@@ -3,17 +3,19 @@ package ru.dns_shop;
 import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import ru.dns_shop.utilities.ConfProperties;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
+import static com.codeborne.selenide.Selenide.open;
 
 public class BaseTest {
 
     @BeforeAll
     public static void installTestConfigurations() {
-        Configuration.browser = new ConfProperties().getProperty("chrome");
+        Configuration.browser = new ConfProperties().getProperty("browser-name");
         Configuration.browserSize = null;
         DesiredCapabilities cap = new DesiredCapabilities();
         ChromeOptions options = new ChromeOptions();
