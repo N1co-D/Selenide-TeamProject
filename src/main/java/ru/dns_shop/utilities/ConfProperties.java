@@ -5,27 +5,16 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class ConfProperties {
-    private final Properties properties = new Properties();
-
-    public String getBrowserFromProperty() {
+    public String getProperty(String key) {
+        Properties properties;
         try {
             FileInputStream fileInputStream = new FileInputStream("src/main/resources/config.properties");
+            properties = new Properties();
             properties.load(fileInputStream);
         } catch (IOException e) {
-            System.err.println("Ошибка при загрузке файла!");
-            throw new RuntimeException(e);
+            System.out.println("Ошибка при загрузке файла!");
+            throw new RuntimeException();
         }
-        return properties.getProperty("browser-name");
-    }
-
-    public String getTestSiteFromProperty() {
-        try {
-            FileInputStream fileInputStream = new FileInputStream("src/main/resources/config.properties");
-            properties.load(fileInputStream);
-        } catch (IOException e) {
-            System.err.println("Ошибка при загрузке файла!");
-            throw new RuntimeException(e);
-        }
-        return properties.getProperty("test-site");
+        return properties.getProperty(key);
     }
 }
