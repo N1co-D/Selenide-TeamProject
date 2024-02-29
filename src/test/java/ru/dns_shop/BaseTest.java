@@ -11,7 +11,7 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 public class BaseTest {
 
     @BeforeAll
-    public static void setupClass() {
+    public static void installingTestConfigurations() {
         Configuration.browser = "chrome";
         Configuration.browserSize = null;
         DesiredCapabilities cap = new DesiredCapabilities();
