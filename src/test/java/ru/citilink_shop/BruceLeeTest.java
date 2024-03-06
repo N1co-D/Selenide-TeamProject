@@ -9,7 +9,6 @@ import ru.citilink_shop.utilities.pages.ProductPage;
 import static com.codeborne.selenide.Selenide.open;
 
 public class BruceLeeTest extends BaseTest {
-
     private final static String HUAWEI_NOVA_MGA_LX3_BLACK = "Смартфон Huawei nova Y72 8/128Gb,  MGA-LX3,  черный";
 
     @Test
@@ -20,6 +19,7 @@ public class BruceLeeTest extends BaseTest {
                 .clickButtonForAddingItemToBasket(HUAWEI_NOVA_MGA_LX3_BLACK)
                 .clickButtonCloseUpSaleBasketLayout()
                 .clickButtonBasketFresnelContainer();
-        Assertions.assertTrue(HUAWEI_NOVA_MGA_LX3_BLACK.equals(new OrderPage().getNameProductFromBasketSnippet(HUAWEI_NOVA_MGA_LX3_BLACK)));
+        Assertions.assertEquals("Смартфон Huawei nova Y72 8/128Gb, MGA-LX3, черный"
+                , new OrderPage().getNameProductFromBasketSnippet(HUAWEI_NOVA_MGA_LX3_BLACK));
     }
 }
