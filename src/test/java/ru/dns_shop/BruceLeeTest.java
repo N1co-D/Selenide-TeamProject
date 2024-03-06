@@ -10,20 +10,19 @@ import ru.dns_shop.utilities.ConfProperties;
 import static com.codeborne.selenide.Selenide.open;
 
 public class BruceLeeTest extends BaseTest {
+    MainPage mainPage = new MainPage();
+    ResultsPage resultsPage = new ResultsPage();
+    CartPage cartPage = new CartPage();
     private static final String MAIN_PAGE = new ConfProperties().getProperty("test-site");
 
     @Test
     public void checkTheAdditionOfProductToCart() {
-        MainPage mainPage = new MainPage();
-
         open(MAIN_PAGE);
         Assertions.assertTrue(mainPage.getPagesUniqueElement(),
                 "Ошибка в открытии главной страницы");
         String inputText = "Переходники";
         String productFromDropDownList = "Переходники на евровилку";
         String observedProduct = "Адаптер-переходник на евровилку PREMIER 11626/20, темно-серый";
-
-        ResultsPage resultsPage = new ResultsPage();
 
         mainPage.inputBoxWriteText(inputText).clickOnProductFromDropDownList(productFromDropDownList);
         Assertions.assertTrue(resultsPage.getPagesUniqueElement(),
@@ -33,8 +32,6 @@ public class BruceLeeTest extends BaseTest {
         Assertions.assertTrue(resultsPage
                         .checkAppearingWindowWithAddedProductInCartStatus(),
                 "Ошибка в открытии всплывающего окна с сообщением о добавлении товара в корзину");
-
-        CartPage cartPage = new CartPage();
 
         resultsPage.goToCartButtonClick();
         Assertions.assertTrue(cartPage.getPagesUniqueElement(),
