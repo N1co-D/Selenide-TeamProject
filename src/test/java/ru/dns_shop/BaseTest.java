@@ -1,8 +1,8 @@
 package ru.dns_shop;
 
 import com.codeborne.selenide.Configuration;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import ru.dns_shop.utilities.ConfProperties;
@@ -11,10 +11,11 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 
 public class BaseTest {
 
-    @BeforeAll
-    public static void installTestConfigurations() {
+    @BeforeEach
+    public void installTestConfigurations() {
         Configuration.browser = new ConfProperties().getProperty("browser-name");
         Configuration.browserSize = null;
+        Configuration.pageLoadStrategy = "none";
         DesiredCapabilities cap = new DesiredCapabilities();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("start-maximized");
@@ -22,8 +23,8 @@ public class BaseTest {
         Configuration.browserCapabilities = cap;
     }
 
-    @AfterAll
-    public static void quitTest() {
+    @AfterEach
+    public void quitTest() {
         closeWebDriver();
     }
 }
