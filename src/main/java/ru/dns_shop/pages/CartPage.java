@@ -42,4 +42,3 @@ public class CartPage {
                 .getAttribute("value");
     }
 }
-
