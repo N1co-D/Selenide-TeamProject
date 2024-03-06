@@ -1,11 +1,11 @@
-package ru.dns_shop;
+package ru.citilink;
 
 import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import ru.dns_shop.utilities.ConfProperties;
+import ru.citilink.utilities.ConfProperties;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 
