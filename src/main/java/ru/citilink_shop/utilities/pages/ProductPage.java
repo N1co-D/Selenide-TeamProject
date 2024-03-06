@@ -13,7 +13,8 @@ public class ProductPage {
 
 
     public ProductPage clickButtonForAddingItemToBasket(String nameProduct) {
-        $x(String.format(buttonForAddingItemToBasket, nameProduct)).scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"nearest\"}")
+        $x(String.format(buttonForAddingItemToBasket, nameProduct))
+                .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"nearest\"}")
                 .should(visible, Duration.ofSeconds(3)).click();
         return this;
     }
