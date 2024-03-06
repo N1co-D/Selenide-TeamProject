@@ -1,4 +1,4 @@
-package ru.dns_shop.utilities;
+package ru.citilink.utilities;
 
 import java.io.FileInputStream;
 import java.io.IOException;
