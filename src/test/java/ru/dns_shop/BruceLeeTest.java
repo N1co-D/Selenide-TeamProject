@@ -10,12 +10,12 @@ import ru.dns_shop.utilities.ConfProperties;
 import static com.codeborne.selenide.Selenide.open;
 
 public class BruceLeeTest extends BaseTest {
+    MainPage mainPage = new MainPage();
+    ComparingPage comparingPage = new ComparingPage();
     private static final String MAIN_PAGE = new ConfProperties().getProperty("test-site");
 
     @Test
     public void checkTheAdditionOfProductToCompareSection() {
-        MainPage mainPage = new MainPage();
-
         open(MAIN_PAGE);
         Assertions.assertTrue(mainPage.getPagesUniqueElement(),
                 "Ошибка в открытии главной страницы");
@@ -32,8 +32,6 @@ public class BruceLeeTest extends BaseTest {
         Assertions.assertEquals(resultsPage.getAmountOfAddedProductsToCompare(),
                 String.valueOf(amountOfProductsForAdding),
                 "Ошибка в  корректном отражении количества добавленных для сравнения товаров");
-
-        ComparingPage comparingPage = new ComparingPage();
 
         resultsPage.comparingButtonClick();
         Assertions.assertTrue(comparingPage.getPagesUniqueElement(),
