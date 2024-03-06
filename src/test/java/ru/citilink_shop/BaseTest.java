@@ -14,7 +14,6 @@ public class BaseTest {
     @BeforeAll
     public static void installTestConfigurations() {
         Configuration.browser = new ConfProperties().getProperty("browser-name");
-        Configuration.pageLoadStrategy = "none";
         Configuration.browserSize = null;
         DesiredCapabilities cap = new DesiredCapabilities();
         ChromeOptions options = new ChromeOptions();

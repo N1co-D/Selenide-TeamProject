@@ -8,8 +8,8 @@ import ru.citilink_shop.utilities.pages.ProductPage;
 
 import static com.codeborne.selenide.Selenide.open;
 
+public class BruceLeeTest extends BaseTest {
 
-public class ShoppingBasket extends BaseTest {
     private final static String HUAWEI_NOVA_MGA_LX3_BLACK = "Смартфон Huawei nova Y72 8/128Gb,  MGA-LX3,  черный";
 
     @Test
