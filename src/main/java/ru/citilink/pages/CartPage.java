@@ -1,4 +1,4 @@
-package ru.dns_shop.pages;
+package ru.citilink.pages;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
