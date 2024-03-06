@@ -13,7 +13,7 @@ public class BruceLeeTest extends BaseTest {
     private static final String MAIN_PAGE = new ConfProperties().getProperty("test-site");
 
     @Test
-    public void checkingTheAdditionOfProductToCart() {
+    public void checkTheAdditionOfProductToCart() {
         MainPage mainPage = new MainPage();
 
         open(MAIN_PAGE);
