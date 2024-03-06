@@ -22,6 +22,7 @@ public class CartPage {
     public boolean getPagesUniqueElement() {
         try {
             $x(uniqueElement).should(visible, Duration.ofSeconds(secondsOfWaiting));
+            Selenide.sleep(5000);
             return $x(uniqueElement).isDisplayed();
         } catch (TimeoutException | NoSuchElementException | ElementNotFound e) {
             Assertions.fail("Боковое описание корзины (как уникальный элемент страницы) не обнаружен");
