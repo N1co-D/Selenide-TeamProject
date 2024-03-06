@@ -15,6 +15,7 @@ public class BaseTest {
     public static void installTestConfigurations() {
         Configuration.browser = new ConfProperties().getProperty("browser-name");
         Configuration.browserSize = null;
+        Configuration.pageLoadStrategy = "none";
         DesiredCapabilities cap = new DesiredCapabilities();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("start-maximized");
