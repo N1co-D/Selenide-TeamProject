@@ -1,11 +1,11 @@
-package ru.dns_shop;
+package ru.citilink;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.dns_shop.pages.ComparingPage;
-import ru.dns_shop.pages.MainPage;
-import ru.dns_shop.pages.ResultsPage;
-import ru.dns_shop.utilities.ConfProperties;
+import ru.citilink.pages.ComparingPage;
+import ru.citilink.pages.MainPage;
+import ru.citilink.pages.ResultsPage;
+import ru.citilink.utilities.ConfProperties;
 
 import static com.codeborne.selenide.Selenide.open;
 
