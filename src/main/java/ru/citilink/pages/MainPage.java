@@ -17,13 +17,13 @@ import static org.assertj.core.api.Assertions.fail;
 public class MainPage {
     private final String uniqueElement = "//div[@data-meta-name='BannersLayout']";
     private final String inputBox = "//input[@type='search']";
-    private static final int SECONDS_OF_WAITING = 20;
+    private static final int SECONDS_OF_WAITING = 20; //todo перенести в бейс педж
 
-    public boolean getPagesUniqueElement() {
+    public boolean getPagesUniqueElement() { //todo поменять имя
         try {
             $x(uniqueElement).should(visible, Duration.ofSeconds(SECONDS_OF_WAITING));
             return $x(uniqueElement).isDisplayed();
-        } catch (TimeoutException | NoSuchElementException | ElementNotFound e) {
+        } catch (TimeoutException | NoSuchElementException | ElementNotFound e) { //todo поменять эксепшион
             fail("Центральная секция с баннерами (как уникальный элемент страницы) не обнаружен");
         }
         return false;

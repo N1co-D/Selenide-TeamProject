@@ -35,7 +35,7 @@ public class CartPage {
 
     public void increaseTheAmountOfProductInCartButtonClick() {
         $x(increaseTheAmountOfProductInCartButton).should(visible, Duration.ofSeconds(SECONDS_OF_WAITING));
-        executeJavaScript("arguments[0].click();", $x(increaseTheAmountOfProductInCartButton));
+        executeJavaScript("arguments[0].click();", $x(increaseTheAmountOfProductInCartButton)); //todo вынести в пейдж
     }
 
     public String getAmountOfProductInCart() {

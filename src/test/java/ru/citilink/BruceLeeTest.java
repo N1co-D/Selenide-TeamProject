@@ -11,8 +11,8 @@ import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class BruceLeeTest extends BaseTest {
-    MainPage mainPage = new MainPage();
+public class BruceLeeTest extends BaseTest { //todo имя
+    MainPage mainPage = new MainPage();  //todo модификаторы
     ResultsPage resultsPage = new ResultsPage();
     CartPage cartPage = new CartPage();
     ConfProperties confProperties = new ConfProperties();
