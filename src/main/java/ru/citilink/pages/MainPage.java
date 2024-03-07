@@ -10,6 +10,7 @@ import java.time.Duration;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.executeJavaScript;
+import static org.assertj.core.api.Assertions.fail;
 
 /**
  * Главная страница сайта Citilink
@@ -25,7 +26,7 @@ public class MainPage {
             $x(uniqueElement).should(visible, Duration.ofSeconds(SECONDS_OF_WAITING));
             return $x(uniqueElement).isDisplayed();
         } catch (TimeoutException | NoSuchElementException | ElementNotFound e) {
-            Assertions.fail("Центральная секция с баннерами (как уникальный элемент страницы) не обнаружен");
+            fail("Центральная секция с баннерами (как уникальный элемент страницы) не обнаружен");
         }
         return false;
     }
