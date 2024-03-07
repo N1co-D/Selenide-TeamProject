@@ -21,13 +21,14 @@ public class MainPage {
     private static final int SECONDS_OF_WAITING = 20; //todo перенести в бейс педж
 
     private final String popularCategoryTile = "//div[contains(@data-meta-name,'category-tiles')]//a//span[contains(text(),'%s')]";
-    private static final long SECONDS_OF_WAITING = 15;
+
 
     public void clickPopularCategoryTile(String nameCategory) {
         $x(String.format(popularCategoryTile, nameCategory))
                 .scrollIntoView("{behavior: \"smooth\", block: \"center\", inline: \"nearest\"}")
                 .should(visible, Duration.ofSeconds(SECONDS_OF_WAITING))
                 .click();
+    }
 
 
     public boolean getPagesUniqueElement() { //todo поменять имя

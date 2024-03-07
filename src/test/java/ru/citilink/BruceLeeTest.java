@@ -1,14 +1,17 @@
 package ru.citilink;
 
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import ru.citilink.pages.CartPage;
 import ru.citilink.pages.MainPage;
 import ru.citilink.pages.ResultsPage;
+import ru.citilink.pages.catalog.Noutbuki;
 import ru.citilink.utilities.ConfProperties;
 
 import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.sleep;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
