@@ -72,6 +72,12 @@ public class BruceLeeTest extends BaseTest { //todo имя
                 .clickButtonDetailCatalogMode()
                 .checkProductsAfterFiltration("HUAWEI","14","Core i7");
         sleep(5000);
+
     }
+    @Test
+    public void testTestForStudy(){
+        System.out.println("Conflict Study");
+    }
+
 }
 
