@@ -36,7 +36,7 @@ public class MainPage {
         return this;
     }
 
-    public void searchGameByInputBox(String searchingProduct) {
+    public void searchProductByInputBox(String searchingProduct) {
         inputBoxWriteText(searchingProduct);
         $x(inputBox).should(visible, Duration.ofSeconds(SECONDS_OF_WAITING)).pressEnter();
     }

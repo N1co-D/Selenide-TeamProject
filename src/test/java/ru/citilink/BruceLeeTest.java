@@ -25,7 +25,7 @@ public class BruceLeeTest extends BaseTest {
         assertTrue(mainPage.getPagesUniqueElement(),
                 "Ошибка в открытии главной страницы");
 
-        mainPage.searchGameByInputBox(inputText);
+        mainPage.searchProductByInputBox(inputText);
         assertTrue(resultsPage.getPagesUniqueElement(),
                 "Ошибка в открытии страницы с результатами поиска");
 
