@@ -1,7 +1,8 @@
 package ru.citilink;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import ru.citilink.pages.CartPage;
 import ru.citilink.pages.MainPage;
 import ru.citilink.pages.ResultsPage;
@@ -15,19 +16,19 @@ public class BruceLeeTest extends BaseTest {
     CartPage cartPage = new CartPage();
     private static final String MAIN_PAGE = new ConfProperties().getProperty("test-site");
 
-    @Test
-    public void checkTheIncreaseInQuantityWhenAddingProductsToCart() {
+    @ParameterizedTest
+    @CsvSource({
+            "'Ноутбук Huawei MateBook D 14 53013XFA, 14', '8 ГБ, LPDDR4x', 'SSD 512 ГБ', '2'"
+    })
+    public void checkTheIncreaseInQuantityWhenAddingProductsToCart(String inputText, String rawMemoryRequiredParameter,
+                                                                   String diskRequiredParameter, String expectedAmountOfProduct) {
         open(MAIN_PAGE);
         Assertions.assertTrue(mainPage.getPagesUniqueElement(),
                 "Ошибка в открытии главной страницы");
-        String inputText = "Ноутбук Huawei MateBook D 14 53013XFA, 14";
 
         mainPage.SearchGameByInputBox(inputText);
         Assertions.assertTrue(resultsPage.getPagesUniqueElement(),
                 "Ошибка в открытии страницы с результатами поиска");
-
-        String rawMemoryRequiredParameter = "8 ГБ, LPDDR4x";
-        String diskRequiredParameter = "SSD 512 ГБ";
 
         resultsPage.enableDetailedCatalogMode().requiredProductWithParametersBuyingClick(rawMemoryRequiredParameter, diskRequiredParameter);
         Assertions.assertTrue(resultsPage
@@ -44,7 +45,6 @@ public class BruceLeeTest extends BaseTest {
                 "Ошибка в открытии страницы с корзиной");
 
         cartPage.increaseTheAmountOfProductInCartButtonClick();
-        String expectedAmountOfProduct = "2";
         Assertions.assertEquals(cartPage.getAmountOfProductInCart(), expectedAmountOfProduct,
                 "Ошибка в увеличении количества товара в корзине");
     }
