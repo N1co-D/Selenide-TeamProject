@@ -1,4 +1,4 @@
-package ru.dns_shop.citilink;
+package ru.citilink.pages;
 
 import java.time.Duration;
 
@@ -9,7 +9,7 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class CatalogPage {
     private final String subcategoryPageTitle = "//div[@data-meta-name='SubcategoryPageTitle']/h1[text()]";
-    private final String productList = "//div[@data-meta-row-count='48']/div";
+    private final String productList = "//div[@data-meta-name='ProductHorizontalSnippet']";
     private final String comparingCurrentProductButton = ".//button[@data-meta-name='Snippet__compare-button']";
     private final String detailedCatalogModeButton = "//label[@for='Подробный режим каталога-list']";
     private static final long SECONDS_OF_WAITING = 15;
