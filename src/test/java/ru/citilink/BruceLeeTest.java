@@ -15,17 +15,15 @@ import static com.codeborne.selenide.Selenide.sleep;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
 public class BruceLeeTest extends BaseTest { //todo имя
+    private final MainPage mainPage = new MainPage();
+    private final ResultsPage resultsPage = new ResultsPage();
+    private final CartPage cartPage = new CartPage();
+    private final ConfProperties confProperties = new ConfProperties();
     private final static String NOUTBUKI_CATEGORY = "Ноутбуки";
     private final static String BREND_FILTER_CATEGORY = "Бренд";
     private final static String SCREEN_DIAGONAL_FILTER_CATEGORY = "Диагональ экрана";
     private final static String PROCESSOR_SERIES_FILTER_CATEGORY = "Серия процессора";
-    ConfProperties confProperties = new ConfProperties();
-    MainPage mainPage = new MainPage();  //todo модификаторы
-    ResultsPage resultsPage = new ResultsPage();
-    CartPage cartPage = new CartPage();
-
 
     @ParameterizedTest
     @CsvSource({"'Ноутбук Huawei MateBook D 14 53013XFA, 14', '8 ГБ, LPDDR4x', 'SSD 512 ГБ', '2'"})
@@ -81,3 +79,13 @@ public class BruceLeeTest extends BaseTest { //todo имя
 
 }
 
+// Example text
+// Example text
+// Example text
+// Example text
+// Example text
+// Example text
+// Example text
+// Example text
+// Example text
+// Example text
