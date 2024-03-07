@@ -1,9 +1,9 @@
-package ru.citilink_shop;
+package ru.citilink;
 
 import org.junit.jupiter.api.Test;
-import ru.citilink_shop.utilities.ConfProperties;
-import ru.citilink_shop.utilities.pages.MainPage;
-import ru.citilink_shop.utilities.pages.catalog.Noutbuki;
+import ru.citilink.pages.MainPage;
+import ru.citilink.pages.catalog.Noutbuki;
+import ru.citilink.utilities.ConfProperties;
 
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
@@ -20,12 +20,12 @@ public class BruceLeeTest extends BaseTest {
         open(confProperties.getProperty("test-site"));
         new MainPage().clickPopularCategoryTile(NOUTBUKI_CATEGORY);
         new Noutbuki().clickFilterDropDownCategoryAndValue(BREND_FILTER_CATEGORY,"HUAWEI")
+//                .clickFilterDropDownCategoryAndValue(BREND_FILTER_CATEGORY,"LENOVO")
                 .clickFilterDropDownCategoryAndValue(SCREEN_DIAGONAL_FILTER_CATEGORY,"14")
                 .clickFilterDropDownCategoryAndValue(PROCESSOR_SERIES_FILTER_CATEGORY,"Core i7")
-                .clickButtonWithFilteringResults()
+//                .clickButtonWithFilteringResults()
                 .clickButtonDetailCatalogMode()
-                .checkProductsAfterFiltration();
+                .checkProductsAfterFiltration("HUAWEI","14","Core i7");
         sleep(5000);
-
     }
 }

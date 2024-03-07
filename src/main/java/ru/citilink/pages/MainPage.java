@@ -1,4 +1,4 @@
-package ru.citilink_shop.utilities.pages;
+package ru.citilink.pages;
 
 import java.time.Duration;
 
@@ -11,7 +11,7 @@ public class MainPage {
 
     public void clickPopularCategoryTile(String nameCategory) {
         $x(String.format(popularCategoryTile, nameCategory))
-                .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"nearest\"}")
+                .scrollIntoView("{behavior: \"smooth\", block: \"center\", inline: \"nearest\"}")
                 .should(visible, Duration.ofSeconds(SECONDS_OF_WAITING))
                 .click();
     }
