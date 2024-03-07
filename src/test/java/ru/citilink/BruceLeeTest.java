@@ -17,9 +17,7 @@ public class BruceLeeTest extends BaseTest {
     private static final String MAIN_PAGE = new ConfProperties().getProperty("test-site");
 
     @ParameterizedTest
-    @CsvSource({
-            "'Ноутбук Huawei MateBook D 14 53013XFA, 14', '8 ГБ, LPDDR4x', 'SSD 512 ГБ', '2'"
-    })
+    @CsvSource({"'Ноутбук Huawei MateBook D 14 53013XFA, 14', '8 ГБ, LPDDR4x', 'SSD 512 ГБ', '2'"})
     public void checkTheIncreaseInQuantityWhenAddingProductsToCart(String inputText, String rawMemoryRequiredParameter,
                                                                    String diskRequiredParameter, String expectedAmountOfProduct) {
         open(MAIN_PAGE);
