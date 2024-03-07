@@ -48,7 +48,7 @@ public class ResultsPage {
         return $$x(listOfProducts).should(CollectionCondition.sizeGreaterThan(0));
     }
 
-    private SelenideElement searchingForRequiredProductInList(String observedProduct) {
+    private SelenideElement searchForRequiredProductInList(String observedProduct) {
         ElementsCollection allProductsFromList = getAllProductsInPage();
         SelenideElement foundProduct = null;
         SelenideElement currentProductTitleElement;
@@ -71,7 +71,7 @@ public class ResultsPage {
     }
 
     public void requiredProductBuyingClick(String observedProduct) {
-        SelenideElement foundRequiredProduct = searchingForRequiredProductInList(observedProduct);
+        SelenideElement foundRequiredProduct = searchForRequiredProductInList(observedProduct);
         foundRequiredProduct.$x(inCartButton).should(visible, Duration.ofSeconds(SECONDS_OF_WAITING));
         executeJavaScript("arguments[0].click();", foundRequiredProduct.$x(inCartButton));
     }
