@@ -1,7 +1,8 @@
 package ru.citilink;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import ru.citilink.pages.CartPage;
 import ru.citilink.pages.MainPage;
 import ru.citilink.pages.ResultsPage;
@@ -15,14 +16,14 @@ public class BruceLeeTest extends BaseTest {
     CartPage cartPage = new CartPage();
     private static final String MAIN_PAGE = new ConfProperties().getProperty("test-site");
 
-    @Test
-    public void checkingTheDeletingOfProductFromCart() {
+    @ParameterizedTest
+    @CsvSource({"'Переходники', 'Переходники на евровилку', " +
+            "'Адаптер-переходник на евровилку PREMIER 11626/20, темно-серый'"})
+    public void checkingTheDeletingOfProductFromCart(String inputText, String productFromDropDownList,
+                                                     String observedProduct) {
         open(MAIN_PAGE);
         Assertions.assertTrue(mainPage.getPagesUniqueElement(),
                 "Ошибка в открытии главной страницы");
-        String inputText = "Переходники";
-        String productFromDropDownList = "Переходники на евровилку";
-        String observedProduct = "Адаптер-переходник на евровилку PREMIER 11626/20, темно-серый";
 
         mainPage.inputBoxWriteText(inputText).clickOnProductFromDropDownList(productFromDropDownList);
         Assertions.assertTrue(resultsPage.getPagesUniqueElement(),
