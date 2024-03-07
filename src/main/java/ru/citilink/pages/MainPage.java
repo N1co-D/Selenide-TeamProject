@@ -1,4 +1,4 @@
-package ru.dns_shop.citilink;
+package ru.citilink.pages;
 
 import java.time.Duration;
 

@@ -1,4 +1,4 @@
-package ru.dns_shop.citilink;
+package ru.citilink.pages;
 
 import java.time.Duration;
 
@@ -8,7 +8,7 @@ import static com.codeborne.selenide.Selenide.$x;
 public class ComparePage {
     private final String comparePageTitle = "//div[@class='ComparePage__header']//h2[text()]";
     private final String titleOfCurrentProduct = "//div[normalize-space(text())='Модель']/following-sibling::div//a";
-    private final String priceOfCurrentProduct = "//div[normalize-space(text())='Цена']/following::span[contains(@class, 'current-price')]";
+    private final String priceOfCurrentProduct = "//span[contains(@class,'Compare__product-cell_price_current-price')]";
     private static final long SECONDS_OF_WAITING = 15;
 
     public String getComparePageTitle() {
