@@ -14,7 +14,6 @@ import static org.assertj.core.api.Assertions.fail;
  * Главная страница сайта Citilink
  */
 public class MainPage extends BasePage {
-    private final BasePage basePage = new BasePage();
     private final String uniqueElement = "//div[@data-meta-name='BannersLayout']";
     private final String inputBox = "//input[@type='search']";
 
@@ -29,8 +28,7 @@ public class MainPage extends BasePage {
     }
 
     private MainPage inputBoxWriteText(String searchingProduct) {
-        $x(inputBox).should(visible, Duration.ofSeconds(DURATION));
-        basePage.jsClick($x(inputBox));
+        jsClick($x(inputBox));
         $x(inputBox).sendKeys(searchingProduct);
         return this;
     }

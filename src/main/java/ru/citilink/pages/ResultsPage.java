@@ -20,7 +20,6 @@ import static org.assertj.core.api.Assertions.fail;
  * Страница с результатами "[Категория товаров]" в Citilink
  */
 public class ResultsPage extends BasePage {
-    private final BasePage basePage = new BasePage();
     private final String uniqueElement = "//div[@data-meta-name='FiltersLayout']";
     private final String detailedCatalogMode = "//label[@for='Подробный режим каталога-list']";
     private final String listOfProducts = "//div[@data-meta-name='ProductHorizontalSnippet']";
@@ -42,8 +41,7 @@ public class ResultsPage extends BasePage {
     }
 
     public ResultsPage enableDetailedCatalogMode() {
-        $x(detailedCatalogMode).should(visible, Duration.ofSeconds(DURATION));
-        basePage.jsClick($x(detailedCatalogMode));
+        jsClick($x(detailedCatalogMode));
         return this;
     }
 
@@ -79,18 +77,15 @@ public class ResultsPage extends BasePage {
 
     public void requiredProductWithParametersBuyingClick(String firstParameter, String secondParameter) {
         SelenideElement requiredProduct = searchingForRequiredProductInList(firstParameter, secondParameter);
-        requiredProduct.$x(inCartButton).should(visible, Duration.ofSeconds(DURATION));
-        basePage.jsClick(requiredProduct.$x(inCartButton));
+        jsClick(requiredProduct.$x(inCartButton));
     }
 
     public void cartButtonClick() {
-        $x(cartButton).should(visible, Duration.ofSeconds(DURATION));
-        basePage.jsClick($x(cartButton));
+        jsClick($x(cartButton));
     }
 
     public void closeWindowWithAddedProductInCartStatusClick() {
-        $x(closeWindowWithAddedProductInCartStatus).should(visible, Duration.ofSeconds(DURATION));
-        basePage.jsClick($x(closeWindowWithAddedProductInCartStatus));
+        jsClick($x(closeWindowWithAddedProductInCartStatus));
     }
 
     public boolean checkAppearingWindowWithAddedProductInCartStatus() {
