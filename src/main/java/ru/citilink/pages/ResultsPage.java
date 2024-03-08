@@ -20,6 +20,7 @@ import static org.assertj.core.api.Assertions.fail;
  * Страница с результатами "[Категория товаров]" в Citilink
  */
 public class ResultsPage extends BasePage {
+    private final BasePage basePage = new BasePage();
     private final String uniqueElement = "//div[@data-meta-name='FiltersLayout']";
     private final String detailedCatalogMode = "//label[@for='Подробный режим каталога-list']";
     private final String listOfProducts = "//div[@data-meta-name='ProductHorizontalSnippet']";
@@ -29,7 +30,6 @@ public class ResultsPage extends BasePage {
     private final String windowWithAddedProductInCartStatus = "//div[@data-meta-name='Popup']";
     private final String closeWindowWithAddedProductInCartStatus = "//button[@data-meta-name='UpsaleBasket__close-popup']";
     private final String cartButton = "//div[@data-meta-name='HeaderBottom__search']/following-sibling::div//div[@data-meta-name='BasketButton']";
-    private final BasePage basePage = new BasePage();
 
     public boolean getPagesUniqueElement() {
         try {

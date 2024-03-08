@@ -14,9 +14,9 @@ import static org.assertj.core.api.Assertions.fail;
  * Главная страница сайта Citilink
  */
 public class MainPage extends BasePage {
+    private final BasePage basePage = new BasePage();
     private final String uniqueElement = "//div[@data-meta-name='BannersLayout']";
     private final String inputBox = "//input[@type='search']";
-    private final BasePage basePage = new BasePage();
 
     public boolean getPagesUniqueElement() { //todo поменять имя
         try {

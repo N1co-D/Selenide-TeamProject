@@ -15,10 +15,10 @@ import static org.assertj.core.api.Assertions.fail;
  * Страница "Корзина" на сайте Citilink
  */
 public class CartPage extends BasePage {
+    private final BasePage basePage = new BasePage();
     private final String uniqueElement = "//div[@data-meta-name='BasketSummary']";
     private final String amountOfProductInCart = "//input[@data-meta-name='Count__input']";
     private final String increaseTheAmountOfProductInCartButton = "//button[@data-meta-name='Count__button-plus']";
-    private final BasePage basePage = new BasePage();
 
     public boolean getPagesUniqueElement() {
         try {
