@@ -49,14 +49,3 @@ public class BruceLeeTest extends BaseTest { //todo имя
                 "Ошибка в увеличении количества товара в корзине");
     }
 }
-
-// Example text
-// Example text
-// Example text
-// Example text
-// Example text
-// Example text
-// Example text
-// Example text
-// Example text
-// Example text
