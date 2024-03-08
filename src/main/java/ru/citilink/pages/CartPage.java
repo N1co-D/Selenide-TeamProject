@@ -21,7 +21,7 @@ public class CartPage extends BasePage {
 
     public boolean getPagesUniqueElement() {
         try {
-            $x(uniqueElement).should(visible, Duration.ofSeconds(DURATION));
+            $x(uniqueElement).should(visible, WAITING_TIME);
             Selenide.sleep(5000);
             return $x(uniqueElement).isDisplayed();
         } catch (TimeoutException | NoSuchElementException | ElementNotFound e) {
@@ -35,7 +35,7 @@ public class CartPage extends BasePage {
     }
 
     public String getAmountOfProductInCart() {
-        return $x(amountOfProductInCart).should(visible, Duration.ofSeconds(DURATION))
+        return $x(amountOfProductInCart).should(visible, WAITING_TIME)
                 .getAttribute("value");
     }
 }

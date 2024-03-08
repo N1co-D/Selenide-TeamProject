@@ -19,7 +19,7 @@ public class MainPage extends BasePage {
 
     public boolean getPagesUniqueElement() { //todo поменять имя
         try {
-            $x(uniqueElement).should(visible, Duration.ofSeconds(DURATION));
+            $x(uniqueElement).should(visible, WAITING_TIME);
             return $x(uniqueElement).isDisplayed();
         } catch (TimeoutException | NoSuchElementException | ElementNotFound e) { //todo поменять эксепшион
             fail("Центральная секция с баннерами (как уникальный элемент страницы) не обнаружен");
@@ -35,6 +35,6 @@ public class MainPage extends BasePage {
 
     public void searchProductByInputBox(String searchingProduct) {
         inputBoxWriteText(searchingProduct);
-        $x(inputBox).should(visible, Duration.ofSeconds(DURATION)).pressEnter();
+        $x(inputBox).should(visible, WAITING_TIME).pressEnter();
     }
 }

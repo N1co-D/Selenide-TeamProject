@@ -32,7 +32,7 @@ public class ResultsPage extends BasePage {
 
     public boolean getPagesUniqueElement() {
         try {
-            $x(uniqueElement).should(visible, Duration.ofSeconds(DURATION));
+            $x(uniqueElement).should(visible, WAITING_TIME);
             return $x(uniqueElement).isDisplayed();
         } catch (TimeoutException | NoSuchElementException | ElementNotFound e) {
             fail("Фильтр (как уникальный элемент страницы) не обнаружен");
@@ -50,12 +50,12 @@ public class ResultsPage extends BasePage {
     }
 
     private String getRamMemoryParameterOfProduct() {
-        return $x(ramMemoryParameterOfProduct).should(visible, Duration.ofSeconds(DURATION))
+        return $x(ramMemoryParameterOfProduct).should(visible, WAITING_TIME)
                 .getText();
     }
 
     private String getDiskParameterOfProduct() {
-        return $x(diskParameterOfProduct).should(visible, Duration.ofSeconds(DURATION))
+        return $x(diskParameterOfProduct).should(visible, WAITING_TIME)
                 .getText();
     }
 
@@ -90,7 +90,7 @@ public class ResultsPage extends BasePage {
 
     public boolean checkAppearingWindowWithAddedProductInCartStatus() {
         try {
-            $x(windowWithAddedProductInCartStatus).should(appear, Duration.ofSeconds(DURATION));
+            $x(windowWithAddedProductInCartStatus).should(appear, WAITING_TIME);
             return true;
         } catch (TimeoutException e) {
             return false;
@@ -99,7 +99,7 @@ public class ResultsPage extends BasePage {
 
     public boolean checkDisappearingWindowWithAddedProductInCartStatus() {
         try {
-            $x(windowWithAddedProductInCartStatus).shouldNot(appear, Duration.ofSeconds(DURATION));
+            $x(windowWithAddedProductInCartStatus).shouldNot(appear, WAITING_TIME);
             return true;
         } catch (TimeoutException e) {
             return false;
