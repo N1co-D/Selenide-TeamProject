@@ -78,14 +78,3 @@ public class BruceLeeTest extends BaseTest { //todo имя
     }
 
 }
-
-// Example text
-// Example text
-// Example text
-// Example text
-// Example text
-// Example text
-// Example text
-// Example text
-// Example text
-// Example text
