@@ -1,18 +1,15 @@
 package ru.citilink.pages;
 
-import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.ex.ElementNotFound;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 
-import java.time.Duration;
-
+import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$$x;
 import static com.codeborne.selenide.Selenide.$x;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 /**
@@ -20,7 +17,7 @@ import static org.assertj.core.api.Assertions.fail;
  * Страница с результатами "[Категория товаров]" в Citilink
  */
 public class ResultsPage extends BasePage {
-    private final String uniqueElement = "//div[@data-meta-name='FiltersLayout']";
+    private final String filter = "//div[@data-meta-name='FiltersLayout']";
     private final String detailedCatalogMode = "//label[@for='Подробный режим каталога-list']";
     private final String listOfProducts = "//div[@data-meta-name='ProductHorizontalSnippet']";
     private final String ramMemoryParameterOfProduct = ".//span[text()='Оперативная память']/..";
@@ -30,14 +27,13 @@ public class ResultsPage extends BasePage {
     private final String closeWindowWithAddedProductInCartStatus = "//button[@data-meta-name='UpsaleBasket__close-popup']";
     private final String cartButton = "//div[@data-meta-name='HeaderBottom__search']/following-sibling::div//div[@data-meta-name='BasketButton']";
 
-    public boolean getPagesUniqueElement() {
+    public ResultsPage checkICorrectPageOpen() {
         try {
-            $x(uniqueElement).should(visible, WAITING_TIME);
-            return $x(uniqueElement).isDisplayed();
-        } catch (TimeoutException | NoSuchElementException | ElementNotFound e) {
-            fail("Фильтр (как уникальный элемент страницы) не обнаружен");
+            assertThat($x(filter).should(visible, WAITING_TIME));
+        } catch (AssertionError e) {
+            fail("Ошибка в открытии ожидаемой страницы с результатами поиска");
         }
-        return false;
+        return this;
     }
 
     public ResultsPage enableDetailedCatalogMode() {
@@ -46,7 +42,7 @@ public class ResultsPage extends BasePage {
     }
 
     private ElementsCollection getAllProductsInPage() {
-        return $$x(listOfProducts).should(CollectionCondition.sizeGreaterThan(0));
+        return $$x(listOfProducts).should(sizeGreaterThan(0));
     }
 
     private String getRamMemoryParameterOfProduct() {
@@ -59,7 +55,7 @@ public class ResultsPage extends BasePage {
                 .getText();
     }
 
-    private SelenideElement searchingForRequiredProductInList(String firstParameter, String secondParameter) {
+    private SelenideElement searchForRequiredProductInList(String firstParameter, String secondParameter) {
         ElementsCollection allProductsFromList = getAllProductsInPage();
         SelenideElement foundProduct = null;
         for (SelenideElement product : allProductsFromList) {
@@ -75,34 +71,37 @@ public class ResultsPage extends BasePage {
         return foundProduct;
     }
 
-    public void requiredProductWithParametersBuyingClick(String firstParameter, String secondParameter) {
-        SelenideElement requiredProduct = searchingForRequiredProductInList(firstParameter, secondParameter);
+    public ResultsPage requiredProductWithParametersBuyingClick(String firstParameter, String secondParameter) {
+        SelenideElement requiredProduct = searchForRequiredProductInList(firstParameter, secondParameter);
         jsClick(requiredProduct.$x(inCartButton));
+        return this;
     }
 
-    public void cartButtonClick() {
+    public ResultsPage cartButtonClick() {
         jsClick($x(cartButton));
+        return this;
     }
 
-    public void closeWindowWithAddedProductInCartStatusClick() {
+    public ResultsPage closeWindowWithAddedProductInCartStatusClick() {
         jsClick($x(closeWindowWithAddedProductInCartStatus));
+        return this;
     }
 
-    public boolean checkAppearingWindowWithAddedProductInCartStatus() {
+    public ResultsPage checkAppearWindowWithAddedProductInCartStatus() {
         try {
-            $x(windowWithAddedProductInCartStatus).should(appear, WAITING_TIME);
-            return true;
+            assertThat($x(windowWithAddedProductInCartStatus).should(appear, WAITING_TIME));
         } catch (TimeoutException e) {
-            return false;
+            fail("Ошибка в открытии всплывающего окна с сообщением о добавлении товара в корзину");
         }
+        return this;
     }
 
-    public boolean checkDisappearingWindowWithAddedProductInCartStatus() {
+    public ResultsPage checkDisappearWindowWithAddedProductInCartStatus() {
         try {
-            $x(windowWithAddedProductInCartStatus).shouldNot(appear, WAITING_TIME);
-            return true;
+            assertThat($x(windowWithAddedProductInCartStatus).shouldNot(appear, WAITING_TIME));
         } catch (TimeoutException e) {
-            return false;
+            fail("Ошибка в закрытии всплывающего окна с сообщением о добавлении товара в корзину");
         }
+        return this;
     }
 }
