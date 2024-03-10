@@ -13,7 +13,7 @@ public class CartPage extends BasePage {
     private final String amountOfProductInCart = "//input[@data-meta-name='Count__input']";
     private final String increaseTheAmountOfProductInCartButton = "//button[@data-meta-name='Count__button-plus']";
 
-    public CartPage checkICorrectPageOpen() {
+    public CartPage checkIfCorrectPageOpen() {
         try {
             assertThat($x(SideDescriptionOfCart).should(visible, WAITING_TIME));
         } catch (AssertionError e) {

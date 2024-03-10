@@ -23,10 +23,10 @@ public class CitilinkTest extends BaseTest {
                                                                    String diskRequiredParameter,
                                                                    String expectedAmountOfProduct) {
         open(confProperties.getProperty("test-site"));
-        mainPage.checkICorrectPageOpen()
+        mainPage.checkIfCorrectPageOpen()
                 .searchProductByInputBox(inputText);
 
-        resultsPage.checkICorrectPageOpen()
+        resultsPage.checkIfCorrectPageOpen()
                 .enableDetailedCatalogMode()
                 .requiredProductWithParametersBuyingClick(rawMemoryRequiredParameter, diskRequiredParameter)
                 .checkAppearWindowWithAddedProductInCartStatus()
@@ -34,7 +34,7 @@ public class CitilinkTest extends BaseTest {
                 .checkDisappearWindowWithAddedProductInCartStatus()
                 .cartButtonClick();
 
-        cartPage.checkICorrectPageOpen()
+        cartPage.checkIfCorrectPageOpen()
                 .increaseTheAmountOfProductInCartButtonClick();
 
         assertEquals(expectedAmountOfProduct,

@@ -27,7 +27,7 @@ public class ResultsPage extends BasePage {
     private final String closeWindowWithAddedProductInCartStatus = "//button[@data-meta-name='UpsaleBasket__close-popup']";
     private final String cartButton = "//div[@data-meta-name='HeaderBottom__search']/following-sibling::div//div[@data-meta-name='BasketButton']";
 
-    public ResultsPage checkICorrectPageOpen() {
+    public ResultsPage checkIfCorrectPageOpen() {
         try {
             assertThat($x(filter).should(visible, WAITING_TIME));
         } catch (AssertionError e) {

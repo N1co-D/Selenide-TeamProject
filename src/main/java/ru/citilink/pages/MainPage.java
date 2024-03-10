@@ -12,7 +12,7 @@ public class MainPage extends BasePage {
     private final String centralAdBanner = "//div[@data-meta-name='BannersLayout']";
     private final String inputBox = "//input[@type='search']";
 
-    public MainPage checkICorrectPageOpen() {
+    public MainPage checkIfCorrectPageOpen() {
         try {
             assertThat($x(centralAdBanner).should(visible, WAITING_TIME));
         } catch (AssertionError e) {
