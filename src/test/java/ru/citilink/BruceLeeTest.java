@@ -1,17 +1,13 @@
 package ru.citilink;
 
-
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import ru.citilink.pages.CartPage;
 import ru.citilink.pages.MainPage;
 import ru.citilink.pages.ResultsPage;
-import ru.citilink.pages.catalog.Noutbuki;
 import ru.citilink.utilities.ConfProperties;
 
 import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.sleep;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -20,10 +16,6 @@ public class BruceLeeTest extends BaseTest { //todo имя
     private final ResultsPage resultsPage = new ResultsPage();
     private final CartPage cartPage = new CartPage();
     private final ConfProperties confProperties = new ConfProperties();
-    private final static String NOUTBUKI_CATEGORY = "Ноутбуки";
-    private final static String BREND_FILTER_CATEGORY = "Бренд";
-    private final static String SCREEN_DIAGONAL_FILTER_CATEGORY = "Диагональ экрана";
-    private final static String PROCESSOR_SERIES_FILTER_CATEGORY = "Серия процессора";
 
     @ParameterizedTest
     @CsvSource({"'Ноутбук Huawei MateBook D 14 53013XFA, 14', '8 ГБ, LPDDR4x', 'SSD 512 ГБ', '2'"})
@@ -57,24 +49,17 @@ public class BruceLeeTest extends BaseTest { //todo имя
                 "Ошибка в увеличении количества товара в корзине");
     }
 
-
-    @Test
-    public void checkFilterProductsByParameters() throws InterruptedException {
+    @ParameterizedTest
+    @CsvSource({"'Ноутбуки','Бренд','Диагональ экрана','Серия процессора','HUAWEI','14','Core i7'"})
+    public void checkFilterProductsByParameters(String noutbukiCategory, String brandFilterCategory
+            , String screenDiagonalFilterCategory, String processorSeriesFilterCategory, String brandValue
+            , String diagonalValue, String cpuValue) {
         open(confProperties.getProperty("test-site"));
-        new MainPage().clickPopularCategoryTile(NOUTBUKI_CATEGORY);
-        new Noutbuki().clickFilterDropDownCategoryAndValue(BREND_FILTER_CATEGORY,"HUAWEI")
-//                .clickFilterDropDownCategoryAndValue(BREND_FILTER_CATEGORY,"LENOVO")
-                .clickFilterDropDownCategoryAndValue(SCREEN_DIAGONAL_FILTER_CATEGORY,"14")
-                .clickFilterDropDownCategoryAndValue(PROCESSOR_SERIES_FILTER_CATEGORY,"Core i7")
-//                .clickButtonWithFilteringResults()
+        new MainPage().clickPopularCategoryTile(noutbukiCategory);
+        new ResultsPage().clickFilterDropDownCategoryAndValue(brandFilterCategory, brandValue)
+                .clickFilterDropDownCategoryAndValue(screenDiagonalFilterCategory, diagonalValue)
+                .clickFilterDropDownCategoryAndValue(processorSeriesFilterCategory, cpuValue)
                 .clickButtonDetailCatalogMode()
-                .checkProductsAfterFiltration("HUAWEI","14","Core i7");
-        sleep(5000);
-
+                .checkProductsAfterFiltration(brandValue, diagonalValue, cpuValue);
     }
-    @Test
-    public void testTestForStudy(){
-        System.out.println("Conflict Study");
-    }
-
 }

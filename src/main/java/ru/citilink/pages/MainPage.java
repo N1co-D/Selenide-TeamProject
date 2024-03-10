@@ -4,8 +4,6 @@ import com.codeborne.selenide.ex.ElementNotFound;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 
-import java.time.Duration;
-
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$x;
 import static org.assertj.core.api.Assertions.fail;
@@ -16,17 +14,15 @@ import static org.assertj.core.api.Assertions.fail;
 public class MainPage extends BasePage {
     private final String uniqueElement = "//div[@data-meta-name='BannersLayout']";
     private final String inputBox = "//input[@type='search']";
-
     private final String popularCategoryTile = "//div[contains(@data-meta-name,'category-tiles')]//a//span[contains(text(),'%s')]";
 
 
     public void clickPopularCategoryTile(String nameCategory) {
         $x(String.format(popularCategoryTile, nameCategory))
                 .scrollIntoView("{behavior: \"smooth\", block: \"center\", inline: \"nearest\"}")
-                .should(visible, Duration.ofSeconds(SECONDS_OF_WAITING))
+                .should(visible, WAITING_TIME)
                 .click();
     }
-
 
     public boolean getPagesUniqueElement() { //todo поменять имя
         try {
