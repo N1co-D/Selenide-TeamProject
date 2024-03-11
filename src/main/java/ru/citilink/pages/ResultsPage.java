@@ -7,7 +7,7 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 
-public class CatalogPage {
+public class ResultsPage {
     private final String subcategoryPageTitle = "//div[@data-meta-name='SubcategoryPageTitle']/h1[text()]";
     private final String productList = "//div[@data-meta-name='ProductHorizontalSnippet']";
     private final String comparingCurrentProductButton = ".//button[@data-meta-name='Snippet__compare-button']";
@@ -30,7 +30,7 @@ public class CatalogPage {
                         .findBy(text(nameData)).$x(comparingCurrentProductButton));
     }
 
-    public CatalogPage detailedCatalogModeButtonClick() {
+    public ResultsPage detailedCatalogModeButtonClick() {
         $x(detailedCatalogModeButton).shouldBe(visible, Duration.ofSeconds(SECONDS_OF_WAITING)).click();
         return this;
     }
