@@ -20,16 +20,18 @@ public class MainPage {
         return this;
     }
 
-    public void productSearchExtraResultListClick(String gameName) {
+    public ResultsPage productSearchExtraResultListClick(String gameName) {
         $$x(searchDropDownList).shouldBe(sizeGreaterThan(0), Duration.ofSeconds(SECONDS_OF_WAITING))
                 .findBy(text(gameName)).click();
+        return new ResultsPage();
     }
 
     public boolean compareValueIsDisplayed() {
         return $x(compareValue).shouldBe(visible, Duration.ofSeconds(SECONDS_OF_WAITING)).isDisplayed();
     }
 
-    public void compareButtonClick() {
+    public ComparePage compareButtonClick() {
         $x(compareButton).shouldBe(visible, Duration.ofSeconds(SECONDS_OF_WAITING)).click();
+        return new ComparePage();
     }
 }
