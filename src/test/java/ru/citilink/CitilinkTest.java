@@ -11,7 +11,7 @@ import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class BruceLeeTest extends BaseTest { //todo имя
+public class CitilinkTest extends BaseTest {
     private final MainPage mainPage = new MainPage();
     private final ResultsPage resultsPage = new ResultsPage();
     private final CartPage cartPage = new CartPage();

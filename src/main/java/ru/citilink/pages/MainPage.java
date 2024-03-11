@@ -16,7 +16,6 @@ public class MainPage extends BasePage {
     private final String inputBox = "//input[@type='search']";
     private final String popularCategoryTile = "//div[contains(@data-meta-name,'category-tiles')]//a//span[contains(text(),'%s')]";
 
-
     public void clickPopularCategoryTile(String nameCategory) {
         $x(String.format(popularCategoryTile, nameCategory))
                 .scrollIntoView("{behavior: \"smooth\", block: \"center\", inline: \"nearest\"}")

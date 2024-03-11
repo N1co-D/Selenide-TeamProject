@@ -36,7 +36,7 @@ public class ResultsPage extends BasePage {
     private final String horizontalSnippetsProductsTitles = "//a[@data-meta-name='Snippet__title']";
     private final String horizontalSnippetsProductsDisplay = "//span[contains(text(),'Экран')]/..";
     private final String horizontalSnippetsProductsProcessor = "//span[contains(text(),'Процессор')]/..";
-    private final String detailCatalogModeButton = "//div[@class='app-catalog-1h5tkz eo3odd60']";
+    private final String detailCatalogModeButton = "//label[contains(@for,'Подробный режим каталога')]";
     private List<String> notMatchFilterProductsList = new ArrayList<>();
 
     public boolean getPagesUniqueElement() {
