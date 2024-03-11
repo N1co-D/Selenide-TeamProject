@@ -23,6 +23,7 @@ public class CitilinkTest extends BaseTest {
                                                                    String diskRequiredParameter,
                                                                    String expectedAmountOfProduct) {
         open(confProperties.getProperty("test-site"));
+
         mainPage.checkIfCorrectPageOpen()
                 .searchProductByInputBox(inputText);
 
