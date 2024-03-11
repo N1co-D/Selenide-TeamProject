@@ -1,6 +1,5 @@
 package ru.citilink.pages;
 
-
 import com.codeborne.selenide.ex.ElementNotFound;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
