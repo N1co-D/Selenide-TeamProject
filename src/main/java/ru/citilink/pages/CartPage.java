@@ -17,7 +17,7 @@ public class CartPage extends BasePage {
         try {
             assertThat($x(sideDescriptionOfCart).should(visible, WAITING_TIME));
         } catch (AssertionError e) {
-            fail("Ошибка в открытии ожидаемой страницы 'Корзина'");
+            fail("Ошибка в открытии ожидаемой страницы 'Корзина' сайта Citilink");
         }
         return this;
     }

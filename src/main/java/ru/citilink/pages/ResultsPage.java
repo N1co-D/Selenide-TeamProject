@@ -31,7 +31,7 @@ public class ResultsPage extends BasePage {
         try {
             assertThat($x(filter).should(visible, WAITING_TIME));
         } catch (AssertionError e) {
-            fail("Ошибка в открытии ожидаемой страницы с результатами поиска");
+            fail("Ошибка в открытии ожидаемой страницы с результатами поиска сайта Citilink");
         }
         return this;
     }
