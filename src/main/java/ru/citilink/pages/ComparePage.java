@@ -1,12 +1,5 @@
 package ru.citilink.pages;
 
-import com.codeborne.selenide.ex.ElementNotFound;
-import org.assertj.core.api.Assertions;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.TimeoutException;
-
-import java.time.Duration;
-
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$x;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -15,22 +8,27 @@ import static org.assertj.core.api.Assertions.fail;
 /**
  * Страница "Сравнение товаров" сайта Citilink
  */
-public class ComparePage {
+public class ComparePage extends BasePage {
     private final String showOnlyDifferenceCheckbox = "//label[contains(@class,'Compare__actions_show-differences')]";
     private final String amountOfAddedProductsToCompare = "//div[@class='Tabs js--Tabs']//div";
-    private static final int SECONDS_OF_WAITING = 20;
 
-    public boolean getPagesUniqueElement() {
+    public ComparePage getPagesUniqueElement() {
         try {
-//            assertThat($x(showOnlyDifferenceCheckbox).should(visible, WAITING_TIME));
-        } catch (TimeoutException | NoSuchElementException | ElementNotFound e) {
-            fail("Чекбокс 'Показывать только отличия' (как уникальный элемент страницы) не обнаружен");
+            assertThat($x(showOnlyDifferenceCheckbox).should(visible, WAITING_TIME));
+        } catch (AssertionError e) {
+            fail("Ошибка в открытии ожидаемой страницы 'Сравнение товаров'");
         }
-        return false;
+        return this;
     }
 
-    public String getAmountOfAddedProductsToCompare() {
-        return $x(amountOfAddedProductsToCompare).should(visible, Duration.ofSeconds(SECONDS_OF_WAITING))
-                .getText();
+    public ComparePage checkAmountOfAddedProductsToCompare(int expectedAmountOfProductsForAdding) {
+        try {
+            assertThat($x(amountOfAddedProductsToCompare).should(visible, WAITING_TIME)
+                    .getText()
+                    .equals(String.valueOf(expectedAmountOfProductsForAdding)));
+        } catch (AssertionError e) {
+            fail("Ошибка в корректном отражении количества добавленных для сравнения товаров");
+        }
+        return this;
     }
 }
