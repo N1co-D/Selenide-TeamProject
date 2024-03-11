@@ -4,9 +4,10 @@ import com.codeborne.selenide.ex.ElementNotFound;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 
-import java.time.Duration;
-
+import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.$$x;
 import static com.codeborne.selenide.Selenide.$x;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -16,19 +17,9 @@ import static org.assertj.core.api.Assertions.fail;
 public class MainPage extends BasePage {
     private final String uniqueElement = "//div[@data-meta-name='BannersLayout']";
     private final String inputBox = "//input[@type='search']";
-
-
-
-
-    private final String searchField = "//input[@type='search']";
     private final String searchDropDownList = "//div[@data-meta-name='InstantSearchExtraResultList']//a";
     private final String compareButton = "//div[@data-meta-name='HeaderBottom__search']/..//div[@data-meta-name='CompareButton']";
     private final String compareValue = "//div[@data-meta-name='HeaderBottom__search']/..//div[@data-meta-name='NotificationCounter']";
-    private static final long SECONDS_OF_WAITING = 15;
-
-
-
-
 
     public boolean getPagesUniqueElement() { //todo поменять имя
         try {
@@ -40,7 +31,7 @@ public class MainPage extends BasePage {
         return false;
     }
 
-    private MainPage inputBoxWriteText(String searchingProduct) {
+    public MainPage inputBoxWriteText(String searchingProduct) {
         jsClick($x(inputBox));
         $x(inputBox).sendKeys(searchingProduct);
         return this;
@@ -51,25 +42,18 @@ public class MainPage extends BasePage {
         $x(inputBox).should(visible, WAITING_TIME).pressEnter();
     }
 
-
-
-
-    public ru.citilink.pages.MainPage enterDataSearchField(String parameterSearch) {
-        $x(searchField).shouldBe(visible, Duration.ofSeconds(SECONDS_OF_WAITING)).sendKeys(parameterSearch);
-        return this;
-    }
-
-    public void productSearchExtraResultListClick(String gameName) {
-        $$x(searchDropDownList).shouldBe(sizeGreaterThan(0), Duration.ofSeconds(SECONDS_OF_WAITING))
+    public ResultsPage productSearchExtraResultListClick(String gameName) {
+        $$x(searchDropDownList).shouldBe(sizeGreaterThan(0), WAITING_TIME)
                 .findBy(text(gameName)).click();
+        return new ResultsPage();
     }
 
     public boolean compareValueIsDisplayed() {
-        return $x(compareValue).shouldBe(visible, Duration.ofSeconds(SECONDS_OF_WAITING)).isDisplayed();
+        return $x(compareValue).shouldBe(visible, WAITING_TIME).isDisplayed();
     }
 
-    public void compareButtonClick() {
-        $x(compareButton).shouldBe(visible, Duration.ofSeconds(SECONDS_OF_WAITING)).click();
+    public ComparePage compareButtonClick() {
+        $x(compareButton).shouldBe(visible, WAITING_TIME).click();
+        return new ComparePage();
     }
-
 }
