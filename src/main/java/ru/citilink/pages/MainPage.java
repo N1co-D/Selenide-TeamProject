@@ -1,9 +1,10 @@
 package ru.citilink.pages;
 
+import com.codeborne.selenide.ex.UIAssertionError;
+
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.actions;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 /**
@@ -18,9 +19,10 @@ public class MainPage extends BasePage {
 
     public MainPage checkIfCorrectPageOpen() {
         try {
-            assertThat($x(centralAdBanner).should(visible, WAITING_TIME));
-        } catch (AssertionError e) {
-            fail("Ошибка в открытии ожидаемой главной страницы сайта Citilink");
+            $x(centralAdBanner).should(visible, WAITING_TIME);
+        } catch (UIAssertionError e) {
+            fail("Не удалось подтвердить открытие ожидаемой страницы. " +
+                    "Уникальный элемент страницы 'centralAdBanner' не был найден в течение заданного времени.");
         }
         return this;
     }

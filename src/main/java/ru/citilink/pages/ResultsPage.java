@@ -2,6 +2,7 @@ package ru.citilink.pages;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.ex.UIAssertionError;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.appear;
@@ -31,9 +32,10 @@ public class ResultsPage extends BasePage {
 
     public ResultsPage checkIfCorrectPageOpen() {
         try {
-            assertThat($x(filter).should(visible, WAITING_TIME));
-        } catch (AssertionError e) {
-            fail("Ошибка в открытии ожидаемой страницы с результатами поиска");
+            $x(filter).should(visible, WAITING_TIME);
+        } catch (UIAssertionError e) {
+            fail("Не удалось подтвердить открытие ожидаемой страницы. " +
+                    "Уникальный элемент страницы 'filter' не был найден в течение заданного времени.");
         }
         return this;
     }
@@ -91,18 +93,19 @@ public class ResultsPage extends BasePage {
 
     public ResultsPage checkAppearWindowWithAddedProductInCartStatus() {
         try {
-            assertThat($x(windowWithAddedProductInCartStatus).should(appear, WAITING_TIME));
-        } catch (AssertionError e) {
-            fail("Ошибка в открытии всплывающего окна с сообщением о добавлении товара в корзину");
+            $x(windowWithAddedProductInCartStatus).should(appear, WAITING_TIME);
+        } catch (UIAssertionError e) {
+            fail("Не было обнаружено всплывающее окно с сообщением о добавлении товара в корзину");
         }
         return this;
     }
 
     public ResultsPage checkDisappearWindowWithAddedProductInCartStatus() {
         try {
-            assertThat($x(windowWithAddedProductInCartStatus).shouldNot(appear, WAITING_TIME));
-        } catch (AssertionError e) {
-            fail("Ошибка в закрытии всплывающего окна с сообщением о добавлении товара в корзину");
+            $x(windowWithAddedProductInCartStatus).shouldNot(appear, WAITING_TIME);
+        } catch (UIAssertionError e) {
+            fail("Всплывающее окно с сообщением о добавлении товара в корзину не было закрыто " +
+                    "после нажатия соответствующего элемента 'closeWindowWithAddedProductInCartStatus'");
         }
         return this;
     }
@@ -116,13 +119,20 @@ public class ResultsPage extends BasePage {
         return this;
     }
 
+    private String getAmountOfAddedProductsToCompare() {
+        return $x(amountOfAddedProductsToCompare).should(visible, WAITING_TIME)
+                .getText();
+    }
+
     public ResultsPage checkAmountOfAddedProductsToCompare(int expectedAmountOfProductsForAdding) {
         try {
-            assertThat($x(amountOfAddedProductsToCompare).should(visible, WAITING_TIME)
-                    .getText()
-                    .equals(String.valueOf(expectedAmountOfProductsForAdding)));
+            assertThat(getAmountOfAddedProductsToCompare()
+                    .equals(String.valueOf(expectedAmountOfProductsForAdding)))
+                    .isEqualTo(true);
         } catch (AssertionError e) {
-            fail("Ошибка в корректном отражении количества добавленных для сравнения товаров");
+            fail(String.format("Фактическое количество добавленных для сравнения товаров = %s " +
+                            " не соответствует ожидаемому = %s",
+                    getAmountOfAddedProductsToCompare(), expectedAmountOfProductsForAdding));
         }
         return this;
     }
