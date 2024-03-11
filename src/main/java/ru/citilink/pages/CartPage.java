@@ -1,8 +1,9 @@
 package ru.citilink.pages;
 
+import com.codeborne.selenide.ex.UIAssertionError;
+
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$x;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 /**
@@ -15,9 +16,10 @@ public class CartPage extends BasePage {
 
     public CartPage checkIfCorrectPageOpen() {
         try {
-            assertThat($x(sideDescriptionOfCart).should(visible, WAITING_TIME));
-        } catch (AssertionError e) {
-            fail("Ошибка в открытии ожидаемой страницы 'Корзина' сайта Citilink");
+            $x(sideDescriptionOfCart).should(visible, WAITING_TIME);
+        } catch (UIAssertionError e) {
+            fail("Не удалось подтвердить открытие ожидаемой страницы. " +
+                    "Уникальный элемент страницы 'sideDescriptionOfCart' не был найден в течение заданного времени.");
         }
         return this;
     }

@@ -40,6 +40,7 @@ public class CitilinkTest extends BaseTest {
 
         assertEquals(expectedAmountOfProduct,
                 cartPage.getAmountOfProductInCart(),
-                "Ошибка в увеличении количества товара в корзине");
+                String.format("Количества товара в корзине = %s не соответствует ожидаемому значению = %s",
+                        cartPage.getAmountOfProductInCart(), expectedAmountOfProduct));
     }
 }

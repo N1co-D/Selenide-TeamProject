@@ -2,14 +2,13 @@ package ru.citilink.pages;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import org.openqa.selenium.TimeoutException;
+import com.codeborne.selenide.ex.UIAssertionError;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$$x;
 import static com.codeborne.selenide.Selenide.$x;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 /**
@@ -29,9 +28,10 @@ public class ResultsPage extends BasePage {
 
     public ResultsPage checkIfCorrectPageOpen() {
         try {
-            assertThat($x(filter).should(visible, WAITING_TIME));
-        } catch (AssertionError e) {
-            fail("Ошибка в открытии ожидаемой страницы с результатами поиска сайта Citilink");
+            $x(filter).should(visible, WAITING_TIME);
+        } catch (UIAssertionError e) {
+            fail("Не удалось подтвердить открытие ожидаемой страницы. " +
+                    "Уникальный элемент страницы 'filter' не был найден в течение заданного времени.");
         }
         return this;
     }
@@ -89,18 +89,19 @@ public class ResultsPage extends BasePage {
 
     public ResultsPage checkAppearWindowWithAddedProductInCartStatus() {
         try {
-            assertThat($x(windowWithAddedProductInCartStatus).should(appear, WAITING_TIME));
-        } catch (TimeoutException e) {
-            fail("Ошибка в открытии всплывающего окна с сообщением о добавлении товара в корзину");
+            $x(windowWithAddedProductInCartStatus).should(appear, WAITING_TIME);
+        } catch (UIAssertionError e) {
+            fail("Не было обнаружено всплывающее окно с сообщением о добавлении товара в корзину");
         }
         return this;
     }
 
     public ResultsPage checkDisappearWindowWithAddedProductInCartStatus() {
         try {
-            assertThat($x(windowWithAddedProductInCartStatus).shouldNot(appear, WAITING_TIME));
-        } catch (TimeoutException e) {
-            fail("Ошибка в закрытии всплывающего окна с сообщением о добавлении товара в корзину");
+            $x(windowWithAddedProductInCartStatus).shouldNot(appear, WAITING_TIME);
+        } catch (UIAssertionError e) {
+            fail("Всплывающее окно с сообщением о добавлении товара в корзину не было закрыто " +
+                    "после нажатия соответствующего элемента 'closeWindowWithAddedProductInCartStatus'");
         }
         return this;
     }
