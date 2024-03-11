@@ -2,9 +2,9 @@ package ru.citilink;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import ru.citilink.pages.ResultsPage;
 import ru.citilink.pages.ComparePage;
 import ru.citilink.pages.MainPage;
+import ru.citilink.pages.ResultsPage;
 import ru.citilink.utilities.ConfProperties;
 
 import static com.codeborne.selenide.Selenide.open;
@@ -22,7 +22,7 @@ public class CitilinkTest extends BaseTest {
     })
     public void checkRemoveProductFromComparison(String testLaptop, String productCategory) {
         open(confProperties.getProperty("test-site"));
-        mainPage.enterDataSearchField("lenovo")
+        mainPage.inputBoxWriteText("lenovo")
                 .productSearchExtraResultListClick(productCategory);
         assertEquals(resultsPage.getSubcategoryPageTitle(), productCategory,
                 String.format("Указан заголовок некорректной страницы. Ожидаем = %s, факт = %s",
