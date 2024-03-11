@@ -2,6 +2,7 @@ package ru.citilink;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import ru.citilink.pages.CartPage;
 import ru.citilink.pages.ComparePage;
 import ru.citilink.pages.MainPage;
@@ -45,7 +46,7 @@ public class CitilinkTest extends BaseTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"2"})
+    @ValueSource(ints = {2})
     public void checkTheAdditionOfProductToCompareSection(int amountOfProductsForAdding) {
         open(confProperties.getProperty("test-site"));
 
