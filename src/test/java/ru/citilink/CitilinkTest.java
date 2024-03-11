@@ -21,7 +21,7 @@ public class CitilinkTest extends BaseTest {
     public void checkTheIncreaseInQuantityWhenAddingProductsToCart(String inputText,
                                                                    String rawMemoryRequiredParameter,
                                                                    String diskRequiredParameter,
-                                                                   String expectedAmountOfProduct) {
+                                                                   int expectedAmountOfProduct) {
         open(confProperties.getProperty("test-site"));
 
         mainPage.checkIfCorrectPageOpen()
@@ -37,10 +37,9 @@ public class CitilinkTest extends BaseTest {
 
         cartPage.checkIfCorrectPageOpen()
                 .increaseTheAmountOfProductInCartButtonClick();
-
-        assertEquals(expectedAmountOfProduct,
+        assertEquals(String.valueOf(expectedAmountOfProduct),
                 cartPage.getAmountOfProductInCart(),
-                String.format("Количества товара в корзине = %s не соответствует ожидаемому значению = %s",
+                String.format("Фактическое количество товаров в корзине = %s не соответствует ожидаемому = %s",
                         cartPage.getAmountOfProductInCart(), expectedAmountOfProduct));
     }
 }
