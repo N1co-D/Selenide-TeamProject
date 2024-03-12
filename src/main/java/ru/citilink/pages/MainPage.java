@@ -29,14 +29,14 @@ public class MainPage extends BasePage {
         return this;
     }
 
-    public MainPage inputBoxWriteText(String searchingProduct) {
+    public MainPage inputBoxWriteText(String searchedProduct) {
         jsClick($x(inputBox));
-        $x(inputBox).sendKeys(searchingProduct);
+        $x(inputBox).sendKeys(searchedProduct);
         return this;
     }
 
-    public MainPage searchProductByInputBox(String searchingProduct) {
-        inputBoxWriteText(searchingProduct);
+    public MainPage searchProductByInputBox(String searchedProduct) {
+        inputBoxWriteText(searchedProduct);
         $x(inputBox).should(visible, WAITING_TIME)
                 .pressEnter();
         return this;
