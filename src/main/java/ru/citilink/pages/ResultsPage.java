@@ -3,9 +3,7 @@ package ru.citilink.pages;
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.ex.ElementNotFound;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.TimeoutException;
+import com.codeborne.selenide.ex.UIAssertionError;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Страница с результатами "[Категория товаров]" в Citilink
  */
 public class ResultsPage extends BasePage {
-    private final String uniqueElement = "//div[@data-meta-name='FiltersLayout']";
+    private final String filter = "//div[@data-meta-name='FiltersLayout']";
     private final String detailedCatalogModeButton = "//label[@for='Подробный режим каталога-list']";
     private final String productList = "//div[@data-meta-name='ProductHorizontalSnippet']";
     private final String ramMemoryParameterOfProduct = ".//span[text()='Оперативная память']/..";
@@ -43,14 +41,14 @@ public class ResultsPage extends BasePage {
     private final String detailCatalogModeButton = "//label[contains(@for,'Подробный режим каталога')]";
     private List<String> notMatchFilterProductsList = new ArrayList<>();
 
-    public boolean getPagesUniqueElement() {
+    public ResultsPage checkIfCorrectPageOpen() {
         try {
-            $x(uniqueElement).should(visible, WAITING_TIME);
-            return $x(uniqueElement).isDisplayed();
-        } catch (TimeoutException | NoSuchElementException | ElementNotFound e) {
-            fail("Фильтр (как уникальный элемент страницы) не обнаружен");
+            $x(filter).should(visible, WAITING_TIME);
+        } catch (UIAssertionError e) {
+            fail("Не удалось подтвердить открытие ожидаемой страницы. " +
+                    "Уникальный элемент страницы 'filter' не был найден в течение заданного времени.");
         }
-        return false;
+        return this;
     }
 
     public ResultsPage enableDetailedCatalogMode() {
@@ -72,7 +70,7 @@ public class ResultsPage extends BasePage {
                 .getText();
     }
 
-    private SelenideElement searchingForRequiredProductInList(String firstParameter, String secondParameter) {
+    private SelenideElement searchForRequiredProductInList(String firstParameter, String secondParameter) {
         ElementsCollection allProductsFromList = getAllProductsInPage();
         SelenideElement foundProduct = null;
         for (SelenideElement product : allProductsFromList) {
@@ -88,35 +86,39 @@ public class ResultsPage extends BasePage {
         return foundProduct;
     }
 
-    public void requiredProductWithParametersBuyingClick(String firstParameter, String secondParameter) {
-        SelenideElement requiredProduct = searchingForRequiredProductInList(firstParameter, secondParameter);
+    public ResultsPage requiredProductWithParametersBuyingClick(String firstParameter, String secondParameter) {
+        SelenideElement requiredProduct = searchForRequiredProductInList(firstParameter, secondParameter);
         jsClick(requiredProduct.$x(inCartButton));
+        return this;
     }
 
-    public void cartButtonClick() {
+    public ResultsPage cartButtonClick() {
         jsClick($x(cartButton));
+        return this;
     }
 
-    public void closeWindowWithAddedProductInCartStatusClick() {
+    public ResultsPage closeWindowWithAddedProductInCartStatusClick() {
         jsClick($x(closeWindowWithAddedProductInCartStatus));
+        return this;
     }
 
-    public boolean checkAppearingWindowWithAddedProductInCartStatus() {
+    public ResultsPage checkAppearWindowWithAddedProductInCartStatus() {
         try {
             $x(windowWithAddedProductInCartStatus).should(appear, WAITING_TIME);
-            return true;
-        } catch (TimeoutException e) {
-            return false;
+        } catch (UIAssertionError e) {
+            fail("Не было обнаружено всплывающее окно с сообщением о добавлении товара в корзину");
         }
+        return this;
     }
 
-    public boolean checkDisappearingWindowWithAddedProductInCartStatus() {
+    public ResultsPage checkDisappearWindowWithAddedProductInCartStatus() {
         try {
             $x(windowWithAddedProductInCartStatus).shouldNot(appear, WAITING_TIME);
-            return true;
-        } catch (TimeoutException e) {
-            return false;
+        } catch (UIAssertionError e) {
+            fail("Всплывающее окно с сообщением о добавлении товара в корзину не было закрыто " +
+                    "после нажатия соответствующего элемента 'closeWindowWithAddedProductInCartStatus'");
         }
+        return this;
     }
 
     public String getSubcategoryPageTitle() {
