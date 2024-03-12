@@ -3,15 +3,17 @@ package ru.citilink;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import ru.citilink.pages.CartPage;
+import ru.citilink.pages.ComparePage;
 import ru.citilink.pages.MainPage;
 import ru.citilink.pages.ResultsPage;
 import ru.citilink.utilities.ConfProperties;
 
 import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.sleep;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class BruceLeeTest extends BaseTest { //todo имя
+public class CitilinkTest extends BaseTest { //todo имя
     private final MainPage mainPage = new MainPage();
     private final ResultsPage resultsPage = new ResultsPage();
     private final CartPage cartPage = new CartPage();
@@ -47,5 +49,22 @@ public class BruceLeeTest extends BaseTest { //todo имя
         cartPage.increaseTheAmountOfProductInCartButtonClick();
         assertEquals(cartPage.getAmountOfProductInCart(), expectedAmountOfProduct,
                 "Ошибка в увеличении количества товара в корзине");
+    }
+
+    @ParameterizedTest
+    @CsvSource({"'Снегоуборщик Huter SGC', '45 000 ₽'"})
+    public void checkProductComparison(String inputText, String price) {
+        open(confProperties.getProperty("test-site"));
+        new MainPage().enterProductInputLineAndClickSearchButton(inputText);
+        new ResultsPage().enterFilterDropdownInputMaxPrice(price)
+                .clickButtonDetailCatalogMode()
+                .clickCompareProductButtonFromCollection()
+                .clickFresnelContainerCompareButton();
+        new ComparePage()
+                .getRetainAllList();
+
+        sleep(5000);
+
+
     }
 }

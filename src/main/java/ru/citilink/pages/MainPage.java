@@ -4,8 +4,6 @@ import com.codeborne.selenide.ex.ElementNotFound;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 
-import java.time.Duration;
-
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$x;
 import static org.assertj.core.api.Assertions.fail;
@@ -16,6 +14,9 @@ import static org.assertj.core.api.Assertions.fail;
 public class MainPage extends BasePage {
     private final String uniqueElement = "//div[@data-meta-name='BannersLayout']";
     private final String inputBox = "//input[@type='search']";
+    private final String productSearchInputLine = "//input[@type='search']";
+    private final String searchButton = "//input[@type='search']/..//button[@type='submit']";
+
 
     public boolean getPagesUniqueElement() { //todo поменять имя
         try {
@@ -36,5 +37,19 @@ public class MainPage extends BasePage {
     public void searchProductByInputBox(String searchingProduct) {
         inputBoxWriteText(searchingProduct);
         $x(inputBox).should(visible, WAITING_TIME).pressEnter();
+    }
+
+    public MainPage enterProductInputLineAndClickSearchButton(String nameProduct) {
+        $x(productSearchInputLine)
+                .should(visible, WAITING_TIME)
+                .sendKeys(nameProduct);
+        clickSearchButton();
+        return this;
+    }
+
+    private void clickSearchButton(){
+        $x(searchButton)
+                .should(visible, WAITING_TIME)
+                .click();
     }
 }

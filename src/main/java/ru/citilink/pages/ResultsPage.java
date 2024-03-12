@@ -7,12 +7,9 @@ import com.codeborne.selenide.ex.ElementNotFound;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 
-import java.time.Duration;
-
-import static com.codeborne.selenide.Condition.appear;
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$$x;
-import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selenide.*;
 import static org.assertj.core.api.Assertions.fail;
 
 /**
@@ -29,7 +26,12 @@ public class ResultsPage extends BasePage {
     private final String windowWithAddedProductInCartStatus = "//div[@data-meta-name='Popup']";
     private final String closeWindowWithAddedProductInCartStatus = "//button[@data-meta-name='UpsaleBasket__close-popup']";
     private final String cartButton = "//div[@data-meta-name='HeaderBottom__search']/following-sibling::div//div[@data-meta-name='BasketButton']";
-
+    private final String filterDropdownInputMaxPrice = "//div[@data-meta-name='FilterListGroupsLayout']//div[contains(@data-meta-value,'Цена')]//div/input[@name = 'input-max']";
+    private final String detailCatalogModeButton = "//label[contains(@for,'Подробный режим каталога')]";
+    private final String horizontalSnippetsProducts = "//div[@data-meta-name='ProductHorizontalSnippet']";
+    private final String currentProductCompareButton = ".//button[@data-meta-name='Snippet__compare-button']";
+    private final String fresnelContainerCompareButton = "//div[@data-meta-name='UserButtonContainer']/following-sibling::div//div[@data-meta-name='CompareButton']";
+    //div[contains(text(),'Марка топлива')]/following-sibling::div[@class="Compare__specification-row_wrapper"]/div/div
     public boolean getPagesUniqueElement() {
         try {
             $x(uniqueElement).should(visible, WAITING_TIME);
@@ -46,7 +48,7 @@ public class ResultsPage extends BasePage {
     }
 
     private ElementsCollection getAllProductsInPage() {
-        return $$x(listOfProducts).should(CollectionCondition.sizeGreaterThan(0));
+        return $$x(listOfProducts).should(sizeGreaterThan(0));
     }
 
     private String getRamMemoryParameterOfProduct() {
@@ -104,5 +106,43 @@ public class ResultsPage extends BasePage {
         } catch (TimeoutException e) {
             return false;
         }
+    }
+
+    public ResultsPage enterFilterDropdownInputMaxPrice(String price) {
+        $x(filterDropdownInputMaxPrice)
+                .should(visible, WAITING_TIME)
+                .val(price).pressEnter();
+        return this;
+    }
+
+    public ResultsPage clickButtonDetailCatalogMode() {
+        $x(detailCatalogModeButton)
+                .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"nearest\"}")
+                .should(visible, WAITING_TIME)
+                .click();
+        return this;
+    }
+
+    public ResultsPage clickCompareProductButtonFromCollection() {
+        for (SelenideElement element : createElementsCollection(horizontalSnippetsProducts)) {
+            sleep(2000);
+            element.$x(currentProductCompareButton)
+                    .scrollIntoView("{behavior: \"smooth\", block: \"center\", inline: \"nearest\"}")
+                    .shouldBe(interactable, WAITING_TIME)
+                    .click();
+            sleep(2000);
+        }
+        return this;
+    }
+    public ResultsPage clickFresnelContainerCompareButton() {
+        $x(fresnelContainerCompareButton)
+                .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"nearest\"}")
+                .should(visible, WAITING_TIME)
+                .click();
+        return this;
+    }
+
+    private ElementsCollection createElementsCollection(String xPath) {
+        return $$x(xPath).should(CollectionCondition.sizeGreaterThan(0), WAITING_TIME);
     }
 }
