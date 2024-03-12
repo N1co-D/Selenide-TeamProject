@@ -26,7 +26,6 @@ public class ResultsPage extends BasePage {
     private final String cartButton = "//div[@data-meta-name='HeaderBottom__search']/following-sibling::div//div[@data-meta-name='BasketButton']";
     private final String logo = "//div[contains(@class,'fresnel-greaterThanOrEqual-tabletL')]//div[@data-meta-name='Logo']";
     private final String productTitle = ".//a[@data-meta-name='Snippet__title']";
-    private final String goToCartButton = "//span[text()='Перейти в корзину']/preceding::span[text()='Перейти в корзину']";
     private final String subcategoryPageTitle = "//div[@data-meta-name='SubcategoryPageTitle']/h1[text()]";
     private final String comparingCurrentProductButton = ".//button[@data-meta-name='Snippet__compare-button']";
     private final String priceOfCurrentProduct = ".//span[@data-meta-price]/span[1]";
