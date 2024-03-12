@@ -21,6 +21,7 @@ public class MainPage extends BasePage {
     private final String compareButton = "//div[@data-meta-name='HeaderBottom__search']/..//div[@data-meta-name='CompareButton']";
     private final String compareValue = "//div[@data-meta-name='HeaderBottom__search']/..//div[@data-meta-name='NotificationCounter']";
     private final String popularCategoryTile = "//div[contains(@data-meta-name,'category-tiles')]//a//span[contains(text(),'%s')]";
+
     public boolean getPagesUniqueElement() { //todo поменять имя
         try {
             $x(uniqueElement).should(visible, WAITING_TIME);
@@ -56,6 +57,7 @@ public class MainPage extends BasePage {
         $x(compareButton).shouldBe(visible, WAITING_TIME).click();
         return new ComparePage();
     }
+
     public void clickPopularCategoryTile(String nameCategory) {
         $x(String.format(popularCategoryTile, nameCategory))
                 .scrollIntoView("{behavior: \"smooth\", block: \"center\", inline: \"nearest\"}")

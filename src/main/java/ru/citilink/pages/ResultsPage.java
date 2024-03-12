@@ -1,19 +1,17 @@
 package ru.citilink.pages;
 
+import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.ElementNotFound;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 
-import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
-import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.$$x;
-import static com.codeborne.selenide.Selenide.$x;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static org.assertj.core.api.Assertions.fail;
@@ -140,6 +138,7 @@ public class ResultsPage extends BasePage {
         $x(detailedCatalogModeButton).shouldBe(visible, WAITING_TIME).click();
         return this;
     }
+
     /**
      * the method scrolls and clicks the selected category and filter values
      *

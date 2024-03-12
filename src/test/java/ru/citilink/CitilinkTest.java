@@ -2,6 +2,7 @@ package ru.citilink;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import ru.citilink.pages.CartPage;
 import ru.citilink.pages.ComparePage;
 import ru.citilink.pages.MainPage;
 import ru.citilink.pages.ResultsPage;
@@ -44,6 +45,7 @@ public class CitilinkTest extends BaseTest {
                         String.format("Цена товара указанна не корректно. Ожидаем = %s, факт = %s",
                                 priceOfCurrentProduct, comparePage.getComparePageTitle())));
     }
+
     @ParameterizedTest
     @CsvSource({"'Ноутбук Huawei MateBook D 14 53013XFA, 14', '8 ГБ, LPDDR4x', 'SSD 512 ГБ', '2'"})
     public void checkTheIncreaseInQuantityWhenAddingProductsToCart(String inputText, String rawMemoryRequiredParameter,
