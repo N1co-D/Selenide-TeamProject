@@ -47,6 +47,20 @@ public class CitilinkTest extends BaseTest {
     }
 
     @ParameterizedTest
+    @CsvSource({"'Ноутбуки','Бренд','Диагональ экрана','Серия процессора','HUAWEI','14','Core i7'"})
+    public void checkFilterProductsByParameters(String noutbukiCategory, String brandFilterCategory
+            , String screenDiagonalFilterCategory, String processorSeriesFilterCategory, String brandValue
+            , String diagonalValue, String cpuValue) {
+        open(confProperties.getProperty("test-site"));
+        new MainPage().clickPopularCategoryTile(noutbukiCategory);
+        new ResultsPage().clickFilterDropDownCategoryAndValue(brandFilterCategory, brandValue)
+                .clickFilterDropDownCategoryAndValue(screenDiagonalFilterCategory, diagonalValue)
+                .clickFilterDropDownCategoryAndValue(processorSeriesFilterCategory, cpuValue)
+                .clickButtonDetailCatalogMode()
+                .checkProductsAfterFiltration(brandValue, diagonalValue, cpuValue);
+    }
+
+    @ParameterizedTest
     @CsvSource({"'Ноутбук Huawei MateBook D 14 53013XFA, 14', '8 ГБ, LPDDR4x', 'SSD 512 ГБ', '2'"})
     public void checkTheIncreaseInQuantityWhenAddingProductsToCart(String inputText,
                                                                    String rawMemoryRequiredParameter,
