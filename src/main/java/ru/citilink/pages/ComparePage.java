@@ -5,8 +5,8 @@ import com.codeborne.selenide.ex.UIAssertionError;
 import static com.codeborne.selenide.Condition.not;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$x;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class ComparePage extends BasePage {
     private final String comparePageTitle = "//div[@class='ComparePage__header']//h2[text()]";
@@ -58,15 +58,11 @@ public class ComparePage extends BasePage {
     }
 
     public ComparePage checkAmountOfAddedProductsToCompare(int expectedAmountOfProductsForAdding) {
-        try {
-            assertThat(getAmountOfAddedProductsToCompare()
-                    .equals(String.valueOf(expectedAmountOfProductsForAdding)))
-                    .isEqualTo(true);
-        } catch (AssertionError e) {
-            fail(String.format("Фактическое количество добавленных для сравнения товаров = %s " +
-                            " не соответствует ожидаемому = %s",
-                    getAmountOfAddedProductsToCompare(), expectedAmountOfProductsForAdding));
-        }
+        assertEquals(getAmountOfAddedProductsToCompare(),
+                String.valueOf(expectedAmountOfProductsForAdding),
+                String.format("Фактическое количество добавленных для сравнения товаров = %s " +
+                                " не соответствует ожидаемому = %s",
+                        getAmountOfAddedProductsToCompare(), expectedAmountOfProductsForAdding));
         return this;
     }
 }

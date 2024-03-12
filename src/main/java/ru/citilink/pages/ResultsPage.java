@@ -11,10 +11,7 @@ import java.util.Locale;
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Страница с результатами "Результаты [поиска] для <запрос пользователя>" в Citilink
@@ -231,15 +228,11 @@ public class ResultsPage extends BasePage {
     }
 
     public ResultsPage checkAmountOfAddedProductsToCompare(int expectedAmountOfProductsForAdding) {
-        try {
-            assertThat(getAmountOfAddedProductsToCompare()
-                    .equals(String.valueOf(expectedAmountOfProductsForAdding)))
-                    .isEqualTo(true);
-        } catch (AssertionError e) {
-            fail(String.format("Фактическое количество добавленных для сравнения товаров = %s " +
-                            " не соответствует ожидаемому = %s",
-                    getAmountOfAddedProductsToCompare(), expectedAmountOfProductsForAdding));
-        }
+        assertEquals(getAmountOfAddedProductsToCompare(),
+                String.valueOf(expectedAmountOfProductsForAdding),
+                String.format("Фактическое количество добавленных для сравнения товаров = %s " +
+                                " не соответствует ожидаемому = %s",
+                        getAmountOfAddedProductsToCompare(), expectedAmountOfProductsForAdding));
         return this;
     }
 
