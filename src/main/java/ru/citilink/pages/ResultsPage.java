@@ -1,21 +1,15 @@
 package ru.citilink.pages;
 
-import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.ex.ElementNotFound;
 import com.codeborne.selenide.ex.UIAssertionError;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.TimeoutException;
-
-import java.time.Duration;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
-import static com.codeborne.selenide.Condition.appear;
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.*;
-import static com.codeborne.selenide.Selenide.executeJavaScript;
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selenide.$$x;
+import static com.codeborne.selenide.Selenide.$x;
 import static org.assertj.core.api.Assertions.fail;
+
 /**
  * Страница с результатами "Результаты [поиска] для <запрос пользователя>" в Citilink
  * Страница с результатами "[Категория товаров]" в Citilink
@@ -30,18 +24,14 @@ public class ResultsPage extends BasePage {
     private final String windowWithAddedProductInCartStatus = "//div[@data-meta-name='Popup']";
     private final String closeWindowWithAddedProductInCartStatus = "//button[@data-meta-name='UpsaleBasket__close-popup']";
     private final String cartButton = "//div[@data-meta-name='HeaderBottom__search']/following-sibling::div//div[@data-meta-name='BasketButton']";
+    private final String logo = "//div[contains(@class,'fresnel-greaterThanOrEqual-tabletL')]//div[@data-meta-name='Logo']";
     private final String productTitle = ".//a[@data-meta-name='Snippet__title']";
     private final String goToCartButton = "//span[text()='Перейти в корзину']/preceding::span[text()='Перейти в корзину']";
-
-    private final String uniqueElement = "//div[@data-meta-name='FiltersLayout']";
-    private final String detailedCatalogMode = "//label[@for='Подробный режим каталога-list']";
-    private final String listOfProducts = "//div[@data-meta-name='ProductHorizontalSnippet']";
-    private final String productTitle = ".//a[@data-meta-name='Snippet__title']";
-    private final String inCartButton = ".//button[@data-meta-name='Snippet__cart-button']";
-    private final String windowWithAddedProductInCartStatus = "//div[@data-meta-name='Popup']";
-    private final String closeWindowWithAddedProductInCartStatus = "//button[@data-meta-name='UpsaleBasket__close-popup']";
-    private final String cartButton = "//div[@data-meta-name='HeaderBottom__search']/following-sibling::div//div[@data-meta-name='BasketButton']";
-
+    private final String subcategoryPageTitle = "//div[@data-meta-name='SubcategoryPageTitle']/h1[text()]";
+    private final String comparingCurrentProductButton = ".//button[@data-meta-name='Snippet__compare-button']";
+    private final String priceOfCurrentProduct = ".//span[@data-meta-price]/span[1]";
+    private final String detailedCatalogModeButton = "//label[@for='Подробный режим каталога-list']";
+    private final String productList = "//div[@data-meta-name='ProductHorizontalSnippet']";
 
     public ResultsPage checkIfCorrectPageOpen() {
         try {
@@ -66,9 +56,15 @@ public class ResultsPage extends BasePage {
         return $x(ramMemoryParameterOfProduct).should(visible, WAITING_TIME)
                 .getText();
     }
+
     private String getDiskParameterOfProduct() {
         return $x(diskParameterOfProduct).should(visible, WAITING_TIME)
                 .getText();
+    }
+
+    public ResultsPage returnToMainPage() {
+        jsClick($x(logo));
+        return this;
     }
 
     private SelenideElement searchForRequiredProductInList(String firstParameter, String secondParameter) {
@@ -150,85 +146,23 @@ public class ResultsPage extends BasePage {
         return this;
     }
 
-    public ResultsPage goToCartButtonClickWithPopupWindow() {
-        jsClick($x(goToCartButton));
+    public String getSubcategoryPageTitle() {
+        return $x(subcategoryPageTitle).shouldBe(visible, WAITING_TIME).getText();
+    }
+
+    public String getPriceOfCurrentProduct(String nameData) {
+        return $$x(productList).shouldBe(sizeGreaterThan(0), WAITING_TIME)
+                .findBy(text(nameData)).$x(priceOfCurrentProduct).getText();
+    }
+
+    public ResultsPage comparingCurrentProductButtonClick(String nameData) {
+        jsClick($$x(productList).shouldBe(sizeGreaterThan(0), WAITING_TIME)
+                .findBy(text(nameData)).$x(comparingCurrentProductButton));
         return this;
     }
 
-
-    public boolean getPagesUniqueElement() {
-        try {
-            $x(uniqueElement).should(visible, Duration.ofSeconds(SECONDS_OF_WAITING));
-            return $x(uniqueElement).isDisplayed();
-        } catch (TimeoutException | NoSuchElementException | ElementNotFound e) {
-            fail("Фильтр (как уникальный элемент страницы) не обнаружен");
-        }
-        return false;
-    }
-
-    public ResultsPage enableDetailedCatalogMode() {
-        $x(detailedCatalogMode).should(visible, Duration.ofSeconds(SECONDS_OF_WAITING));
-        executeJavaScript("arguments[0].click();", $x(detailedCatalogMode));
+    public ResultsPage detailedCatalogModeButtonClick() {
+        $x(detailedCatalogModeButton).shouldBe(visible, WAITING_TIME).click();
         return this;
-    }
-
-    private ElementsCollection getAllProductsInPage() {
-        return $$x(listOfProducts).should(CollectionCondition.sizeGreaterThan(0));
-    }
-
-    private SelenideElement searchForRequiredProductInList(String observedProduct) {
-        ElementsCollection allProductsFromList = getAllProductsInPage();
-        SelenideElement foundProduct = null;
-        SelenideElement currentProductTitleElement;
-        for (SelenideElement product : allProductsFromList) {
-            currentProductTitleElement = getElementWithCurrentProductTitle(product);
-            if (currentProductTitleElement.getText().contains(observedProduct)) {
-                foundProduct = product;
-                break;
-            }
-        }
-        if (foundProduct == null) {
-            fail("Продукт с названием, содержащим '" + observedProduct + "' , не был найден в списке");
-        }
-        return foundProduct;
-    }
-
-    private SelenideElement getElementWithCurrentProductTitle(SelenideElement product) {
-        $x(productTitle).should(visible, Duration.ofSeconds(SECONDS_OF_WAITING));
-        return product.$x(productTitle);
-    }
-
-    public void requiredProductBuyingClick(String observedProduct) {
-        SelenideElement foundRequiredProduct = searchForRequiredProductInList(observedProduct);
-        foundRequiredProduct.$x(inCartButton).should(visible, Duration.ofSeconds(SECONDS_OF_WAITING));
-        executeJavaScript("arguments[0].click();", foundRequiredProduct.$x(inCartButton));
-    }
-
-    public void cartButtonClick() {
-        $x(cartButton).should(visible, Duration.ofSeconds(SECONDS_OF_WAITING));
-        executeJavaScript("arguments[0].click();", $x(cartButton));
-    }
-
-    public void closeWindowWithAddedProductInCartStatusClick() {
-        $x(closeWindowWithAddedProductInCartStatus).should(visible, Duration.ofSeconds(SECONDS_OF_WAITING));
-        executeJavaScript("arguments[0].click();", $x(closeWindowWithAddedProductInCartStatus));
-    }
-
-    public boolean checkAppearingWindowWithAddedProductInCartStatus() {
-        try {
-            $x(windowWithAddedProductInCartStatus).should(appear, Duration.ofSeconds(SECONDS_OF_WAITING));
-            return true;
-        } catch (TimeoutException e) {
-            return false;
-        }
-    }
-
-    public boolean checkDisappearingWindowWithAddedProductInCartStatus() {
-        try {
-            $x(windowWithAddedProductInCartStatus).shouldNot(appear, Duration.ofSeconds(SECONDS_OF_WAITING));
-            return true;
-        } catch (TimeoutException e) {
-            return false;
-        }
     }
 }
