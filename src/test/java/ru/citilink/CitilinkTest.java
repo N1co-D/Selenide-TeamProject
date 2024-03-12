@@ -76,9 +76,9 @@ public class CitilinkTest extends BaseTest {
     @ParameterizedTest
     @CsvSource({"'Переходники', 'Переходники на евровилку', " +
             "'Адаптер-переходник на евровилку PREMIER 11626/20, темно-серый'"})
-    public void checkingTheDeletingOfProductFromCart(String inputText,
-                                                     String productFromDropDownList,
-                                                     String observedProduct) {
+    public void checkTheDeletingOfProductFromCart(String inputText,
+                                                  String productFromDropDownList,
+                                                  String observedProduct) {
         open(confProperties.getProperty("test-site"));
 
         mainPage.checkIfCorrectPageOpen()
