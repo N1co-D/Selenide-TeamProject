@@ -52,7 +52,7 @@ public class CitilinkTest extends BaseTest {
         open(confProperties.getProperty("test-site"));
         mainPage.inputBoxWriteText("lenovo")
                 .productSearchExtraResultListClick(productCategory);
-        assertEquals(resultsPage.getSubcategoryPageTitle(), productCategory,
+        assertEquals(productCategory, resultsPage.getSubcategoryPageTitle(),
                 String.format("Указан заголовок некорректной страницы. Ожидаем = %s, факт = %s",
                         productCategory, resultsPage.getSubcategoryPageTitle()));
 
@@ -61,10 +61,10 @@ public class CitilinkTest extends BaseTest {
         assertTrue(mainPage.compareValueIsDisplayed(), "Товар не добавлен в сравнение");
         mainPage.compareButtonClick();
         assertAll(
-                () -> assertEquals(comparePage.getComparePageTitle(), "Сравнение товаров",
+                () -> assertEquals("Сравнение товаров", comparePage.getComparePageTitle(),
                         String.format("Указан заголовок некорректной страницы. Ожидаем = Сравнение товаров, факт = %s",
                                 comparePage.getComparePageTitle())),
-                () -> assertEquals(comparePage.getProductTitle(), testLaptop,
+                () -> assertEquals(testLaptop, comparePage.getProductTitle(),
                         String.format("Товар для сравнения не корректный. Ожидаем = %s, факт = %s",
                                 testLaptop, comparePage.getComparePageTitle())));
 
