@@ -69,10 +69,10 @@ public class CitilinkTest extends BaseTest {
 
     @ParameterizedTest
     @CsvSource({"'Ноутбук Huawei MateBook D 14 53013XFA, 14', '8 ГБ, LPDDR4x', 'SSD 512 ГБ', '2'"})
-    public void checkTheIncreaseInQuantityWhenAddingProductsToCart(String inputText,
-                                                                   String rawMemoryRequiredParameter,
-                                                                   String diskRequiredParameter,
-                                                                   int expectedAmountOfProduct) {
+    public void checkIncreaseInQuantityWhenAddProductsToCart(String inputText,
+                                                             String rawMemoryRequiredParameter,
+                                                             String diskRequiredParameter,
+                                                             int expectedAmountOfProduct) {
         open(confProperties.getProperty("test-site"));
 
         mainPage.checkIfCorrectPageOpen()
@@ -126,7 +126,7 @@ public class CitilinkTest extends BaseTest {
 
     @ParameterizedTest
     @ValueSource(ints = {2})
-    public void checkTheAdditionOfProductToCompareSection(int amountOfProductsForAdding) {
+    public void checkProductAddToCompareSection(int amountOfProductsForAdding) {
         open(confProperties.getProperty("test-site"));
 
         mainPage.checkIfCorrectPageOpen()
@@ -147,10 +147,10 @@ public class CitilinkTest extends BaseTest {
     @ParameterizedTest
     @CsvSource({"'Переходники', 'Переходники на евровилку', " +
             "'Адаптер-переходник на евровилку PREMIER 11626/20, темно-серый', '1860968'"})
-    public void checkTheAdditionOfProductToCart(String inputText,
-                                                String productFromDropDownList,
-                                                String observedProduct,
-                                                String expectedProductCode) {
+    public void checkProductAddToCart(String inputText,
+                                      String productFromDropDownList,
+                                      String observedProduct,
+                                      String expectedProductCode) {
         open(confProperties.getProperty("test-site"));
 
         mainPage.checkIfCorrectPageOpen()
