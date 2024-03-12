@@ -137,4 +137,27 @@ public class CitilinkTest extends BaseTest {
         comparePage.checkIfCorrectPageOpen()
                 .checkAmountOfAddedProductsToCompare(amountOfProductsForAdding);
     }
+
+    @ParameterizedTest
+    @CsvSource({"'Переходники', 'Переходники на евровилку', " +
+            "'Адаптер-переходник на евровилку PREMIER 11626/20, темно-серый', '1860968'"})
+    public void checkTheAdditionOfProductToCart(String inputText,
+                                                String productFromDropDownList,
+                                                String observedProduct,
+                                                String expectedProductCode) {
+        open(confProperties.getProperty("test-site"));
+
+        mainPage.checkIfCorrectPageOpen()
+                .inputBoxWriteText(inputText)
+                .clickOnProductFromDropDownList(productFromDropDownList);
+
+        resultsPage.checkIfCorrectPageOpen()
+                .enableDetailedCatalogMode()
+                .requiredProductBuyingClick(observedProduct)
+                .checkAppearWindowWithAddedProductInCartStatus()
+                .goToCartButtonClickWithPopupWindow();
+
+        cartPage.checkIfCorrectPageOpen()
+                .checkIsCorrectCodeNumberOfProductInCart(expectedProductCode);
+    }
 }
