@@ -12,9 +12,9 @@ import static org.assertj.core.api.Assertions.fail;
  */
 public class CartPage extends BasePage {
     private final String sideDescriptionOfCart = "//div[@data-meta-name='BasketSummary']";
-    private final String codeNumberOfProductInCart = "//span[text()='Код товара: ']";
     private final String amountOfProductInCart = "//input[@data-meta-name='Count__input']";
     private final String increaseTheAmountOfProductInCartButton = "//button[@data-meta-name='Count__button-plus']";
+    private final String codeNumberOfProductInCart = "//span[text()='Код товара: ']";
 
     public CartPage checkIfCorrectPageOpen() {
         try {
