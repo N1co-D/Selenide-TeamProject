@@ -2,20 +2,20 @@ package ru.citilink;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import ru.citilink.pages.ComparePage;
 import ru.citilink.pages.CartPage;
+import ru.citilink.pages.ComparePage;
 import ru.citilink.pages.MainPage;
 import ru.citilink.pages.ResultsPage;
 import ru.citilink.utilities.ConfProperties;
 
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CitilinkTest extends BaseTest {
     private final MainPage mainPage = new MainPage();
     private final ResultsPage resultsPage = new ResultsPage();
     private final ComparePage comparePage = new ComparePage();
+    private final CartPage cartPage = new CartPage();
     private final ConfProperties confProperties = new ConfProperties();
 
     @ParameterizedTest

@@ -1,13 +1,9 @@
 package ru.citilink.pages;
 
-import com.codeborne.selenide.ex.ElementNotFound;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.TimeoutException;
+import com.codeborne.selenide.ex.UIAssertionError;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.text;
-import com.codeborne.selenide.ex.UIAssertionError;
-
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$$x;
 import static com.codeborne.selenide.Selenide.$x;
@@ -40,7 +36,7 @@ public class MainPage extends BasePage {
     }
 
     public MainPage searchProductByInputBox(String searchingProduct) {
-        writeTextInInputBox(searchingProduct);
+        inputBoxWriteText(searchingProduct);
         $x(inputBox).should(visible, WAITING_TIME)
                 .pressEnter();
         return this;
