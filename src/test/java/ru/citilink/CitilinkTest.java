@@ -2,6 +2,7 @@ package ru.citilink;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import ru.citilink.pages.CartPage;
 import ru.citilink.pages.ComparePage;
 import ru.citilink.pages.MainPage;
@@ -123,6 +124,25 @@ public class CitilinkTest extends BaseTest {
                 () -> assertTrue(comparePage.noProductsForCompareIsDisplayed(), "Отсутствует уведомление Нет товаров для сравнения"));
     }
 
+    @ParameterizedTest
+    @ValueSource(ints = {2})
+    public void checkTheAdditionOfProductToCompareSection(int amountOfProductsForAdding) {
+        open(confProperties.getProperty("test-site"));
+
+        mainPage.checkIfCorrectPageOpen()
+                .productCatalogClick()
+                .televisionsAndAudioVideoEquipmentCategoryClick()
+                .oledTelevisionsCategoryClick();
+
+        resultsPage.checkIfCorrectPageOpen()
+                .enableDetailedCatalogMode()
+                .someProductAddToComparingClick(amountOfProductsForAdding)
+                .checkAmountOfAddedProductsToCompare(amountOfProductsForAdding)
+                .comparingButtonClick();
+
+        comparePage.checkIfCorrectPageOpen()
+                .checkAmountOfAddedProductsToCompare(amountOfProductsForAdding);
+    }
     @ParameterizedTest
     @CsvSource({"'Смартфон Huawei nova Y72 8/128Gb,  MGA-LX3,  черный'"})
     public void checkAddItemToShopBasket(String inputText) {
