@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.fail;
  */
 public class MainPage extends BasePage {
     private final String centralAdBanner = "//div[@data-meta-name='BannersLayout']";
-    private final String inputBox = "//input[@type='search']";
+    private final String productSearchField = "//input[@type='search']";
     private final String searchDropDownList = "//div[@data-meta-name='InstantSearchExtraResultList']//a";
     private final String compareButton = "//div[@data-meta-name='HeaderBottom__search']/..//div[@data-meta-name='CompareButton']";
     private final String compareValue = "//div[@data-meta-name='HeaderBottom__search']/..//div[@data-meta-name='NotificationCounter']";
@@ -33,14 +33,14 @@ public class MainPage extends BasePage {
     }
 
     public MainPage inputBoxWriteText(String searchedProduct) {
-        jsClick($x(inputBox));
-        $x(inputBox).sendKeys(searchedProduct);
+        jsClick($x(productSearchField));
+        $x(productSearchField).sendKeys(searchedProduct);
         return this;
     }
 
     public MainPage searchProductByInputBox(String searchedProduct) {
         inputBoxWriteText(searchedProduct);
-        $x(inputBox).should(visible, WAITING_TIME)
+        $x(productSearchField).should(visible, WAITING_TIME)
                 .pressEnter();
         return this;
     }
