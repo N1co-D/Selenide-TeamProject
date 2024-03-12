@@ -48,12 +48,18 @@ public class CitilinkTest extends BaseTest {
 
     @ParameterizedTest
     @CsvSource({"'Ноутбуки','Бренд','Диагональ экрана','Серия процессора','HUAWEI','14','Core i7'"})
-    public void checkFilterProductsByParameters(String noutbukiCategory, String brandFilterCategory
-            , String screenDiagonalFilterCategory, String processorSeriesFilterCategory, String brandValue
-            , String diagonalValue, String cpuValue) {
+    public void checkFilterProductsByParameters(String noutbukiCategory,
+                                                String brandFilterCategory,
+                                                String screenDiagonalFilterCategory,
+                                                String processorSeriesFilterCategory,
+                                                String brandValue,
+                                                String diagonalValue,
+                                                String cpuValue) {
         open(confProperties.getProperty("test-site"));
-        new MainPage().clickPopularCategoryTile(noutbukiCategory);
-        new ResultsPage().clickFilterDropDownCategoryAndValue(brandFilterCategory, brandValue)
+
+        mainPage.clickPopularCategoryTile(noutbukiCategory);
+
+        resultsPage.clickFilterDropDownCategoryAndValue(brandFilterCategory, brandValue)
                 .clickFilterDropDownCategoryAndValue(screenDiagonalFilterCategory, diagonalValue)
                 .clickFilterDropDownCategoryAndValue(processorSeriesFilterCategory, cpuValue)
                 .clickButtonDetailCatalogMode()
@@ -116,16 +122,20 @@ public class CitilinkTest extends BaseTest {
                 () -> assertFalse(comparePage.compareValueIsDisplayed(), "Товар не удалён из сравнение"),
                 () -> assertTrue(comparePage.noProductsForCompareIsDisplayed(), "Отсутствует уведомление Нет товаров для сравнения"));
     }
+
     @ParameterizedTest
     @CsvSource({"'Смартфон Huawei nova Y72 8/128Gb,  MGA-LX3,  черный'"})
     public void checkAddItemToShopBasket(String inputText) {
+
         open(confProperties.getProperty("test-site"));
-        new MainPage().enterSearchProductInputLine(inputText);
-        new ResultsPage()
+
+        mainPage.enterSearchProductInputLine(inputText);
+        resultsPage
                 .clickButtonForAddingItemToBasket(inputText)
                 .clickButtonCloseUpSaleBasketLayout()
                 .clickButtonBasketFresnelContainer();
-        assertEquals("Смартфон Huawei nova Y72 8/128Gb, MGA-LX3, черный"
-                , new CartPage().getNameProductFromBasketSnippet(inputText));
+
+        assertEquals("Смартфон Huawei nova Y72 8/128Gb, MGA-LX3, черный",
+                cartPage.getNameProductFromBasketSnippet(inputText));
     }
 }
