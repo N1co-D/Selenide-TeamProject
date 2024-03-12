@@ -12,8 +12,7 @@ import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static org.assertj.core.api.Assertions.fail;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Страница с результатами "Результаты [поиска] для <запрос пользователя>" в Citilink
@@ -39,6 +38,9 @@ public class ResultsPage extends BasePage {
     private final String horizontalSnippetsProductsProcessor = "//span[contains(text(),'Процессор')]/..";
     private final String detailCatalogModeButton = "//label[contains(@for,'Подробный режим каталога')]";
     private List<String> notMatchFilterProductsList = new ArrayList<>();
+    private final String addToCompareButton = ".//button[@data-meta-name='Snippet__compare-button']";
+    private final String comparingButton = "//div[@data-meta-name='HeaderBottom__search']/following-sibling::div//div[@data-meta-name='CompareButton']";
+    private final String amountOfAddedProductsToCompare = "//div[contains(@class,'fresnel-greaterThanOrEqual')]//div[@data-meta-name='CompareButton']//div[@data-meta-name='NotificationCounter']";
     private final String productTitle = ".//a[@data-meta-name='Snippet__title']";
     private final String goToCartButton = "//span[text()='Перейти в корзину']/preceding::span[text()='Перейти в корзину']";
 
@@ -212,6 +214,34 @@ public class ResultsPage extends BasePage {
 
     private ElementsCollection createElementsCollection(String xPath) {
         return $$x(xPath).should(sizeGreaterThan(0));
+    }
+
+    public ResultsPage someProductAddToComparingClick(int amountOfProductsForAdding) {
+        ElementsCollection allProductsFromList = getAllProductsInPage();
+        for (int countOfAddedProducts = 0; countOfAddedProducts < amountOfProductsForAdding; countOfAddedProducts++) {
+            allProductsFromList.get(countOfAddedProducts).should(visible, WAITING_TIME);
+            jsClick(allProductsFromList.get(countOfAddedProducts).$x(addToCompareButton));
+        }
+        return this;
+    }
+
+    private String getAmountOfAddedProductsToCompare() {
+        return $x(amountOfAddedProductsToCompare).should(visible, WAITING_TIME)
+                .getText();
+    }
+
+    public ResultsPage checkAmountOfAddedProductsToCompare(int expectedAmountOfProductsForAdding) {
+        assertEquals(getAmountOfAddedProductsToCompare(),
+                String.valueOf(expectedAmountOfProductsForAdding),
+                String.format("Фактическое количество добавленных для сравнения товаров = %s " +
+                                " не соответствует ожидаемому = %s",
+                        getAmountOfAddedProductsToCompare(), expectedAmountOfProductsForAdding));
+        return this;
+    }
+
+    public ResultsPage comparingButtonClick() {
+        jsClick($x(comparingButton));
+        return this;
     }
 
     private SelenideElement searchForRequiredProductInList(String observedProduct) {
