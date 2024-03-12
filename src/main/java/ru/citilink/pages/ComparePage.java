@@ -7,12 +7,24 @@ import static com.codeborne.selenide.Selenide.$x;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-/**
- * Страница "Сравнение товаров" сайта Citilink
- */
 public class ComparePage extends BasePage {
+    private final String comparePageTitle = "//div[@class='ComparePage__header']//h2[text()]";
+    private final String productTitle = "//div[normalize-space(text())='Модель']/following-sibling::div//a";
+    private final String productPrice = "//span[contains(@class,'Compare__product-cell_price_current-price')]";
     private final String showOnlyDifferenceCheckbox = "//label[contains(@class,'Compare__actions_show-differences')]";
     private final String amountOfAddedProductsToCompare = "//div[@class='Tabs js--Tabs']//div";
+
+    public String getComparePageTitle() {
+        return $x(comparePageTitle).shouldBe(visible, WAITING_TIME).getText();
+    }
+
+    public String getProductTitle() {
+        return $x(productTitle).shouldBe(visible, WAITING_TIME).getText();
+    }
+
+    public String getProductPrice() {
+        return $x(productPrice).shouldBe(visible, WAITING_TIME).getText();
+    }
 
     public ComparePage checkIfCorrectPageOpen() {
         try {
