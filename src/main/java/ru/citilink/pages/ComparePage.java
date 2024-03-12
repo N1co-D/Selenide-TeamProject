@@ -7,6 +7,7 @@ import static com.codeborne.selenide.Selenide.$x;
 public class ComparePage extends BasePage {
     private final String comparePageTitle = "//div[@class='ComparePage__header']//h2[text()]";
     private final String productTitle = "//div[normalize-space(text())='Модель']/following-sibling::div//a";
+    private final String productPrice = "//span[contains(@class,'Compare__product-cell_price_current-price')]";
     private final String deleteProductButton = "//div[@class='Compare__product-row']//div[@class='Compare__image-wrapper']/button";
     private final String noProductsForCompare = "//div[normalize-space(text())='Нет товаров для сравнения' and @style='display: block;']";
     private final String compareValue = "//div[contains(@class, 'HeaderMenu__count') and text()]";
@@ -17,6 +18,10 @@ public class ComparePage extends BasePage {
 
     public String getProductTitle() {
         return $x(productTitle).shouldBe(visible, WAITING_TIME).getText();
+    }
+
+    public String getProductPrice() {
+        return $x(productPrice).shouldBe(visible, WAITING_TIME).getText();
     }
 
     public void deleteProductButtonClick() {

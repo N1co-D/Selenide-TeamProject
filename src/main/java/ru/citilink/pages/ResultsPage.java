@@ -28,6 +28,7 @@ public class ResultsPage extends BasePage {
     private final String cartButton = "//div[@data-meta-name='HeaderBottom__search']/following-sibling::div//div[@data-meta-name='BasketButton']";
     private final String subcategoryPageTitle = "//div[@data-meta-name='SubcategoryPageTitle']/h1[text()]";
     private final String comparingCurrentProductButton = ".//button[@data-meta-name='Snippet__compare-button']";
+    private final String priceOfCurrentProduct = ".//span[@data-meta-price]/span[1]";
 
     public boolean getPagesUniqueElement() {
         try {
@@ -107,6 +108,11 @@ public class ResultsPage extends BasePage {
 
     public String getSubcategoryPageTitle() {
         return $x(subcategoryPageTitle).shouldBe(visible, WAITING_TIME).getText();
+    }
+
+    public String getPriceOfCurrentProduct(String nameData) {
+        return $$x(productList).shouldBe(sizeGreaterThan(0), WAITING_TIME)
+                .findBy(text(nameData)).$x(priceOfCurrentProduct).getText();
     }
 
     public ResultsPage comparingCurrentProductButtonClick(String nameData) {
