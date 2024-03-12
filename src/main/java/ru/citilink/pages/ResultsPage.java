@@ -36,13 +36,12 @@ public class ResultsPage extends BasePage {
     private final String horizontalSnippetsProductsDisplay = "//span[contains(text(),'Экран')]/..";
     private final String horizontalSnippetsProductsProcessor = "//span[contains(text(),'Процессор')]/..";
     private final String detailCatalogModeButton = "//label[contains(@for,'Подробный режим каталога')]";
-    private final String addItemToBasketButton = "//a[contains(text(),'%s')]/ancestor::div[contains(@data-meta-name,'ProductVerticalSnippet')]//button[contains(@data-meta-name,'Snippet__cart')]";
-    private final String closeUpSaleBasketLayoutButton = "//div[@data-meta-name='UpsaleBasketLayout']/button[contains(@data-meta-name,'close')]";
-    private final String basketFresnelContainerButton = "//div[@data-meta-name='UserButtonContainer']/following-sibling::a/div[@data-meta-name='BasketButton']";
     private List<String> notMatchFilterProductsList = new ArrayList<>();
     private final String addToCompareButton = ".//button[@data-meta-name='Snippet__compare-button']";
     private final String comparingButton = "//div[@data-meta-name='HeaderBottom__search']/following-sibling::div//div[@data-meta-name='CompareButton']";
     private final String amountOfAddedProductsToCompare = "//div[contains(@class,'fresnel-greaterThanOrEqual')]//div[@data-meta-name='CompareButton']//div[@data-meta-name='NotificationCounter']";
+    private final String productTitle = ".//a[@data-meta-name='Snippet__title']";
+    private final String goToCartButton = "//span[text()='Перейти в корзину']/preceding::span[text()='Перейти в корзину']";
 
     public ResultsPage checkIfCorrectPageOpen() {
         try {
@@ -244,6 +243,38 @@ public class ResultsPage extends BasePage {
         return this;
     }
 
+    private SelenideElement searchForRequiredProductInList(String observedProduct) {
+        ElementsCollection allProductsFromList = getAllProductsInPage();
+        SelenideElement foundProduct = null;
+        SelenideElement currentProductTitleElement;
+        for (SelenideElement product : allProductsFromList) {
+            currentProductTitleElement = getElementWithCurrentProductTitle(product);
+            if (currentProductTitleElement.getText().contains(observedProduct)) {
+                foundProduct = product;
+                break;
+            }
+        }
+        if (foundProduct == null) {
+            fail("Продукт с названием, содержащим '" + observedProduct + "' , не был найден в списке");
+        }
+        return foundProduct;
+    }
+
+    private SelenideElement getElementWithCurrentProductTitle(SelenideElement product) {
+        $x(productTitle).should(visible, WAITING_TIME);
+        return product.$x(productTitle);
+    }
+
+    public ResultsPage requiredProductBuyingClick(String observedProduct) {
+        SelenideElement foundRequiredProduct = searchForRequiredProductInList(observedProduct);
+        jsClick(foundRequiredProduct.$x(inCartButton));
+        return this;
+    }
+
+    public ResultsPage goToCartButtonClickWithPopupWindow() {
+        jsClick($x(goToCartButton));
+        return this;
+    }
     public ResultsPage clickButtonForAddingItemToBasket(String nameProduct) {
         $x(String.format(addItemToBasketButton, nameProduct))
                 .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"nearest\"}")

@@ -21,6 +21,7 @@ public class MainPage extends BasePage {
     private final String productCatalog = "//a[@data-meta-name='DesktopHeaderFixed__catalog-menu']";
     private final String televisionsAndAudioVideoEquipmentCategory = "//div[@data-meta-name='CatalogMenuDesktopLayout__menu']//span[text()='Телевизоры, аудио-видео техника']";
     private final String oledTelevisionsCategory = "//span[text()='Телевизоры OLED']";
+    private final String searchCategoryInDropDownMenu = "//div[@data-meta-name='InstantSearchExtraResultList']//a[@title='";
 
     public MainPage checkIfCorrectPageOpen() {
         try {
@@ -80,6 +81,11 @@ public class MainPage extends BasePage {
 
     public MainPage oledTelevisionsCategoryClick() {
         jsClick($x(oledTelevisionsCategory));
+        return this;
+    }
+
+    public MainPage clickOnProductFromDropDownList(String productFromDropDownList) {
+        jsClick($x(searchCategoryInDropDownMenu + productFromDropDownList + "']"));
         return this;
     }
     public MainPage enterSearchProductInputLine(String nameProduct) {
