@@ -1,14 +1,10 @@
 package ru.citilink.pages;
 
-import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.ex.ElementNotFound;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.TimeoutException;
-
-import java.time.Duration;
+import com.codeborne.selenide.ex.UIAssertionError;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$x;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 /**
@@ -16,6 +12,7 @@ import static org.assertj.core.api.Assertions.fail;
  */
 public class CartPage extends BasePage {
     private final String sideDescriptionOfCart = "//div[@data-meta-name='BasketSummary']";
+    private final String codeNumberOfProductInCart = "//span[text()='Код товара: ']";
     private final String amountOfProductInCart = "//input[@data-meta-name='Count__input']";
     private final String increaseTheAmountOfProductInCartButton = "//button[@data-meta-name='Count__button-plus']";
 
@@ -39,19 +36,22 @@ public class CartPage extends BasePage {
                 .getAttribute("value");
     }
 
-    public boolean getPagesUniqueElement() {
-        try {
-            $x(uniqueElement).should(visible, Duration.ofSeconds(SECONDS_OF_WAITING));
-            Selenide.sleep(5000);
-            return $x(uniqueElement).isDisplayed();
-        } catch (TimeoutException | NoSuchElementException | ElementNotFound e) {
-            fail("Боковое описание корзины (как уникальный элемент страницы) не обнаружен");
-        }
-        return false;
+    public String getCodeNumberOfProductInCart() {
+        return $x(codeNumberOfProductInCart).should(visible, WAITING_TIME)
+                .getText();
     }
 
-    public String getCodeNumberOfProductInCart() {
-        return $x(codeNumberOfProductInCart).should(visible, Duration.ofSeconds(SECONDS_OF_WAITING))
-                .getText();
+    public CartPage checkIsCorrectCodeNumberOfProductInCart(String expectedProductCode) {
+        try {
+            assertThat(getCodeNumberOfProductInCart()
+                    .contains(expectedProductCode))
+                    .isEqualTo(true);
+        } catch (AssertionError e) {
+            fail(String.format("Фактическое значение кода добавленного товара = %s " +
+                            " не соответствует ожидаемому = %s",
+                    getCodeNumberOfProductInCart().substring(getCodeNumberOfProductInCart().indexOf(":") + 1),
+                    expectedProductCode));
+        }
+        return this;
     }
 }

@@ -9,7 +9,6 @@ import ru.citilink.utilities.ConfProperties;
 
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CitilinkTest extends BaseTest {
     private final MainPage mainPage = new MainPage();
@@ -47,26 +46,23 @@ public class CitilinkTest extends BaseTest {
     @ParameterizedTest
     @CsvSource({"'Переходники', 'Переходники на евровилку', " +
             "'Адаптер-переходник на евровилку PREMIER 11626/20, темно-серый', '1860968'"})
-    public void checkTheAdditionOfProductToCart(String inputText, String productFromDropDownList,
-                                                String observedProduct, String expectedProductCode) {
+    public void checkTheAdditionOfProductToCart(String inputText,
+                                                String productFromDropDownList,
+                                                String observedProduct,
+                                                String expectedProductCode) {
         open(confProperties.getProperty("test-site"));
-        assertTrue(mainPage.getPagesUniqueElement(),
-                "Ошибка в открытии главной страницы");
 
-        mainPage.inputBoxWriteText(inputText).clickOnProductFromDropDownList(productFromDropDownList);
-        assertTrue(resultsPage.getPagesUniqueElement(),
-                "Ошибка в открытии страницы с результатами поиска");
+        mainPage.checkIfCorrectPageOpen()
+                .writeTextInInputBox(inputText)
+                .clickOnProductFromDropDownList(productFromDropDownList);
 
-        resultsPage.enableDetailedCatalogMode().requiredProductBuyingClick(observedProduct);
-        assertTrue(resultsPage
-                        .checkAppearingWindowWithAddedProductInCartStatus(),
-                "Ошибка в открытии всплывающего окна с сообщением о добавлении товара в корзину");
+        resultsPage.checkIfCorrectPageOpen()
+                .enableDetailedCatalogMode()
+                .requiredProductBuyingClick(observedProduct)
+                .checkAppearWindowWithAddedProductInCartStatus()
+                .goToCartButtonClickWithPopupWindow();
 
-        resultsPage.goToCartButtonClick();
-        assertTrue(cartPage.getPagesUniqueElement(),
-                "Ошибка в открытии страницы с корзиной");
-
-        assertTrue(cartPage.getCodeNumberOfProductInCart().contains(expectedProductCode),
-                "Код товара в корзине неверен");
+        cartPage.checkIfCorrectPageOpen()
+                .checkIsCorrectCodeNumberOfProductInCart(expectedProductCode);
     }
 }
