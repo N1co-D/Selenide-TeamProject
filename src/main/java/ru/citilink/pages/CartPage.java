@@ -4,8 +4,8 @@ import com.codeborne.selenide.ex.UIAssertionError;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$x;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Страница "Корзина" на сайте Citilink
@@ -42,16 +42,11 @@ public class CartPage extends BasePage {
     }
 
     public CartPage checkIsCorrectCodeNumberOfProductInCart(String expectedProductCode) {
-        try {
-            assertThat(getCodeNumberOfProductInCart()
-                    .contains(expectedProductCode))
-                    .isEqualTo(true);
-        } catch (AssertionError e) {
-            fail(String.format("Фактическое значение кода добавленного товара = %s " +
-                            " не соответствует ожидаемому = %s",
-                    getCodeNumberOfProductInCart().substring(getCodeNumberOfProductInCart().indexOf(":") + 1),
-                    expectedProductCode));
-        }
+        assertTrue(getCodeNumberOfProductInCart().contains(expectedProductCode),
+                String.format("Фактическое значение кода добавленного товара = %s " +
+                                " не соответствует ожидаемому = %s",
+                        getCodeNumberOfProductInCart().substring(getCodeNumberOfProductInCart().indexOf(":") + 1),
+                        expectedProductCode));
         return this;
     }
 }
