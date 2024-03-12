@@ -89,6 +89,36 @@ public class CitilinkTest extends BaseTest {
     }
 
     @ParameterizedTest
+    @CsvSource({
+            "'Ноутбук Lenovo IdeaPad 1 15AMN7 82VG00LSUE, 15.6\", TN, AMD Ryzen 3 7320U, 4-ядерный, 8ГБ LPDDR5, 256ГБ SSD, AMD Radeon 610M, серый', Ноутбуки Lenovo"
+    })
+    public void checkRemoveProductFromComparison(String testLaptop, String productCategory) {
+        open(confProperties.getProperty("test-site"));
+        mainPage.inputBoxWriteText("lenovo")
+                .productSearchExtraResultListClick(productCategory);
+        assertEquals(productCategory, resultsPage.getSubcategoryPageTitle(),
+                String.format("Указан заголовок некорректной страницы. Ожидаем = %s, факт = %s",
+                        productCategory, resultsPage.getSubcategoryPageTitle()));
+
+        resultsPage.detailedCatalogModeButtonClick()
+                .comparingCurrentProductButtonClick(testLaptop);
+        assertTrue(mainPage.compareValueIsDisplayed(), "Товар не добавлен в сравнение");
+        mainPage.compareButtonClick();
+        assertAll(
+                () -> assertEquals("Сравнение товаров", comparePage.getComparePageTitle(),
+                        String.format("Указан заголовок некорректной страницы. Ожидаем = Сравнение товаров, факт = %s",
+                                comparePage.getComparePageTitle())),
+                () -> assertEquals(testLaptop, comparePage.getProductTitle(),
+                        String.format("Товар для сравнения не корректный. Ожидаем = %s, факт = %s",
+                                testLaptop, comparePage.getComparePageTitle())));
+
+        comparePage.deleteProductButtonClick();
+        assertAll(
+                () -> assertFalse(comparePage.compareValueIsDisplayed(), "Товар не удалён из сравнение"),
+                () -> assertTrue(comparePage.noProductsForCompareIsDisplayed(), "Отсутствует уведомление Нет товаров для сравнения"));
+    }
+
+    @ParameterizedTest
     @ValueSource(ints = {2})
     public void checkTheAdditionOfProductToCompareSection(int amountOfProductsForAdding) {
         open(confProperties.getProperty("test-site"));
