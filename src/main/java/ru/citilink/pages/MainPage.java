@@ -4,8 +4,6 @@ import com.codeborne.selenide.ex.UIAssertionError;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.text;
-import com.codeborne.selenide.ex.UIAssertionError;
-
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$$x;
 import static com.codeborne.selenide.Selenide.$x;
