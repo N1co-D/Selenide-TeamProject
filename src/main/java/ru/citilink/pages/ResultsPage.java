@@ -11,11 +11,6 @@ import java.util.Locale;
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
-import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
-import static com.codeborne.selenide.Condition.appear;
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$$x;
-import static com.codeborne.selenide.Selenide.$x;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -218,7 +213,7 @@ public class ResultsPage extends BasePage {
     }
 
     private ElementsCollection createElementsCollection(String xPath) {
-        return $$x(xPath).should(CollectionCondition.sizeGreaterThan(0));
+        return $$x(xPath).should(sizeGreaterThan(0));
     }
 
     public ResultsPage someProductAddToComparingClick(int amountOfProductsForAdding) {

@@ -4,12 +4,8 @@ import com.codeborne.selenide.ex.UIAssertionError;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.text;
-import com.codeborne.selenide.ex.UIAssertionError;
-
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$$x;
-import static com.codeborne.selenide.Selenide.$x;
-import static com.codeborne.selenide.Selenide.actions;
+import static com.codeborne.selenide.Selenide.*;
 import static org.assertj.core.api.Assertions.fail;
 
 /**
@@ -47,6 +43,12 @@ public class MainPage extends BasePage {
         $x(inputBox).should(visible, WAITING_TIME)
                 .pressEnter();
         return this;
+    }
+
+    public ResultsPage productSearchExtraResultListClick(String gameName) {
+        $$x(searchDropDownList).shouldBe(sizeGreaterThan(0), WAITING_TIME)
+                .findBy(text(gameName)).click();
+        return new ResultsPage();
     }
 
     public MainPage productCatalogClick() {

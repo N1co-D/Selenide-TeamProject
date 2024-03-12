@@ -11,7 +11,6 @@ import ru.citilink.utilities.ConfProperties;
 
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CitilinkTest extends BaseTest {
     private final MainPage mainPage = new MainPage();
