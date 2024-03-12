@@ -1,12 +1,15 @@
 package ru.citilink.pages;
 
-import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.ElementNotFound;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 
+import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selenide.$$x;
+import static com.codeborne.selenide.Selenide.$x;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -23,14 +26,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class ResultsPage extends BasePage {
     private final String uniqueElement = "//div[@data-meta-name='FiltersLayout']";
-    private final String detailedCatalogMode = "//label[@for='Подробный режим каталога-list']";
-    private final String listOfProducts = "//div[@data-meta-name='ProductHorizontalSnippet']";
+    private final String detailedCatalogModeButton = "//label[@for='Подробный режим каталога-list']";
+    private final String productList = "//div[@data-meta-name='ProductHorizontalSnippet']";
     private final String ramMemoryParameterOfProduct = ".//span[text()='Оперативная память']/..";
     private final String diskParameterOfProduct = ".//span[text()='Диск']/..";
     private final String inCartButton = ".//button[@data-meta-name='Snippet__cart-button']";
     private final String windowWithAddedProductInCartStatus = "//div[@data-meta-name='Popup']";
     private final String closeWindowWithAddedProductInCartStatus = "//button[@data-meta-name='UpsaleBasket__close-popup']";
     private final String cartButton = "//div[@data-meta-name='HeaderBottom__search']/following-sibling::div//div[@data-meta-name='BasketButton']";
+    private final String subcategoryPageTitle = "//div[@data-meta-name='SubcategoryPageTitle']/h1[text()]";
+    private final String comparingCurrentProductButton = ".//button[@data-meta-name='Snippet__compare-button']";
+    private final String priceOfCurrentProduct = ".//span[@data-meta-price]/span[1]";
     private final String dropDownCategoryAndValueFilter = "//div[@data-meta-name='FilterListGroupsLayout']//div[contains(@data-meta-value,'%s')]//div[contains(@data-meta-value,'%s')]";
     private final String horizontalSnippetsProducts = "//div[@data-meta-name='ProductHorizontalSnippet']/../div";
     private final String horizontalSnippetsProductsTitles = "//a[@data-meta-name='Snippet__title']";
@@ -50,12 +56,12 @@ public class ResultsPage extends BasePage {
     }
 
     public ResultsPage enableDetailedCatalogMode() {
-        jsClick($x(detailedCatalogMode));
+        jsClick($x(detailedCatalogModeButton));
         return this;
     }
 
     private ElementsCollection getAllProductsInPage() {
-        return $$x(listOfProducts).should(CollectionCondition.sizeGreaterThan(0));
+        return $$x(productList).should(sizeGreaterThan(0));
     }
 
     private String getRamMemoryParameterOfProduct() {
@@ -115,6 +121,25 @@ public class ResultsPage extends BasePage {
         }
     }
 
+    public String getSubcategoryPageTitle() {
+        return $x(subcategoryPageTitle).shouldBe(visible, WAITING_TIME).getText();
+    }
+
+    public String getPriceOfCurrentProduct(String nameData) {
+        return $$x(productList).shouldBe(sizeGreaterThan(0), WAITING_TIME)
+                .findBy(text(nameData)).$x(priceOfCurrentProduct).getText();
+    }
+
+    public ResultsPage comparingCurrentProductButtonClick(String nameData) {
+        jsClick($$x(productList).shouldBe(sizeGreaterThan(0), WAITING_TIME)
+                .findBy(text(nameData)).$x(comparingCurrentProductButton));
+        return this;
+    }
+
+    public ResultsPage detailedCatalogModeButtonClick() {
+        $x(detailedCatalogModeButton).shouldBe(visible, WAITING_TIME).click();
+        return this;
+    }
     /**
      * the method scrolls and clicks the selected category and filter values
      *
