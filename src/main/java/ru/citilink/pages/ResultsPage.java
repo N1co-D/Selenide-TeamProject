@@ -11,7 +11,6 @@ import java.util.Locale;
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
-import static org.assertj.core.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
