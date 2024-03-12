@@ -4,21 +4,35 @@ import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.ElementNotFound;
+import com.codeborne.selenide.ex.UIAssertionError;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 
 import java.time.Duration;
 
+import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.executeJavaScript;
 import static org.assertj.core.api.Assertions.fail;
-
 /**
  * Страница с результатами "Результаты [поиска] для <запрос пользователя>" в Citilink
  * Страница с результатами "[Категория товаров]" в Citilink
  */
-public class ResultsPage {
+public class ResultsPage extends BasePage {
+    private final String filter = "//div[@data-meta-name='FiltersLayout']";
+    private final String detailedCatalogMode = "//label[@for='Подробный режим каталога-list']";
+    private final String listOfProducts = "//div[@data-meta-name='ProductHorizontalSnippet']";
+    private final String ramMemoryParameterOfProduct = ".//span[text()='Оперативная память']/..";
+    private final String diskParameterOfProduct = ".//span[text()='Диск']/..";
+    private final String inCartButton = ".//button[@data-meta-name='Snippet__cart-button']";
+    private final String windowWithAddedProductInCartStatus = "//div[@data-meta-name='Popup']";
+    private final String closeWindowWithAddedProductInCartStatus = "//button[@data-meta-name='UpsaleBasket__close-popup']";
+    private final String cartButton = "//div[@data-meta-name='HeaderBottom__search']/following-sibling::div//div[@data-meta-name='BasketButton']";
+    private final String productTitle = ".//a[@data-meta-name='Snippet__title']";
+    private final String goToCartButton = "//span[text()='Перейти в корзину']/preceding::span[text()='Перейти в корзину']";
+
     private final String uniqueElement = "//div[@data-meta-name='FiltersLayout']";
     private final String detailedCatalogMode = "//label[@for='Подробный режим каталога-list']";
     private final String listOfProducts = "//div[@data-meta-name='ProductHorizontalSnippet']";
@@ -27,7 +41,120 @@ public class ResultsPage {
     private final String windowWithAddedProductInCartStatus = "//div[@data-meta-name='Popup']";
     private final String closeWindowWithAddedProductInCartStatus = "//button[@data-meta-name='UpsaleBasket__close-popup']";
     private final String cartButton = "//div[@data-meta-name='HeaderBottom__search']/following-sibling::div//div[@data-meta-name='BasketButton']";
-    private static final int SECONDS_OF_WAITING = 20;
+
+
+    public ResultsPage checkIfCorrectPageOpen() {
+        try {
+            $x(filter).should(visible, WAITING_TIME);
+        } catch (UIAssertionError e) {
+            fail("Не удалось подтвердить открытие ожидаемой страницы. " +
+                    "Уникальный элемент страницы 'filter' не был найден в течение заданного времени.");
+        }
+        return this;
+    }
+
+    public ResultsPage enableDetailedCatalogMode() {
+        jsClick($x(detailedCatalogMode));
+        return this;
+    }
+
+    private ElementsCollection getAllProductsInPage() {
+        return $$x(listOfProducts).should(sizeGreaterThan(0));
+    }
+
+    private String getRamMemoryParameterOfProduct() {
+        return $x(ramMemoryParameterOfProduct).should(visible, WAITING_TIME)
+                .getText();
+    }
+    private String getDiskParameterOfProduct() {
+        return $x(diskParameterOfProduct).should(visible, WAITING_TIME)
+                .getText();
+    }
+
+    private SelenideElement searchForRequiredProductInList(String firstParameter, String secondParameter) {
+        ElementsCollection allProductsFromList = getAllProductsInPage();
+        SelenideElement foundProduct = null;
+        for (SelenideElement product : allProductsFromList) {
+            if ((getRamMemoryParameterOfProduct().contains(firstParameter))
+                    && (getDiskParameterOfProduct()).contains(secondParameter)) {
+                foundProduct = product;
+                break;
+            }
+        }
+        if (foundProduct == null) {
+            fail("Продукт с приведенными параметрами не был найден в списке");
+        }
+        return foundProduct;
+    }
+
+    public ResultsPage requiredProductWithParametersBuyingClick(String firstParameter, String secondParameter) {
+        SelenideElement requiredProduct = searchForRequiredProductInList(firstParameter, secondParameter);
+        jsClick(requiredProduct.$x(inCartButton));
+        return this;
+    }
+
+    public ResultsPage cartButtonClick() {
+        jsClick($x(cartButton));
+        return this;
+    }
+
+    public ResultsPage closeWindowWithAddedProductInCartStatusClick() {
+        jsClick($x(closeWindowWithAddedProductInCartStatus));
+        return this;
+    }
+
+    public ResultsPage checkAppearWindowWithAddedProductInCartStatus() {
+        try {
+            $x(windowWithAddedProductInCartStatus).should(appear, WAITING_TIME);
+        } catch (UIAssertionError e) {
+            fail("Не было обнаружено всплывающее окно с сообщением о добавлении товара в корзину");
+        }
+        return this;
+    }
+
+    public ResultsPage checkDisappearWindowWithAddedProductInCartStatus() {
+        try {
+            $x(windowWithAddedProductInCartStatus).shouldNot(appear, WAITING_TIME);
+        } catch (UIAssertionError e) {
+            fail("Всплывающее окно с сообщением о добавлении товара в корзину не было закрыто " +
+                    "после нажатия соответствующего элемента 'closeWindowWithAddedProductInCartStatus'");
+        }
+        return this;
+    }
+
+    private SelenideElement searchForRequiredProductInList(String observedProduct) {
+        ElementsCollection allProductsFromList = getAllProductsInPage();
+        SelenideElement foundProduct = null;
+        SelenideElement currentProductTitleElement;
+        for (SelenideElement product : allProductsFromList) {
+            currentProductTitleElement = getElementWithCurrentProductTitle(product);
+            if (currentProductTitleElement.getText().contains(observedProduct)) {
+                foundProduct = product;
+                break;
+            }
+        }
+        if (foundProduct == null) {
+            fail("Продукт с названием, содержащим '" + observedProduct + "' , не был найден в списке");
+        }
+        return foundProduct;
+    }
+
+    private SelenideElement getElementWithCurrentProductTitle(SelenideElement product) {
+        $x(productTitle).should(visible, WAITING_TIME);
+        return product.$x(productTitle);
+    }
+
+    public ResultsPage requiredProductBuyingClick(String observedProduct) {
+        SelenideElement foundRequiredProduct = searchForRequiredProductInList(observedProduct);
+        jsClick(foundRequiredProduct.$x(inCartButton));
+        return this;
+    }
+
+    public ResultsPage goToCartButtonClickWithPopupWindow() {
+        jsClick($x(goToCartButton));
+        return this;
+    }
+
 
     public boolean getPagesUniqueElement() {
         try {
