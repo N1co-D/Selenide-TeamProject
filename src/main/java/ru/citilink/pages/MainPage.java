@@ -36,7 +36,8 @@ public class MainPage extends BasePage {
         inputBoxWriteText(searchingProduct);
         $x(inputBox).should(visible, WAITING_TIME).pressEnter();
     }
-    public MainPage enterProductSearchInputLine(String nameProduct) {
+
+    public MainPage enterSearchProductInputLine(String nameProduct) {
         $x(productSearchInputLine)
                 .should(visible, WAITING_TIME)
                 .val(nameProduct).pressEnter();

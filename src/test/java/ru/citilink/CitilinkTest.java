@@ -53,7 +53,7 @@ public class CitilinkTest extends BaseTest {
     @CsvSource({"'Смартфон Huawei nova Y72 8/128Gb,  MGA-LX3,  черный'"})
     public void checkAddItemToShopBasket(String inputText) {
         open(confProperties.getProperty("test-site"));
-        new MainPage().enterProductSearchInputLine(inputText);
+        new MainPage().enterSearchProductInputLine(inputText);
         new ResultsPage()
                 .clickButtonForAddingItemToBasket(inputText)
                 .clickButtonCloseUpSaleBasketLayout()
