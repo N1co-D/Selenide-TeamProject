@@ -1,18 +1,14 @@
 package ru.citilink.pages;
 
-import com.codeborne.selenide.ex.UIAssertionError;
-
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.UIAssertionError;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-import static com.codeborne.selenide.Selenide.*;
-import static org.assertj.core.api.Assertions.fail;
 
 /**
  * Страница "Корзина" на сайте Citilink
@@ -21,6 +17,7 @@ public class CartPage extends BasePage {
     private final String sideDescriptionOfCart = "//div[@data-meta-name='BasketSummary']";
     private final String amountOfProductInCart = "//input[@data-meta-name='Count__input']";
     private final String increaseTheAmountOfProductInCartButton = "//button[@data-meta-name='Count__button-plus']";
+    private final String listOfProductsInCart = "//div[@data-meta-name='BasketSnippet']";
     private final String codeNumberOfProductInCart = "//span[text()='Код товара: ']";
     private final String productTitleInCart = ".//span[text()='Код товара: ']/../following-sibling::a/span/span[text()]";
     private final String statusOfMissingProductsInCart = "//span[text()='В корзине нет товаров']";

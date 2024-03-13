@@ -4,7 +4,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import ru.citilink.pages.CartPage;
-import ru.citilink.pages.CartPage;
 import ru.citilink.pages.ComparePage;
 import ru.citilink.pages.MainPage;
 import ru.citilink.pages.ResultsPage;
@@ -171,7 +170,7 @@ public class CitilinkTest extends BaseTest {
         open(confProperties.getProperty("test-site"));
 
         mainPage.checkIfCorrectPageOpen()
-                .writeTextInInputBox(inputText)
+                .inputBoxWriteText(inputText)
                 .clickOnProductFromDropDownList(productFromDropDownList);
 
         resultsPage.checkIfCorrectPageOpen()

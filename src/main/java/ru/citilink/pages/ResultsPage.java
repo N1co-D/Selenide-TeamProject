@@ -7,12 +7,10 @@ import com.codeborne.selenide.ex.UIAssertionError;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import com.codeborne.selenide.ex.UIAssertionError;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
-import static org.assertj.core.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -44,7 +42,6 @@ public class ResultsPage extends BasePage {
     private final String addToCompareButton = ".//button[@data-meta-name='Snippet__compare-button']";
     private final String comparingButton = "//div[@data-meta-name='HeaderBottom__search']/following-sibling::div//div[@data-meta-name='CompareButton']";
     private final String amountOfAddedProductsToCompare = "//div[contains(@class,'fresnel-greaterThanOrEqual')]//div[@data-meta-name='CompareButton']//div[@data-meta-name='NotificationCounter']";
-    private final String productTitle = ".//a[@data-meta-name='Snippet__title']";
     private final String goToCartButton = "//span[text()='Перейти в корзину']/preceding::span[text()='Перейти в корзину']";
 
     public ResultsPage checkIfCorrectPageOpen() {
