@@ -1,41 +1,52 @@
 package ru.citilink.pages;
 
-import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.ex.ElementNotFound;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.TimeoutException;
-
-import java.time.Duration;
+import com.codeborne.selenide.ex.UIAssertionError;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$x;
-import static org.assertj.core.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Страница "Корзина" на сайте Citilink
  */
 public class CartPage extends BasePage {
-    private final String uniqueElement = "//div[@data-meta-name='BasketSummary']";
+    private final String sideDescriptionOfCart = "//div[@data-meta-name='BasketSummary']";
     private final String amountOfProductInCart = "//input[@data-meta-name='Count__input']";
     private final String increaseTheAmountOfProductInCartButton = "//button[@data-meta-name='Count__button-plus']";
+    private final String codeNumberOfProductInCart = "//span[text()='Код товара: ']";
 
-    public boolean getPagesUniqueElement() {
+    public CartPage checkIfCorrectPageOpen() {
         try {
-            $x(uniqueElement).should(visible, WAITING_TIME);
-            Selenide.sleep(5000);
-            return $x(uniqueElement).isDisplayed();
-        } catch (TimeoutException | NoSuchElementException | ElementNotFound e) {
-            fail("Боковое описание корзины (как уникальный элемент страницы) не обнаружен");
+            $x(sideDescriptionOfCart).should(visible, WAITING_TIME);
+        } catch (UIAssertionError e) {
+            fail("Не удалось подтвердить открытие ожидаемой страницы. " +
+                    "Уникальный элемент страницы 'sideDescriptionOfCart' не был найден в течение заданного времени.");
         }
-        return false;
+        return this;
     }
 
-    public void increaseTheAmountOfProductInCartButtonClick() {
+    public CartPage increaseTheAmountOfProductInCartButtonClick() {
         jsClick($x(increaseTheAmountOfProductInCartButton));
+        return this;
     }
 
     public String getAmountOfProductInCart() {
         return $x(amountOfProductInCart).should(visible, WAITING_TIME)
                 .getAttribute("value");
+    }
+
+    public String getCodeNumberOfProductInCart() {
+        return $x(codeNumberOfProductInCart).should(visible, WAITING_TIME)
+                .getText();
+    }
+
+    public CartPage checkIsCorrectCodeNumberOfProductInCart(String expectedProductCode) {
+        assertTrue(getCodeNumberOfProductInCart().contains(expectedProductCode),
+                String.format("Фактическое значение кода добавленного товара = %s " +
+                                " не соответствует ожидаемому = %s",
+                        getCodeNumberOfProductInCart().substring(getCodeNumberOfProductInCart().indexOf(":") + 1),
+                        expectedProductCode));
+        return this;
     }
 }
