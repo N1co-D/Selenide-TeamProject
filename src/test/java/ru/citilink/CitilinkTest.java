@@ -2,6 +2,7 @@ package ru.citilink;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import ru.citilink.pages.CartPage;
 import ru.citilink.pages.ComparePage;
@@ -20,13 +21,11 @@ public class CitilinkTest extends BaseTest {
     private final ConfProperties confProperties = new ConfProperties();
 
     @ParameterizedTest
-    @CsvSource({
-            "'Ноутбук Lenovo IdeaPad 1 15AMN7 82VG00LSUE, 15.6\", TN, AMD Ryzen 3 7320U, 4-ядерный, 8ГБ LPDDR5, 256ГБ SSD, AMD Radeon 610M, серый', Ноутбуки Lenovo"
-    })
+    @MethodSource("ru.citilink.CitilinkTestData#dataForComparisonTest")
     public void checkAddProductToCompare(String testLaptop, String productCategory) {
         open(confProperties.getProperty("test-site"));
         mainPage.inputBoxWriteText("lenovo").productSearchExtraResultListClick(productCategory);
-        assertEquals(resultsPage.getSubcategoryPageTitle(), productCategory,
+        assertEquals(productCategory, resultsPage.getSubcategoryPageTitle(),
                 String.format("Указан заголовок некорректной страницы. Ожидаем = %s, факт = %s",
                         productCategory, resultsPage.getSubcategoryPageTitle()));
 
@@ -36,13 +35,13 @@ public class CitilinkTest extends BaseTest {
         mainPage.compareButtonClick();
 
         assertAll(
-                () -> assertEquals(comparePage.getComparePageTitle(), "Сравнение товаров",
+                () -> assertEquals("Сравнение товаров", comparePage.getComparePageTitle(),
                         String.format("Указан заголовок некорректной страницы. Ожидаем = Сравнение товаров, факт = %s",
                                 comparePage.getComparePageTitle())),
-                () -> assertEquals(comparePage.getProductTitle(), testLaptop,
+                () -> assertEquals(testLaptop, comparePage.getProductTitle(),
                         String.format("Товар для сравнения не корректный. Ожидаем = %s, факт = %s",
                                 testLaptop, comparePage.getComparePageTitle())),
-                () -> assertEquals(comparePage.getProductPrice(), priceOfCurrentProduct,
+                () -> assertEquals(priceOfCurrentProduct, comparePage.getProductPrice(),
                         String.format("Цена товара указанна не корректно. Ожидаем = %s, факт = %s",
                                 priceOfCurrentProduct, comparePage.getComparePageTitle())));
     }
@@ -89,9 +88,7 @@ public class CitilinkTest extends BaseTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-            "'Ноутбук Lenovo IdeaPad 1 15AMN7 82VG00LSUE, 15.6\", TN, AMD Ryzen 3 7320U, 4-ядерный, 8ГБ LPDDR5, 256ГБ SSD, AMD Radeon 610M, серый', Ноутбуки Lenovo"
-    })
+    @MethodSource("ru.citilink.CitilinkTestData#dataForComparisonTest")
     public void checkRemoveProductFromComparison(String testLaptop, String productCategory) {
         open(confProperties.getProperty("test-site"));
         mainPage.inputBoxWriteText("lenovo")
