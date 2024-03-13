@@ -67,11 +67,12 @@ public class MainPage extends BasePage {
         return new ComparePage();
     }
 
-    public void clickPopularCategoryTile(String nameCategory) {
+    public MainPage clickPopularCategoryTile(String nameCategory) {
         $x(String.format(popularCategoryTile, nameCategory))
                 .scrollIntoView("{behavior: \"smooth\", block: \"center\", inline: \"nearest\"}")
                 .should(visible, WAITING_TIME)
                 .click();
+        return this;
     }
 
     public MainPage televisionsAndAudioVideoEquipmentCategoryClick() {
