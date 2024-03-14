@@ -4,6 +4,7 @@ import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import ru.citilink.utilities.ConfProperties;
 
@@ -17,9 +18,10 @@ public class BaseTest {
         Configuration.browserSize = null;
         Configuration.pageLoadStrategy = "none";
         DesiredCapabilities cap = new DesiredCapabilities();
-        ChromeOptions options = new ChromeOptions();
+//        ChromeOptions options = new ChromeOptions();
+        EdgeOptions options = new EdgeOptions();
         options.addArguments("start-maximized");
-        cap.setCapability(ChromeOptions.CAPABILITY, options);
+        cap.setCapability(EdgeOptions.CAPABILITY, options);
         Configuration.browserCapabilities = cap;
 //        Configuration.headless = true;
     }
