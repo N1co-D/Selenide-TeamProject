@@ -31,7 +31,7 @@ public class CitilinkTest extends BaseTest {
                         productCategory, resultsPage.getSubcategoryPageTitle()));
 
         resultsPage.detailedCatalogModeButtonClick().comparingCurrentProductButtonClick(testLaptop);
-        assertFalse(mainPage.compareValueIsDisplayed(), "Товар не добавлен в сравнение");
+        assertTrue(mainPage.compareValueIsDisplayed(), "Товар не добавлен в сравнение");
         String priceOfCurrentProduct = resultsPage.getPriceOfCurrentProduct(testLaptop);
         mainPage.compareButtonClick();
 
