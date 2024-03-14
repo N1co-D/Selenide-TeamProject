@@ -24,6 +24,12 @@ public class ComparePage extends BasePage {
     private final String compareValue = "//div[contains(@class, 'HeaderMenu__count') and text()]";
     private final String showOnlyDifferenceCheckbox = "//label[contains(@class,'Compare__actions_show-differences')]";
     private final String amountOfAddedProductsToCompare = "//div[@class='Tabs js--Tabs']//div";
+    private final String compareSpecificsRowValue = "//div[contains(text(),'%s')]/following-sibling::div[@class='Compare__specification-row_wrapper']/div/div";
+    private final String compareProductPriceBlockByIndex = "//div[contains(text(),'Цена')]/../div[contains(@class,'Compare__product-row')]/div[%d]";
+    private final String compareProductByIndexToCartButton = "//button/span[contains(text(),'В корзину')]/..";
+    private final String upsaleBasketBlockGoShopCartButton = "//div[@class='UpsaleBasket__header-link']//button[@data-label='Перейти в корзину']";
+
+
 
     public String getComparePageTitle() {
         return $x(comparePageTitle).shouldBe(visible, WAITING_TIME).getText();
@@ -72,7 +78,8 @@ public class ComparePage extends BasePage {
                         getAmountOfAddedProductsToCompare(), expectedAmountOfProductsForAdding));
         return this;
     }
-    public List<Integer> createCompareSpecificsRowValueIndexList(String specific, String value) {
+
+    private List<Integer> createCompareSpecificsRowValueIndexList(String specific, String value) {
         List<Integer> indexList = new ArrayList<>();
         indexList.clear();
         int count = 1;
@@ -82,21 +89,29 @@ public class ComparePage extends BasePage {
             }
             count++;
         }
-        System.out.println(indexList);
         return indexList;
     }
 
-    public List<Integer> getRetainAllList() {
-        var items3 = new ArrayList<>(createCompareSpecificsRowValueIndexList("Марка топлива", "АИ-92"));
-        items3.retainAll(createCompareSpecificsRowValueIndexList("Самоходный", "да"));
-        System.out.println(items3);
+    private List<Integer> getRetainAllList() {
+        var items3 = new ArrayList<>(createCompareSpecificsRowValueIndexList("Тип двигателя", "бензиновый"));
+        items3.retainAll(createCompareSpecificsRowValueIndexList("Форма шнека", "зубчатая"));
         return items3;
     }
 
-    public void getIndexProductAfter(){
-        for (Integer element : getRetainAllList()){
-            System.out.println(element.intValue());
+    public void clickCartButtonNgoToCart() {
+        for (Integer element : getRetainAllList()) {
+            $x(String.format(compareProductPriceBlockByIndex, element.intValue()) +
+                    compareProductByIndexToCartButton)
+                    .scrollIntoView("{behavior: \"auto\", block: \"center\", inline: \"center\"}")
+                    .shouldBe(visible, WAITING_TIME)
+                    .click();
+            clickUpsaleBasketBlockGoShopCartButton();
         }
+    }
+    public void clickUpsaleBasketBlockGoShopCartButton(){
+        $x(upsaleBasketBlockGoShopCartButton)
+                .shouldBe(visible,WAITING_TIME)
+                .click();
     }
 
     private ElementsCollection createElementsCollection(String xPath) {

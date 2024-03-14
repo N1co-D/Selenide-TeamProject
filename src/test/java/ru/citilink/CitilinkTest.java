@@ -10,6 +10,7 @@ import ru.citilink.pages.ResultsPage;
 import ru.citilink.utilities.ConfProperties;
 
 import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.sleep;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CitilinkTest extends BaseTest {
@@ -159,5 +160,25 @@ public class CitilinkTest extends BaseTest {
 
         cartPage.checkIfCorrectPageOpen()
                 .checkIsCorrectCodeNumberOfProductInCart(expectedProductCode);
+    }
+
+    @ParameterizedTest
+    @CsvSource({"'Снегоуборщик Huter SGC', '45 000 ₽','Снегоуборщик Huter SGC 4000L, бензиновый, 6.5л.с., самоходный [70/7/22]'"})
+    public void checkProductComparison(String inputText, String price,String nameProduct) {
+
+        open(confProperties.getProperty("test-site"));
+
+        mainPage.enterProductInputLineAndClickSearchButton(inputText);
+
+        resultsPage.enterFilterDropdownInputMaxPrice(price)
+                .clickButtonDetailCatalogMode()
+                .clickCompareProductButtonFromCollection()
+                .clickFresnelContainerCompareButton();
+
+        comparePage.clickCartButtonNgoToCart();
+        cartPage.checkProductNameInCart(nameProduct);
+
+
+        sleep(5000);
     }
 }

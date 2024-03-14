@@ -15,6 +15,8 @@ public class CartPage extends BasePage {
     private final String amountOfProductInCart = "//input[@data-meta-name='Count__input']";
     private final String increaseTheAmountOfProductInCartButton = "//button[@data-meta-name='Count__button-plus']";
     private final String codeNumberOfProductInCart = "//span[text()='Код товара: ']";
+    //div[@data-meta-name="BasketSnippet"]//a//span[contains(text(),'Снегоуборщик Huter SGC 4000L,  бензиновый, 6.5л.с., самоходный [70/7/22]')]
+    private final String productNameInCart = "//div[@data-meta-name='BasketSnippet']//a//span[text()]";
 
     public CartPage checkIfCorrectPageOpen() {
         try {
@@ -47,6 +49,18 @@ public class CartPage extends BasePage {
                                 " не соответствует ожидаемому = %s",
                         getCodeNumberOfProductInCart().substring(getCodeNumberOfProductInCart().indexOf(":") + 1),
                         expectedProductCode));
+        return this;
+    }
+    public String getProductNameInCart() {
+        return $x(productNameInCart).should(visible, WAITING_TIME)
+                .getText();
+    }
+    public CartPage checkProductNameInCart(String expectedProductName) {
+        assertTrue(getProductNameInCart().contains(expectedProductName),
+                String.format("Фактическое имя добавленного товара = %s " +
+                                " не соответствует ожидаемому = %s",
+                        getProductNameInCart(),
+                        expectedProductName));
         return this;
     }
 }

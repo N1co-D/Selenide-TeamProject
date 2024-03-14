@@ -101,7 +101,7 @@ public class MainPage extends BasePage {
         return this;
     }
 
-    private void clickSearchButton(){
+    private void clickSearchButton() {
         $x(searchButton)
                 .should(visible, WAITING_TIME)
                 .click();
