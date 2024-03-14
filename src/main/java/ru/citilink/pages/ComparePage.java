@@ -29,8 +29,6 @@ public class ComparePage extends BasePage {
     private final String compareProductByIndexToCartButton = "//button/span[contains(text(),'В корзину')]/..";
     private final String upsaleBasketBlockGoShopCartButton = "//div[@class='UpsaleBasket__header-link']//button[@data-label='Перейти в корзину']";
 
-
-
     public String getComparePageTitle() {
         return $x(comparePageTitle).shouldBe(visible, WAITING_TIME).getText();
     }
@@ -43,7 +41,7 @@ public class ComparePage extends BasePage {
         return $x(productPrice).shouldBe(visible, WAITING_TIME).getText();
     }
 
-    public ComparePage deleteProductButtonClick() {
+    public ComparePage deleteProductButtonClick() { // todo rename: clickDeleteProductButton
         $x(deleteProductButton).shouldBe(visible, WAITING_TIME).click();
         return this;
     }
@@ -80,7 +78,7 @@ public class ComparePage extends BasePage {
         return this;
     }
 
-    private List<Integer> createCompareSpecificsRowValueIndexList(String specific, String value) {
+    private List<Integer> createIndexList(String specific, String value) {
         List<Integer> indexList = new ArrayList<>();
         indexList.clear();
         int count = 1;
@@ -93,25 +91,32 @@ public class ComparePage extends BasePage {
         return indexList;
     }
 
-    private List<Integer> getRetainAllList() {
-        var items3 = new ArrayList<>(createCompareSpecificsRowValueIndexList("Тип двигателя", "бензиновый"));
-        items3.retainAll(createCompareSpecificsRowValueIndexList("Форма шнека", "зубчатая"));
-        return items3;
+    private List<Integer> getResultList(List<Integer> firstIndexList, List<Integer> secondIndexList) {
+        List<Integer> resultList = new ArrayList<>(firstIndexList);
+        resultList.retainAll(secondIndexList);
+        return resultList;
     }
 
-    public void clickCartButtonNgoToCart() {
-        for (Integer element : getRetainAllList()) {
+    public ComparePage clickSelectedProductCartButton(String firstSpecific,
+                                                      String firstValue,
+                                                      String secondSpecific,
+                                                      String secondValue) {
+
+        for (Integer element : getResultList(createIndexList(firstSpecific, firstValue),
+                createIndexList(secondSpecific, secondValue))) {
+
             $x(String.format(compareProductPriceBlockByIndex, element.intValue()) +
                     compareProductByIndexToCartButton)
                     .scrollIntoView("{behavior: \"auto\", block: \"center\", inline: \"center\"}")
                     .shouldBe(visible, WAITING_TIME)
                     .click();
-            clickUpsaleBasketBlockGoShopCartButton();
         }
+        return this;
     }
-    public void clickUpsaleBasketBlockGoShopCartButton(){
+
+    public void clickUpsaleBasketBlockGoShopCartButton() {
         $x(upsaleBasketBlockGoShopCartButton)
-                .shouldBe(visible,WAITING_TIME)
+                .shouldBe(visible, WAITING_TIME)
                 .click();
     }
 

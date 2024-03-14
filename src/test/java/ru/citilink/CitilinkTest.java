@@ -10,7 +10,6 @@ import ru.citilink.pages.ResultsPage;
 import ru.citilink.utilities.ConfProperties;
 
 import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.sleep;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CitilinkTest extends BaseTest {
@@ -64,7 +63,7 @@ public class CitilinkTest extends BaseTest {
         resultsPage.clickFilterDropDownCategoryAndValue(brandFilterCategory, brandValue)
                 .clickFilterDropDownCategoryAndValue(screenDiagonalFilterCategory, diagonalValue)
                 .clickFilterDropDownCategoryAndValue(processorSeriesFilterCategory, cpuValue)
-                .clickButtonDetailCatalogMode()
+                .clickDetailCatalogModeButton()
                 .checkProductsAfterFiltration(brandValue, diagonalValue, cpuValue);
     }
 
@@ -198,6 +197,7 @@ public class CitilinkTest extends BaseTest {
 
         mainPage.checkIfCorrectPageOpen();
     }
+
     @ParameterizedTest
     @CsvSource({"'Смартфон Huawei nova Y72 8/128Gb,  MGA-LX3,  черный'"})
     public void checkItemAddToCart(String inputText) {
@@ -206,30 +206,42 @@ public class CitilinkTest extends BaseTest {
 
         mainPage.enterSearchProductInputLine(inputText);
         resultsPage
-                .clickButtonForAddingItemToBasket(inputText)
-                .clickButtonCloseUpSaleBasketLayout()
-                .clickButtonBasketFresnelContainer();
+                .clickAddItemToBasketButton(inputText)
+                .clickCloseUpSaleBasketLayoutButton()
+                .clickBasketFresnelContainerButton();
 
         assertEquals("Смартфон Huawei nova Y72 8/128Gb, MGA-LX3, черный",
                 cartPage.getNameProductFromBasketSnippet(inputText));
     }
+
     @ParameterizedTest
-    @CsvSource({"'Снегоуборщик Huter SGC', '45 000 ₽','Снегоуборщик Huter SGC 4000L, бензиновый, 6.5л.с., самоходный [70/7/22]'"})
-    public void checkProductComparison(String inputText, String price,String nameProduct) {
+    @CsvSource({"'Снегоуборщик Huter SGC'," +
+            "'45 000 ₽'," +
+            "'Снегоуборщик Huter SGC 4000L, бензиновый, 6.5л.с., самоходный [70/7/22]'," +
+            "'Тип двигателя','бензиновый'," +
+            "'Форма шнека','зубчатая'"})
+    public void checkProductCompare(String inputText,
+                                       String price,
+                                       String nameProduct,
+                                       String engineType,
+                                       String engineTypeValue,
+                                       String screwShape,
+                                       String screwShapeValue) {
 
         open(confProperties.getProperty("test-site"));
 
-        mainPage.enterProductInputLineAndClickSearchButton(inputText);
+        mainPage.checkIfCorrectPageOpen()
+                .enterProductInputLineAndClickSearchButton(inputText);
 
-        resultsPage.enterFilterDropdownInputMaxPrice(price)
-                .clickButtonDetailCatalogMode()
-                .clickCompareProductButtonFromCollection()
+        resultsPage.checkIfCorrectPageOpen()
+                .enterFilterDropdownInputMaxPrice(price)
+                .clickDetailCatalogModeButton()
+                .clickCollectionCompareProductButton()
                 .clickFresnelContainerCompareButton();
 
-        comparePage.clickCartButtonNgoToCart();
+        comparePage.clickSelectedProductCartButton(engineType, engineTypeValue, screwShape, screwShapeValue)
+                .clickUpsaleBasketBlockGoShopCartButton();
+
         cartPage.checkProductNameInCart(nameProduct);
-
-
-        sleep(5000);
     }
 }
