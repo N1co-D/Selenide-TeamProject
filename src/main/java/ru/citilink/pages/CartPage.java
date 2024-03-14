@@ -23,6 +23,7 @@ public class CartPage extends BasePage {
     private final String statusOfMissingProductsInCart = "//span[text()='В корзине нет товаров']";
     private final String deleteProductInCartButton = ".//div[@data-meta-name='DeleteAction']/button";
     private final String goBackToShoppingButton = "//a[@title='Вернуться к покупкам']";
+    private final String nameProductFromBasketSnippet = "//div[@data-meta-name='BasketSnippet']//span[contains(text(),'%s')]";
 
     public CartPage checkIfCorrectPageOpen() {
         try {
@@ -104,5 +105,10 @@ public class CartPage extends BasePage {
             fail("Элемент с уведомлением 'В корзине нет товаров' не был обнаружен");
         }
         return this;
+    }
+    public String getNameProductFromBasketSnippet(String nameProduct) {
+        return $x(String.format(nameProductFromBasketSnippet, nameProduct))
+                .should(visible, WAITING_TIME)
+                .getText();
     }
 }

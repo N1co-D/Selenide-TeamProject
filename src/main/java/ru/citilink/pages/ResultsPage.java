@@ -43,6 +43,9 @@ public class ResultsPage extends BasePage {
     private final String comparingButton = "//div[@data-meta-name='HeaderBottom__search']/following-sibling::div//div[@data-meta-name='CompareButton']";
     private final String amountOfAddedProductsToCompare = "//div[contains(@class,'fresnel-greaterThanOrEqual')]//div[@data-meta-name='CompareButton']//div[@data-meta-name='NotificationCounter']";
     private final String goToCartButton = "//span[text()='Перейти в корзину']/preceding::span[text()='Перейти в корзину']";
+    private final String addItemToBasketButton = "//a[contains(text(),'%s')]/ancestor::div[contains(@data-meta-name,'ProductVerticalSnippet')]//button[contains(@data-meta-name,'Snippet__cart')]";
+    private final String closeUpSaleBasketLayoutButton = "//div[@data-meta-name='UpsaleBasketLayout']/button[contains(@data-meta-name,'close')]";
+    private final String basketFresnelContainerButton = "//div[@data-meta-name='UserButtonContainer']/following-sibling::a/div[@data-meta-name='BasketButton']";
 
     public ResultsPage checkIfCorrectPageOpen() {
         try {
@@ -279,6 +282,28 @@ public class ResultsPage extends BasePage {
 
     public ResultsPage goToCartButtonClickWithPopupWindow() {
         jsClick($x(goToCartButton));
+        return this;
+    }
+
+    public ResultsPage clickButtonForAddingItemToBasket(String nameProduct) {
+        $x(String.format(addItemToBasketButton, nameProduct))
+                .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"nearest\"}")
+                .should(visible, WAITING_TIME)
+                .click();
+        return this;
+    }
+
+    public ResultsPage clickButtonCloseUpSaleBasketLayout() {
+        $x(closeUpSaleBasketLayoutButton)
+                .should(visible, WAITING_TIME)
+                .click();
+        return this;
+    }
+
+    public ResultsPage clickButtonBasketFresnelContainer() {
+        $x(basketFresnelContainerButton)
+                .should(visible, WAITING_TIME)
+                .click();
         return this;
     }
 }

@@ -95,4 +95,10 @@ public class MainPage extends BasePage {
         jsClick($x(cartButton));
         return this;
     }
+    public MainPage enterSearchProductInputLine(String nameProduct) {
+        $x(productSearchField)
+                .should(visible, WAITING_TIME)
+                .val(nameProduct).pressEnter();
+        return this;
+    }
 }
