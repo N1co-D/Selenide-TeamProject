@@ -48,12 +48,18 @@ public class CitilinkTest extends BaseTest {
 
     @ParameterizedTest
     @CsvSource({"'Ноутбуки','Бренд','Диагональ экрана','Серия процессора','HUAWEI','14','Core i7'"})
-    public void checkFilterProductsByParameters(String noutbukiCategory, String brandFilterCategory
-            , String screenDiagonalFilterCategory, String processorSeriesFilterCategory, String brandValue
-            , String diagonalValue, String cpuValue) {
+    public void checkFilterProductsByParameters(String noutbukiCategory,
+                                                String brandFilterCategory,
+                                                String screenDiagonalFilterCategory,
+                                                String processorSeriesFilterCategory,
+                                                String brandValue,
+                                                String diagonalValue,
+                                                String cpuValue) {
         open(confProperties.getProperty("test-site"));
-        new MainPage().clickPopularCategoryTile(noutbukiCategory);
-        new ResultsPage().clickFilterDropDownCategoryAndValue(brandFilterCategory, brandValue)
+
+        mainPage.clickPopularCategoryTile(noutbukiCategory);
+
+        resultsPage.clickFilterDropDownCategoryAndValue(brandFilterCategory, brandValue)
                 .clickFilterDropDownCategoryAndValue(screenDiagonalFilterCategory, diagonalValue)
                 .clickFilterDropDownCategoryAndValue(processorSeriesFilterCategory, cpuValue)
                 .clickButtonDetailCatalogMode()
@@ -62,10 +68,10 @@ public class CitilinkTest extends BaseTest {
 
     @ParameterizedTest
     @CsvSource({"'Ноутбук Huawei MateBook D 14 53013XFA, 14', '8 ГБ, LPDDR4x', 'SSD 512 ГБ', '2'"})
-    public void checkTheIncreaseInQuantityWhenAddingProductsToCart(String inputText,
-                                                                   String rawMemoryRequiredParameter,
-                                                                   String diskRequiredParameter,
-                                                                   int expectedAmountOfProduct) {
+    public void checkIncreaseInQuantityWhenAddProductsToCart(String inputText,
+                                                             String rawMemoryRequiredParameter,
+                                                             String diskRequiredParameter,
+                                                             int expectedAmountOfProduct) {
         open(confProperties.getProperty("test-site"));
 
         mainPage.checkIfCorrectPageOpen()
@@ -117,7 +123,7 @@ public class CitilinkTest extends BaseTest {
 
     @ParameterizedTest
     @ValueSource(ints = {2})
-    public void checkTheAdditionOfProductToCompareSection(int amountOfProductsForAdding) {
+    public void checkProductAddToCompareSection(int amountOfProductsForAdding) {
         open(confProperties.getProperty("test-site"));
 
         mainPage.checkIfCorrectPageOpen()
@@ -138,10 +144,10 @@ public class CitilinkTest extends BaseTest {
     @ParameterizedTest
     @CsvSource({"'Переходники', 'Переходники на евровилку', " +
             "'Адаптер-переходник на евровилку PREMIER 11626/20, темно-серый', '1860968'"})
-    public void checkTheAdditionOfProductToCart(String inputText,
-                                                String productFromDropDownList,
-                                                String observedProduct,
-                                                String expectedProductCode) {
+    public void checkProductAddToCart(String inputText,
+                                      String productFromDropDownList,
+                                      String observedProduct,
+                                      String expectedProductCode) {
         open(confProperties.getProperty("test-site"));
 
         mainPage.checkIfCorrectPageOpen()
@@ -156,5 +162,51 @@ public class CitilinkTest extends BaseTest {
 
         cartPage.checkIfCorrectPageOpen()
                 .checkIsCorrectCodeNumberOfProductInCart(expectedProductCode);
+    }
+
+    @ParameterizedTest
+    @CsvSource({"'Переходники', 'Переходники на евровилку', " +
+            "'Адаптер-переходник на евровилку PREMIER 11626/20, темно-серый'"})
+    public void checkTheDeletingOfProductFromCart(String inputText,
+                                                  String productFromDropDownList,
+                                                  String observedProduct) {
+        open(confProperties.getProperty("test-site"));
+
+        mainPage.checkIfCorrectPageOpen()
+                .inputBoxWriteText(inputText)
+                .clickOnProductFromDropDownList(productFromDropDownList);
+
+        resultsPage.checkIfCorrectPageOpen()
+                .enableDetailedCatalogMode()
+                .requiredProductBuyingClick(observedProduct)
+                .checkAppearWindowWithAddedProductInCartStatus()
+                .closeWindowWithAddedProductInCartStatusClick()
+                .checkDisappearWindowWithAddedProductInCartStatus()
+                .returnToMainPage();
+
+        mainPage.checkIfCorrectPageOpen()
+                .cartButtonClick();
+
+        cartPage.checkIfCorrectPageOpen()
+                .deleteRequiredProductInCartButtonClick(observedProduct)
+                .checkIsVisibleStatusOfMissingProductsInCart()
+                .goBackToShoppingButtonClick();
+
+        mainPage.checkIfCorrectPageOpen();
+    }
+    @ParameterizedTest
+    @CsvSource({"'Смартфон Huawei nova Y72 8/128Gb,  MGA-LX3,  черный'"})
+    public void checkItemAddToCart(String inputText) {
+
+        open(confProperties.getProperty("test-site"));
+
+        mainPage.enterSearchProductInputLine(inputText);
+        resultsPage
+                .clickButtonForAddingItemToBasket(inputText)
+                .clickButtonCloseUpSaleBasketLayout()
+                .clickButtonBasketFresnelContainer();
+
+        assertEquals("Смартфон Huawei nova Y72 8/128Gb, MGA-LX3, черный",
+                cartPage.getNameProductFromBasketSnippet(inputText));
     }
 }
