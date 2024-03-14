@@ -6,7 +6,7 @@ import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
-import static org.assertj.core.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Главная страница сайта Citilink
@@ -16,6 +16,7 @@ public class MainPage extends BasePage {
     private final String productSearchField = "//input[@type='search']";
     private final String searchDropDownList = "//div[@data-meta-name='InstantSearchExtraResultList']//a";
     private final String compareButton = "//div[@data-meta-name='HeaderBottom__search']/..//div[@data-meta-name='CompareButton']";
+    private final String cartButton = "//div[@data-meta-name='HeaderBottom__search']/following-sibling::div//div[@data-meta-name='BasketButton']";
     private final String compareValue = "//div[@data-meta-name='HeaderBottom__search']/..//div[@data-meta-name='NotificationCounter']";
     private final String popularCategoryTile = "//div[contains(@data-meta-name,'category-tiles')]//a//span[contains(text(),'%s')]";
     private final String productCatalog = "//a[@data-meta-name='DesktopHeaderFixed__catalog-menu']";
@@ -70,11 +71,12 @@ public class MainPage extends BasePage {
         return new ComparePage();
     }
 
-    public void clickPopularCategoryTile(String nameCategory) {
+    public MainPage clickPopularCategoryTile(String nameCategory) {
         $x(String.format(popularCategoryTile, nameCategory))
                 .scrollIntoView("{behavior: \"smooth\", block: \"center\", inline: \"nearest\"}")
                 .should(visible, WAITING_TIME)
                 .click();
+        return this;
     }
 
     public MainPage televisionsAndAudioVideoEquipmentCategoryClick() {
@@ -93,6 +95,16 @@ public class MainPage extends BasePage {
         return this;
     }
 
+    public MainPage cartButtonClick() {
+        jsClick($x(cartButton));
+        return this;
+    }
+    public MainPage enterSearchProductInputLine(String nameProduct) {
+        $x(productSearchField)
+                .should(visible, WAITING_TIME)
+                .val(nameProduct).pressEnter();
+        return this;
+    }
     public MainPage enterProductInputLineAndClickSearchButton(String nameProduct) {
         $x(productSearchInputLine)
                 .should(visible, WAITING_TIME)

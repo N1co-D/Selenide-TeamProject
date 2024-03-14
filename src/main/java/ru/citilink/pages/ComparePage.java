@@ -43,8 +43,9 @@ public class ComparePage extends BasePage {
         return $x(productPrice).shouldBe(visible, WAITING_TIME).getText();
     }
 
-    public void deleteProductButtonClick() {
+    public ComparePage deleteProductButtonClick() {
         $x(deleteProductButton).shouldBe(visible, WAITING_TIME).click();
+        return this;
     }
 
     public boolean noProductsForCompareIsDisplayed() {

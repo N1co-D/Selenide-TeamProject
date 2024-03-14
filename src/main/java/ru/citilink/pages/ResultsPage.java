@@ -29,6 +29,8 @@ public class ResultsPage extends BasePage {
     private final String windowWithAddedProductInCartStatus = "//div[@data-meta-name='Popup']";
     private final String closeWindowWithAddedProductInCartStatus = "//button[@data-meta-name='UpsaleBasket__close-popup']";
     private final String cartButton = "//div[@data-meta-name='HeaderBottom__search']/following-sibling::div//div[@data-meta-name='BasketButton']";
+    private final String logo = "//div[contains(@class,'fresnel-greaterThanOrEqual-tabletL')]//div[@data-meta-name='Logo']";
+    private final String productTitle = ".//a[@data-meta-name='Snippet__title']";
     private final String subcategoryPageTitle = "//div[@data-meta-name='SubcategoryPageTitle']/h1[text()]";
     private final String comparingCurrentProductButton = ".//button[@data-meta-name='Snippet__compare-button']";
     private final String priceOfCurrentProduct = ".//span[@data-meta-price]/span[1]";
@@ -44,10 +46,12 @@ public class ResultsPage extends BasePage {
     private final String amountOfAddedProductsToCompare = "//div[contains(@class,'fresnel-greaterThanOrEqual')]//div[@data-meta-name='CompareButton']//div[@data-meta-name='NotificationCounter']";
     private final String productTitle = ".//a[@data-meta-name='Snippet__title']";
     private final String goToCartButton = "//span[text()='Перейти в корзину']/preceding::span[text()='Перейти в корзину']";
+    private final String addItemToBasketButton = "//a[contains(text(),'%s')]/ancestor::div[contains(@data-meta-name,'ProductVerticalSnippet')]//button[contains(@data-meta-name,'Snippet__cart')]";
+    private final String closeUpSaleBasketLayoutButton = "//div[@data-meta-name='UpsaleBasketLayout']/button[contains(@data-meta-name,'close')]";
+    private final String basketFresnelContainerButton = "//div[@data-meta-name='UserButtonContainer']/following-sibling::a/div[@data-meta-name='BasketButton']";
     private final String filterDropdownInputMaxPrice = "//div[@data-meta-name='FilterListGroupsLayout']//div[contains(@data-meta-value,'Цена')]//div/input[@name = 'input-max']";
     private final String currentProductCompareButton = ".//button[@data-meta-name='Snippet__compare-button']";
     private final String fresnelContainerCompareButton = "//div[@data-meta-name='UserButtonContainer']/following-sibling::div//div[@data-meta-name='CompareButton']";
-
     //div[contains(text(),'Марка топлива')]/following-sibling::div[@class="Compare__specification-row_wrapper"]/div/div
     public ResultsPage checkIfCorrectPageOpen() {
         try {
@@ -76,6 +80,11 @@ public class ResultsPage extends BasePage {
     private String getDiskParameterOfProduct() {
         return $x(diskParameterOfProduct).should(visible, WAITING_TIME)
                 .getText();
+    }
+
+    public ResultsPage returnToMainPage() {
+        jsClick($x(logo));
+        return this;
     }
 
     private SelenideElement searchForRequiredProductInList(String firstParameter, String secondParameter) {
@@ -169,6 +178,13 @@ public class ResultsPage extends BasePage {
         return this;
     }
 
+    public ResultsPage clickButtonDetailCatalogMode() {
+        $x(detailCatalogModeButton)
+                .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"nearest\"}")
+                .should(visible, WAITING_TIME)
+                .click();
+        return this;
+    }
 
     /**
      * the method checks the products after filtering by the selected parameters
@@ -208,6 +224,10 @@ public class ResultsPage extends BasePage {
 
     private String listToString(List<String> list) {
         return String.join("\n", list);
+    }
+
+    private ElementsCollection createElementsCollection(String xPath) {
+        return $$x(xPath).should(sizeGreaterThan(0));
     }
 
     public ResultsPage someProductAddToComparingClick(int amountOfProductsForAdding) {
@@ -271,6 +291,27 @@ public class ResultsPage extends BasePage {
         return this;
     }
 
+    public ResultsPage clickButtonForAddingItemToBasket(String nameProduct) {
+        $x(String.format(addItemToBasketButton, nameProduct))
+                .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"nearest\"}")
+                .should(visible, WAITING_TIME)
+                .click();
+        return this;
+    }
+
+    public ResultsPage clickButtonCloseUpSaleBasketLayout() {
+        $x(closeUpSaleBasketLayoutButton)
+                .should(visible, WAITING_TIME)
+                .click();
+        return this;
+    }
+
+    public ResultsPage clickButtonBasketFresnelContainer() {
+        $x(basketFresnelContainerButton)
+                .should(visible, WAITING_TIME)
+                .click();
+        return this;
+    }
     public ResultsPage enterFilterDropdownInputMaxPrice(String price) {
         $x(filterDropdownInputMaxPrice)
                 .should(visible, WAITING_TIME)
