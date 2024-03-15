@@ -3,7 +3,6 @@ package ru.citilink;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import ru.citilink.pages.CartPage;
 import ru.citilink.pages.ComparePage;
 import ru.citilink.pages.MainPage;
@@ -21,7 +20,7 @@ public class CitilinkTest extends BaseTest {
     private final ConfProperties confProperties = new ConfProperties();
 
     @ParameterizedTest
-    @MethodSource("ru.citilink.CitilinkTestData#dataForComparisonTest")
+    @MethodSource("ru.citilink.CitilinkTestData#checkAddProductToCompareTestData")
     public void checkAddProductToCompare(String testLaptop, String productCategory) {
         open(confProperties.getProperty("test-site"));
         mainPage.inputBoxWriteText("lenovo").productSearchExtraResultListClick(productCategory);
@@ -67,7 +66,7 @@ public class CitilinkTest extends BaseTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"'Ноутбук Huawei MateBook D 14 53013XFA, 14', '8 ГБ, LPDDR4x', 'SSD 512 ГБ', '2'"})
+    @MethodSource("ru.citilink.CitilinkTestData#checkIncreaseInQuantityWhenAddProductsToCartTestData")
     public void checkIncreaseInQuantityWhenAddProductsToCart(String inputText,
                                                              String rawMemoryRequiredParameter,
                                                              String diskRequiredParameter,
@@ -94,7 +93,7 @@ public class CitilinkTest extends BaseTest {
     }
 
     @ParameterizedTest
-    @MethodSource("ru.citilink.CitilinkTestData#dataForComparisonTest")
+    @MethodSource("ru.citilink.CitilinkTestData#checkAddProductToCompareTestData")
     public void checkRemoveProductFromComparison(String testLaptop, String productCategory) {
         open(confProperties.getProperty("test-site"));
         mainPage.inputBoxWriteText("lenovo")
@@ -122,7 +121,7 @@ public class CitilinkTest extends BaseTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {2})
+    @MethodSource("ru.citilink.CitilinkTestData#checkProductAddToCompareSectionTestData")
     public void checkProductAddToCompareSection(int amountOfProductsForAdding) {
         open(confProperties.getProperty("test-site"));
 
@@ -142,8 +141,7 @@ public class CitilinkTest extends BaseTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"'Переходники', 'Переходники на евровилку', " +
-            "'Адаптер-переходник на евровилку PREMIER 11626/20, темно-серый', '1860968'"})
+    @MethodSource("ru.citilink.CitilinkTestData#checkProductAddToCartTestData")
     public void checkProductAddToCart(String inputText,
                                       String productFromDropDownList,
                                       String observedProduct,
@@ -165,8 +163,7 @@ public class CitilinkTest extends BaseTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"'Переходники', 'Переходники на евровилку', " +
-            "'Адаптер-переходник на евровилку PREMIER 11626/20, темно-серый'"})
+    @MethodSource("ru.citilink.CitilinkTestData#checkTheDeletingOfProductFromCartTestData")
     public void checkTheDeletingOfProductFromCart(String inputText,
                                                   String productFromDropDownList,
                                                   String observedProduct) {
@@ -194,6 +191,7 @@ public class CitilinkTest extends BaseTest {
 
         mainPage.checkIfCorrectPageOpen();
     }
+
     @ParameterizedTest
     @CsvSource({"'Смартфон Huawei nova Y72 8/128Gb,  MGA-LX3,  черный'"})
     public void checkItemAddToCart(String inputText) {

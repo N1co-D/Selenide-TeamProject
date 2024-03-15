@@ -1,6 +1,7 @@
 package ru.citilink.pages;
 
 import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.UIAssertionError;
 
@@ -226,6 +227,7 @@ public class ResultsPage extends BasePage {
 
     public ResultsPage someProductAddToComparingClick(int amountOfProductsForAdding) {
         ElementsCollection allProductsFromList = getAllProductsInPage();
+        sleep(3000);
         for (int countOfAddedProducts = 0; countOfAddedProducts < amountOfProductsForAdding; countOfAddedProducts++) {
             allProductsFromList.get(countOfAddedProducts).should(visible, WAITING_TIME);
             jsClick(allProductsFromList.get(countOfAddedProducts).$x(addToCompareButton));
