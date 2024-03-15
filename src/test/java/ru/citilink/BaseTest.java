@@ -21,6 +21,7 @@ public class BaseTest {
         options.addArguments("start-maximized");
         cap.setCapability(ChromeOptions.CAPABILITY, options);
         Configuration.browserCapabilities = cap;
+        Configuration.headless = true;
     }
 
     @AfterEach
