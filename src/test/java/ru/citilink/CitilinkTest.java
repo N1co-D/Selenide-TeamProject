@@ -47,7 +47,7 @@ public class CitilinkTest extends BaseTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"'Ноутбуки','Бренд','Диагональ экрана','Серия процессора','HUAWEI','14','Core i7'"})
+    @MethodSource("ru.citilink.CitilinkTestData#dataNoutbukFilterParam")
     public void checkFilterProductsByParameters(String noutbukiCategory,
                                                 String brandFilterCategory,
                                                 String screenDiagonalFilterCategory,
@@ -196,49 +196,42 @@ public class CitilinkTest extends BaseTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"'Смартфон Huawei nova Y72 8/128Gb,  MGA-LX3,  черный'"})
-    public void checkItemAddToCart(String inputText) {
-
+    @MethodSource("ru.citilink.CitilinkTestData#dataSmartphone")
+    public void checkItemAddToCart(String huaweiNovaY72) {
         open(confProperties.getProperty("test-site"));
 
-        mainPage.enterSearchProductInputLine(inputText);
+        mainPage.enterSearchProductInputLine(huaweiNovaY72);
         resultsPage
-                .clickAddItemToBasketButton(inputText)
+                .clickAddItemToBasketButton(huaweiNovaY72)
                 .clickCloseUpSaleBasketLayoutButton()
                 .clickBasketFresnelContainerButton();
 
-        assertEquals("Смартфон Huawei nova Y72 8/128Gb, MGA-LX3, черный",
-                cartPage.getNameProductFromBasketSnippet(inputText));
+        assertEquals(huaweiNovaY72, cartPage.getNameProductFromBasketSnippet(huaweiNovaY72));
     }
 
     @ParameterizedTest
-    @CsvSource({"'Снегоуборщик Huter SGC'," +
-            "'45 000 ₽'," +
-            "'Снегоуборщик Huter SGC 4000L, бензиновый, 6.5л.с., самоходный [70/7/22]'," +
-            "'Тип двигателя','бензиновый'," +
-            "'Форма шнека','зубчатая'"})
-    public void checkProductCompare(String inputText,
-                                       String price,
-                                       String nameProduct,
-                                       String engineType,
-                                       String engineTypeValue,
-                                       String screwShape,
-                                       String screwShapeValue) {
-
+    @MethodSource("ru.citilink.CitilinkTestData#dataSnowplow")
+    public void checkProductCompare(String huterBrandName,
+                                    String huterSGC4000L,
+                                    String maxPrice,
+                                    String engineType,
+                                    String engineTypeBenzin,
+                                    String screwShape,
+                                    String screwShapeTooth) {
         open(confProperties.getProperty("test-site"));
 
         mainPage.checkIfCorrectPageOpen()
-                .enterProductInputLineAndClickSearchButton(inputText);
+                .enterProductInputLineAndClickSearchButton(huterBrandName);
 
         resultsPage.checkIfCorrectPageOpen()
-                .enterFilterDropdownInputMaxPrice(price)
+                .enterFilterDropdownInputMaxPrice(maxPrice)
                 .clickDetailCatalogModeButton()
                 .clickCollectionCompareProductButton()
                 .clickFresnelContainerCompareButton();
 
-        comparePage.clickSelectedProductCartButton(engineType, engineTypeValue, screwShape, screwShapeValue)
+        comparePage.clickSelectedProductCartButton(engineType, engineTypeBenzin, screwShape, screwShapeTooth)
                 .clickUpsaleBasketBlockGoShopCartButton();
 
-        cartPage.checkProductNameInCart(nameProduct);
+        cartPage.checkProductNameInCart(huterSGC4000L);
     }
 }

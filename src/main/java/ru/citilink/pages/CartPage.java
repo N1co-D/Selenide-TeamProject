@@ -23,9 +23,9 @@ public class CartPage extends BasePage {
     private final String statusOfMissingProductsInCart = "//span[text()='В корзине нет товаров']";
     private final String deleteProductInCartButton = ".//div[@data-meta-name='DeleteAction']/button";
     private final String goBackToShoppingButton = "//a[@title='Вернуться к покупкам']";
-    private final String nameProductFromBasketSnippet = "//div[@data-meta-name='BasketSnippet']//span[contains(text(),'%s')]";
-    //div[@data-meta-name="BasketSnippet"]//a//span[contains(text(),'Снегоуборщик Huter SGC 4000L,  бензиновый, 6.5л.с., самоходный [70/7/22]')]
+    private final String nameProductFromBasketSnippet = "//div[@data-meta-name='BasketSnippet']//span[contains(normalize-space(text()),'%s')]";
     private final String productNameInCart = "//div[@data-meta-name='BasketSnippet']//a//span[text()]";
+
     public CartPage checkIfCorrectPageOpen() {
         try {
             $x(sideDescriptionOfCart).should(visible, WAITING_TIME);
@@ -107,15 +107,18 @@ public class CartPage extends BasePage {
         }
         return this;
     }
+
     public String getNameProductFromBasketSnippet(String nameProduct) {
         return $x(String.format(nameProductFromBasketSnippet, nameProduct))
                 .should(visible, WAITING_TIME)
                 .getText();
     }
+
     public String getProductNameInCart() {
         return $x(productNameInCart).should(visible, WAITING_TIME)
                 .getText();
     }
+
     public CartPage checkProductNameInCart(String expectedProductName) {
         assertTrue(getProductNameInCart().contains(expectedProductName),
                 String.format("Фактическое имя добавленного товара = %s " +
