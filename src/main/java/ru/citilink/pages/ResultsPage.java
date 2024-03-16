@@ -46,6 +46,10 @@ public class ResultsPage extends BasePage {
     private final String addItemToBasketButton = "//a[contains(text(),'%s')]/ancestor::div[contains(@data-meta-name,'ProductVerticalSnippet')]//button[contains(@data-meta-name,'Snippet__cart')]";
     private final String closeUpSaleBasketLayoutButton = "//div[@data-meta-name='UpsaleBasketLayout']/button[contains(@data-meta-name,'close')]";
     private final String basketFresnelContainerButton = "//div[@data-meta-name='UserButtonContainer']/following-sibling::a/div[@data-meta-name='BasketButton']";
+    private final String dropDownlistShowMoreButton = "//div/a[contains(text(),'%s')]/../..//span[contains(text(),'Показать еще')]";
+    private final String underSubcategoryButton = "//a[contains(text(),'%s')]/../..//a[contains(text(),'%s')]";
+    private final String addFirstItemToBasketButton = "//div[@data-meta-name='ProductVerticalSnippet'][1]//button[@data-meta-name='Snippet__cart-button']";
+    private final String upsaleBasketBlockGoShopCartButton = "//div[contains(@data-meta-name,'UpsaleBasketLayout')]/div[2]//span[contains(text(),'Перейти в корзину')]";
 
     public ResultsPage checkIfCorrectPageOpen() {
         try {
@@ -285,7 +289,7 @@ public class ResultsPage extends BasePage {
         return this;
     }
 
-    public ResultsPage clickButtonForAddingItemToBasket(String nameProduct) {
+    public ResultsPage clickAddItemToBasketButton(String nameProduct) {
         $x(String.format(addItemToBasketButton, nameProduct))
                 .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"nearest\"}")
                 .should(visible, WAITING_TIME)
@@ -305,5 +309,35 @@ public class ResultsPage extends BasePage {
                 .should(visible, WAITING_TIME)
                 .click();
         return this;
+    }
+
+    public ResultsPage clickDropDownlistShowMoreButton(String subcategoryname) {
+        $x(String.format(dropDownlistShowMoreButton, subcategoryname))
+                .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"nearest\"}")
+                .should(visible, WAITING_TIME)
+                .click();
+        return this;
+    }
+
+    public ResultsPage clickUnderSubcategoryButton(String subcategoryName, String underSubcategoryName) {
+        $x(String.format(underSubcategoryButton, subcategoryName, underSubcategoryName))
+                .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"nearest\"}")
+                .should(visible, WAITING_TIME)
+                .click();
+        return this;
+    }
+
+    public ResultsPage clickAddFirstItemToBasketButton() {
+        $x(addFirstItemToBasketButton)
+                .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"nearest\"}")
+                .should(visible, WAITING_TIME)
+                .click();
+        return this;
+    }
+
+    public void clickUpsaleBasketBlockGoShopCartButton() {
+        $x(upsaleBasketBlockGoShopCartButton)
+                .shouldBe(visible, WAITING_TIME)
+                .click();
     }
 }

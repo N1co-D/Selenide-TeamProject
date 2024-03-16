@@ -194,6 +194,7 @@ public class CitilinkTest extends BaseTest {
 
         mainPage.checkIfCorrectPageOpen();
     }
+
     @ParameterizedTest
     @CsvSource({"'Смартфон Huawei nova Y72 8/128Gb,  MGA-LX3,  черный'"})
     public void checkItemAddToCart(String inputText) {
@@ -202,11 +203,37 @@ public class CitilinkTest extends BaseTest {
 
         mainPage.enterSearchProductInputLine(inputText);
         resultsPage
-                .clickButtonForAddingItemToBasket(inputText)
+                .clickAddItemToBasketButton(inputText)
                 .clickButtonCloseUpSaleBasketLayout()
                 .clickButtonBasketFresnelContainer();
 
         assertEquals("Смартфон Huawei nova Y72 8/128Gb, MGA-LX3, черный",
-                cartPage.getNameProductFromBasketSnippet(inputText));
+                cartPage.getNameProductFromBasketSnippet());
+    }
+
+    @ParameterizedTest
+    @MethodSource("ru.citilink.CitilinkTestData#dataSmartWatchesNaccessories")
+    public void checkProductNameAfterFilterParam(String categoryName,
+                                                 String subcategoryName,
+                                                 String watchCategoryName,
+                                                 String series,
+                                                 String watchSE2023,
+                                                 String productName,
+                                                 String productAvailFilterCategory,
+                                                 String productAvailPickUp_5min) {
+        open(confProperties.getProperty("test-site"));
+
+        mainPage.clickCatalogMenuButton()
+                .clickCatalogCategoryButton(categoryName);
+
+        resultsPage.clickDropDownlistShowMoreButton(subcategoryName)
+                .clickUnderSubcategoryButton(subcategoryName, watchCategoryName)
+                .clickFilterDropDownCategoryAndValue(series, watchSE2023)
+                .clickFilterDropDownCategoryAndValue(productAvailFilterCategory, productAvailPickUp_5min)
+                .clickAddFirstItemToBasketButton()
+                .clickUpsaleBasketBlockGoShopCartButton();
+
+        assertEquals(productName,
+                cartPage.getNameProductFromBasketSnippet());
     }
 }

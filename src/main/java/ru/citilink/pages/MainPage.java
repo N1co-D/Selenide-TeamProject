@@ -23,6 +23,8 @@ public class MainPage extends BasePage {
     private final String televisionsAndAudioVideoEquipmentCategory = "//div[@data-meta-name='CatalogMenuDesktopLayout__menu']//span[text()='Телевизоры, аудио-видео техника']";
     private final String oledTelevisionsCategory = "//span[text()='Телевизоры OLED']";
     private final String searchCategoryInDropDownMenu = "//div[@data-meta-name='InstantSearchExtraResultList']//a[@title='";
+    private final String catalogMenuButton = "//span[contains(text(),'Каталог товаров')]";
+    private final String catalogCategoryButton = "//div[@class='PopupScrollContainer']//span[contains(text(),'%s')]";
 
     public MainPage checkIfCorrectPageOpen() {
         try {
@@ -95,10 +97,23 @@ public class MainPage extends BasePage {
         jsClick($x(cartButton));
         return this;
     }
+
     public MainPage enterSearchProductInputLine(String nameProduct) {
         $x(productSearchField)
                 .should(visible, WAITING_TIME)
                 .val(nameProduct).pressEnter();
+        return this;
+    }
+
+    public MainPage clickCatalogMenuButton() {
+        $x(catalogMenuButton).shouldBe(visible, WAITING_TIME).click();
+        return this;
+    }
+
+    public MainPage clickCatalogCategoryButton(String nameCategory) {
+        $x(String.format(catalogCategoryButton, nameCategory))
+                .should(visible, WAITING_TIME)
+                .click();
         return this;
     }
 }
