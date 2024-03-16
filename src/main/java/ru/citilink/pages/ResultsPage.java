@@ -46,6 +46,14 @@ public class ResultsPage extends BasePage {
     private final String addItemToBasketButton = "//a[contains(text(),'%s')]/ancestor::div[contains(@data-meta-name,'ProductVerticalSnippet')]//button[contains(@data-meta-name,'Snippet__cart')]";
     private final String closeUpSaleBasketLayoutButton = "//div[@data-meta-name='UpsaleBasketLayout']/button[contains(@data-meta-name,'close')]";
     private final String basketFresnelContainerButton = "//div[@data-meta-name='UserButtonContainer']/following-sibling::a/div[@data-meta-name='BasketButton']";
+    private final String productListLayout = "//div[@data-meta-name='ProductListLayout']";
+    private final String laptopCategoryButton = "//span[text()= 'Ноутбуки']";
+    private final String searchTitle = "//h1[contains(text(), 'Результаты для «')]";
+    private final String categoryTitle = "//div[@data-meta-name='ProductListLayout']//h1";
+    private final String sortingItem = "//button[@data-meta-name='SortingItem']";
+    private final String searchResultsList = "//div[@data-meta-name='SnippetProductHorizontalLayout']";
+    private final String searchResultsPrice = ".//span[@data-meta-price]";
+    private final String feedbackFilter = "//div[@data-meta-value='Оценка товара по отзывам']//div[@data-meta-name='FilterLabel']";
 
     public ResultsPage checkIfCorrectPageOpen() {
         try {
@@ -149,6 +157,9 @@ public class ResultsPage extends BasePage {
 
     public ResultsPage detailedCatalogModeButtonClick() {
         $x(detailedCatalogModeButton).shouldBe(visible, WAITING_TIME).click();
+        assertEquals("list", $x(productListLayout)
+                .shouldHave(attribute("data-meta-view-type", "list"), WAITING_TIME)
+                .getAttribute("data-meta-view-type"), "Подробный каталог не активен");
         return this;
     }
 
@@ -304,6 +315,65 @@ public class ResultsPage extends BasePage {
         $x(basketFresnelContainerButton)
                 .should(visible, WAITING_TIME)
                 .click();
+        return this;
+    }
+
+    public String getSearchTitle() {
+        return $x(searchTitle).shouldBe(visible, WAITING_TIME).getText();
+    }
+
+    public ResultsPage laptopCategoryButtonClick() {
+        $x(laptopCategoryButton).shouldBe(visible, WAITING_TIME).click();
+        return this;
+    }
+
+    public String getCategoryTitle() {
+        return $x(categoryTitle).shouldBe(visible, WAITING_TIME).getText();
+    }
+
+    public ResultsPage sortingItemClick(String sortingParameter) {
+        $$x(sortingItem).shouldBe(sizeGreaterThan(0), WAITING_TIME).findBy(text(sortingParameter)).click();
+        return this;
+    }
+
+    public ResultsPage sortingItemStatus(String sortingParameter) {
+        assertTrue(Boolean.parseBoolean($$x(sortingItem).shouldBe(sizeGreaterThan(0), WAITING_TIME)
+                        .findBy(text(sortingParameter))
+                        .should(attribute("data-meta-is-selected", "true"), WAITING_TIME)
+                        .getAttribute("data-meta-is-selected")),
+                String.format("Сортировка \" %s \" не активна", sortingParameter));
+        return this;
+    }
+
+    public boolean sortingPriceResult() {
+        ElementsCollection selenideElements = $$x(searchResultsList).shouldBe(sizeGreaterThan(0), WAITING_TIME);
+        for (int i = 0; i < selenideElements.size() - 1; i++) {
+            if (Integer.parseInt(selenideElements.get(i).$x(searchResultsPrice).getAttribute("data-meta-price"))
+                    > Integer.parseInt(selenideElements.get(i + 1).$x(searchResultsPrice).getAttribute("data-meta-price")))
+                return false;
+        }
+        return true;
+    }
+
+    public ResultsPage feedbackFilterClick(String rating) {
+        $$x(feedbackFilter).shouldBe(sizeGreaterThan(0), WAITING_TIME)
+                .findBy(attribute("data-meta-value", rating))
+                .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"nearest\"}")
+                .click();
+        return this;
+    }
+
+    public ResultsPage feedbackFilterStatus(String rating) {
+        assertTrue(Boolean.parseBoolean($$x(feedbackFilter).shouldBe(sizeGreaterThan(0), WAITING_TIME)
+                        .findBy(attribute("data-meta-value", rating))
+                        .should(attribute("data-meta-is-selected", "true"), WAITING_TIME)
+                        .getAttribute("data-meta-is-selected")),
+                String.format("Оценка товара по отзывам \" %s \" не активна", rating));
+        return this;
+    }
+
+    public ResultsPage buyFirstProductFromList() {
+        $$x(searchResultsList).shouldBe(sizeGreaterThan(0), WAITING_TIME).first().$x(inCartButton).click();
         return this;
     }
 }
