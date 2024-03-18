@@ -106,9 +106,25 @@ public class CartPage extends BasePage {
         }
         return this;
     }
+
     public String getNameProductFromBasketSnippet(String nameProduct) {
         return $x(String.format(nameProductFromBasketSnippet, nameProduct))
                 .should(visible, WAITING_TIME)
                 .getText();
+    }
+
+    public CartPage checkProductTitleCart(String observedProduct) {
+        ElementsCollection selenideElements = $$x(listOfProductsInCart).shouldBe(sizeGreaterThan(0), WAITING_TIME);
+        String productTitle = null;
+        for (int i = 0; i < selenideElements.size() - 1; i++) {
+            if (selenideElements.get(i).$x(productTitleInCart).getText().equals(observedProduct)) {
+                productTitle = selenideElements.get(i).$x(productTitleInCart).getText();
+                break;
+            }
+        }
+        if (productTitle == null) {
+            fail("Продукт с названием, '" + observedProduct + "', не был найден в списке");
+        }
+        return this;
     }
 }

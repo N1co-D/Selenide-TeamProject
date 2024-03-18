@@ -194,6 +194,7 @@ public class CitilinkTest extends BaseTest {
 
         mainPage.checkIfCorrectPageOpen();
     }
+
     @ParameterizedTest
     @CsvSource({"'Смартфон Huawei nova Y72 8/128Gb,  MGA-LX3,  черный'"})
     public void checkItemAddToCart(String inputText) {
@@ -208,5 +209,38 @@ public class CitilinkTest extends BaseTest {
 
         assertEquals("Смартфон Huawei nova Y72 8/128Gb, MGA-LX3, черный",
                 cartPage.getNameProductFromBasketSnippet(inputText));
+    }
+
+    @ParameterizedTest
+    @MethodSource("ru.citilink.CitilinkTestData#dataForCheckCorrectReflection")
+    public void checkCorrectReflectionProductNameInAccordanceWithFilterParameters(String searchedProduct,
+                                                                                  String sortingParameter,
+                                                                                  String rating,
+                                                                                  String observedProduct,
+                                                                                  String category) {
+        open(confProperties.getProperty("test-site"));
+        mainPage.inputBoxWriteText(searchedProduct).searchButtonClick();
+        assertEquals(String.format("Результаты для «%s»", searchedProduct), resultsPage.getSearchTitle(),
+                String.format("Указан заголовок некорректной страницы. Ожидаем = Результаты для «%s», факт = %s",
+                        searchedProduct, resultsPage.getSearchTitle()));
+
+        resultsPage.detailedCatalogModeButtonClick()
+                .laptopCategoryButtonClick();
+        assertEquals(category, resultsPage.getCategoryTitle(),
+                String.format("Указана не верная категория. Ожидаем = %s, факт = %s",
+                        category, resultsPage.getCategoryTitle()));
+
+        resultsPage.sortingItemClick(sortingParameter)
+                .sortingItemStatus(sortingParameter);
+        assertTrue(resultsPage.sortingPriceResult(), "Цена в списке идёт не по возрастанию");
+
+        resultsPage.feedbackFilterClick(rating)
+                .feedbackFilterStatus(rating);
+
+        resultsPage.buyFirstProductFromList()
+                .checkAppearWindowWithAddedProductInCartStatus()
+                .goToCartButtonClickWithPopupWindow();
+
+        cartPage.checkProductTitleCart(observedProduct);
     }
 }
