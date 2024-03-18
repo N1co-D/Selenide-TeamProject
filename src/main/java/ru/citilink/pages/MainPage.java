@@ -23,6 +23,7 @@ public class MainPage extends BasePage {
     private final String televisionsAndAudioVideoEquipmentCategory = "//div[@data-meta-name='CatalogMenuDesktopLayout__menu']//span[text()='Телевизоры, аудио-видео техника']";
     private final String oledTelevisionsCategory = "//span[text()='Телевизоры OLED']";
     private final String searchCategoryInDropDownMenu = "//div[@data-meta-name='InstantSearchExtraResultList']//a[@title='";
+    private final String searchButton = "//div[@data-meta-name='HeaderBottom__search']//button[@type='submit']";
 
     public MainPage checkIfCorrectPageOpen() {
         try {
@@ -101,5 +102,11 @@ public class MainPage extends BasePage {
                 .should(visible, WAITING_TIME)
                 .val(nameProduct).pressEnter();
         return this;
+    }
+
+    public ResultsPage searchButtonClick() {
+        executeJavaScript("arguments[0].click()",
+                $x(searchButton).shouldBe(visible, WAITING_TIME));
+        return new ResultsPage();
     }
 }
