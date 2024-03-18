@@ -237,6 +237,7 @@ public class ResultsPage extends BasePage {
 
     public ResultsPage someProductAddToComparingClick(int amountOfProductsForAdding) {
         ElementsCollection allProductsFromList = getAllProductsInPage();
+        sleep(3000);
         for (int countOfAddedProducts = 0; countOfAddedProducts < amountOfProductsForAdding; countOfAddedProducts++) {
             allProductsFromList.get(countOfAddedProducts).should(visible, WAITING_TIME);
             jsClick(allProductsFromList.get(countOfAddedProducts).$x(addToCompareButton));
