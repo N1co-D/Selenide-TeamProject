@@ -106,6 +106,7 @@ public class CartPage extends BasePage {
         }
         return this;
     }
+
     public String getNameProductFromBasketSnippet(String nameProduct) {
         return $x(String.format(nameProductFromBasketSnippet, nameProduct))
                 .should(visible, WAITING_TIME)
