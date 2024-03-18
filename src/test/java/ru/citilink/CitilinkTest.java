@@ -20,7 +20,7 @@ public class CitilinkTest extends BaseTest {
     private final ConfProperties confProperties = new ConfProperties();
 
     @ParameterizedTest
-    @MethodSource("ru.citilink.CitilinkTestData#checkAddProductToCompareTestData")
+    @MethodSource("ru.citilink.CitilinkTestData#dataForComparisonTest")
     public void checkAddProductToCompare(String testLaptop, String productCategory) {
         open(confProperties.getProperty("test-site"));
         mainPage.inputBoxWriteText("lenovo").productSearchExtraResultListClick(productCategory);
@@ -93,7 +93,7 @@ public class CitilinkTest extends BaseTest {
     }
 
     @ParameterizedTest
-    @MethodSource("ru.citilink.CitilinkTestData#checkAddProductToCompareTestData")
+    @MethodSource("ru.citilink.CitilinkTestData#dataForComparisonTest")
     public void checkRemoveProductFromComparison(String testLaptop, String productCategory) {
         open(confProperties.getProperty("test-site"));
         mainPage.inputBoxWriteText("lenovo")
