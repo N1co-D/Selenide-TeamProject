@@ -16,7 +16,7 @@ public class CitilinkTestData {
         String sortingParameter = "по цене";
         String rating = "4,5 и выше";
         String category = "Ноутбуки";
-        String observedProduct = "Ноутбук Apple MacBook Air A2337 MGN63ZP/A, 13.3\", IPS, Apple M1 8 core 3.2ГГц, 8-ядерный, 8ГБ 256ГБ SSD, Mac OS, серый космос";
+        String observedProduct = "Ноутбук Apple MacBook Air A2337 MGN63HN/A, 13.3\", IPS, Apple M1 8 core 3.2ГГц, 8-ядерный, 8ГБ 256ГБ SSD, Mac OS, серый космос";
         return Stream.of(Arguments.of(searchedProduct, sortingParameter, rating, observedProduct, category));
     }
 
