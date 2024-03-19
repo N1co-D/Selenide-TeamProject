@@ -80,7 +80,6 @@ public class ComparePage extends BasePage {
 
     private List<Integer> createIndexList(String specific, String value) {
         List<Integer> indexList = new ArrayList<>();
-        indexList.clear();
         int count = 1;
         for (SelenideElement element : createElementsCollection(String.format(compareSpecificsRowValue, specific))) {
             if (element.getText().equals(value)) {
@@ -105,7 +104,7 @@ public class ComparePage extends BasePage {
         for (Integer element : getResultList(createIndexList(firstSpecific, firstValue),
                 createIndexList(secondSpecific, secondValue))) {
 
-            $x(String.format(compareProductPriceBlockByIndex, element.intValue()) +
+            $x(String.format(compareProductPriceBlockByIndex, element) +
                     compareProductByIndexToCartButton)
                     .scrollIntoView("{behavior: \"auto\", block: \"center\", inline: \"center\"}")
                     .shouldBe(visible, WAITING_TIME)

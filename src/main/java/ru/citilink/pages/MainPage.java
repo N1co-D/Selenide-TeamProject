@@ -23,8 +23,6 @@ public class MainPage extends BasePage {
     private final String televisionsAndAudioVideoEquipmentCategory = "//div[@data-meta-name='CatalogMenuDesktopLayout__menu']//span[text()='Телевизоры, аудио-видео техника']";
     private final String oledTelevisionsCategory = "//span[text()='Телевизоры OLED']";
     private final String searchCategoryInDropDownMenu = "//div[@data-meta-name='InstantSearchExtraResultList']//a[@title='";
-    private final String uniqueElement = "//div[@data-meta-name='BannersLayout']";
-    private final String inputBox = "//input[@type='search']";
     private final String productSearchInputLine = "//input[@type='search']";
     private final String searchButton = "//input[@type='search']/..//button[@type='submit']";
 
@@ -99,12 +97,14 @@ public class MainPage extends BasePage {
         jsClick($x(cartButton));
         return this;
     }
+
     public MainPage enterSearchProductInputLine(String nameProduct) {
         $x(productSearchField)
                 .should(visible, WAITING_TIME)
                 .val(nameProduct).pressEnter();
         return this;
     }
+
     public MainPage enterProductInputLineAndClickSearchButton(String nameProduct) {
         $x(productSearchInputLine)
                 .should(visible, WAITING_TIME)

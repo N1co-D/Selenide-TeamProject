@@ -114,16 +114,17 @@ public class CartPage extends BasePage {
                 .getText();
     }
 
-    public String getProductNameInCart() {
+    private String getProductNameInCart() {
         return $x(productNameInCart).should(visible, WAITING_TIME)
                 .getText();
     }
 
     public CartPage checkProductNameInCart(String expectedProductName) {
-        assertTrue(getProductNameInCart().contains(expectedProductName),
+        String productName = getProductNameInCart();
+        assertTrue(productName.contains(expectedProductName),
                 String.format("Фактическое имя добавленного товара = %s " +
                                 " не соответствует ожидаемому = %s",
-                        getProductNameInCart(),
+                        productName,
                         expectedProductName));
         return this;
     }
