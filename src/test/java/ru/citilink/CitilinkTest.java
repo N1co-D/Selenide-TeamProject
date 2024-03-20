@@ -1,7 +1,6 @@
 package ru.citilink;
 
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import ru.citilink.pages.CartPage;
 import ru.citilink.pages.ComparePage;
@@ -46,23 +45,24 @@ public class CitilinkTest extends BaseTest {
     }
 
     @ParameterizedTest
-    @MethodSource("ru.citilink.CitilinkTestData#dataNoutbukFilterParam")
-    public void checkFilterProductsByParameters(String noutbukiCategory,
+    @MethodSource("ru.citilink.CitilinkTestData#checkFilterProductsByParametersTestData")
+    public void checkFilterProductsByParameters(String categoryName,
                                                 String brandFilterCategory,
                                                 String screenDiagonalFilterCategory,
                                                 String processorSeriesFilterCategory,
-                                                String brandValue,
+                                                String brandName,
                                                 String diagonalValue,
                                                 String cpuValue) {
+
         open(confProperties.getProperty("test-site"));
 
-        mainPage.clickPopularCategoryTile(noutbukiCategory);
+        mainPage.clickPopularCategoryTile(categoryName);
 
-        resultsPage.clickFilterDropDownCategoryAndValue(brandFilterCategory, brandValue)
+        resultsPage.clickFilterDropDownCategoryAndValue(brandFilterCategory, brandName)
                 .clickFilterDropDownCategoryAndValue(screenDiagonalFilterCategory, diagonalValue)
                 .clickFilterDropDownCategoryAndValue(processorSeriesFilterCategory, cpuValue)
                 .clickDetailCatalogModeButton()
-                .checkProductsAfterFiltration(brandValue, diagonalValue, cpuValue);
+                .checkProductsAfterFiltration(brandName, diagonalValue, cpuValue);
     }
 
     @ParameterizedTest
@@ -193,32 +193,33 @@ public class CitilinkTest extends BaseTest {
     }
 
     @ParameterizedTest
-    @MethodSource("ru.citilink.CitilinkTestData#dataSmartphone")
-    public void checkItemAddToCart(String huaweiNovaY72) {
+    @MethodSource("ru.citilink.CitilinkTestData#checkItemAddToCartTestData")
+    public void checkItemAddToCart(String productName) {
         open(confProperties.getProperty("test-site"));
 
-        mainPage.enterSearchProductInputLine(huaweiNovaY72);
+        mainPage.enterSearchProductInputLine(productName);
         resultsPage
-                .clickAddItemToBasketButton(huaweiNovaY72)
+                .clickAddItemToBasketButton(productName)
                 .clickCloseUpSaleBasketLayoutButton()
                 .clickBasketFresnelContainerButton();
 
-        assertEquals(huaweiNovaY72, cartPage.getNameProductFromBasketSnippet(huaweiNovaY72));
+        assertEquals(productName, cartPage.getNameProductFromBasketSnippet(productName));
     }
 
     @ParameterizedTest
-    @MethodSource("ru.citilink.CitilinkTestData#dataSnowplow")
-    public void checkProductCompare(String huterBrandName,
-                                    String huterSGC4000L,
+    @MethodSource("ru.citilink.CitilinkTestData#checkProductCompareTestData")
+    public void checkProductCompare(String brandName,
+                                    String productName,
                                     String maxPrice,
                                     String engineType,
-                                    String engineTypeBenzin,
+                                    String engineTypeValue,
                                     String screwShape,
-                                    String screwShapeTooth) {
+                                    String screwShapeValue) {
+
         open(confProperties.getProperty("test-site"));
 
         mainPage.checkIfCorrectPageOpen()
-                .enterProductInputLineAndClickSearchButton(huterBrandName);
+                .enterProductInputLineAndClickSearchButton(brandName);
 
         resultsPage.checkIfCorrectPageOpen()
                 .enterFilterDropdownInputMaxPrice(maxPrice)
@@ -226,10 +227,10 @@ public class CitilinkTest extends BaseTest {
                 .clickCollectionCompareProductButton()
                 .clickFresnelContainerCompareButton();
 
-        comparePage.clickSelectedProductCartButton(engineType, engineTypeBenzin, screwShape, screwShapeTooth)
+        comparePage.clickSelectedProductCartButton(engineType, engineTypeValue, screwShape, screwShapeValue)
                 .clickUpsaleBasketBlockGoShopCartButton();
 
-        cartPage.checkProductNameInCart(huterSGC4000L);
+        cartPage.checkProductNameInCart(productName);
     }
 
     @ParameterizedTest

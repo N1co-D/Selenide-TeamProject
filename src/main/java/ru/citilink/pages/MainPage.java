@@ -25,7 +25,7 @@ public class MainPage extends BasePage {
     private final String searchCategoryInDropDownMenu = "//div[@data-meta-name='InstantSearchExtraResultList']//a[@title='";
     private final String searchButton = "//div[@data-meta-name='HeaderBottom__search']//button[@type='submit']";
     private final String productSearchInputLine = "//input[@type='search']";
-    private final String searchButton = "//input[@type='search']/..//button[@type='submit']";
+
     public MainPage checkIfCorrectPageOpen() {
         try {
             $x(centralAdBanner).should(visible, WAITING_TIME);
@@ -110,6 +110,7 @@ public class MainPage extends BasePage {
                 $x(searchButton).shouldBe(visible, WAITING_TIME));
         return new ResultsPage();
     }
+
     public MainPage enterProductInputLineAndClickSearchButton(String nameProduct) {
         $x(productSearchInputLine)
                 .should(visible, WAITING_TIME)

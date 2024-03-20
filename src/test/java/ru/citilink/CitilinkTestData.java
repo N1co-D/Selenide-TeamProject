@@ -60,42 +60,43 @@ public class CitilinkTestData {
         String observedProduct = "Адаптер-переходник на евровилку PREMIER 11626/20, темно-серый";
         return Stream.of(Arguments.of(inputText, productFromDropDownList, observedProduct));
     }
-    static Stream<Arguments> dataNoutbukFilterParam() {
-        String noutbukiCategory = "Ноутбуки";
+
+    static Stream<Arguments> checkFilterProductsByParametersTestData() {
+        String categoryName = "Ноутбуки";
         String brandFilterCategory = "Бренд";
         String screenDiagonalFilterCategory = "Диагональ экрана";
         String processorSeriesFilterCategory = "Серия процессора";
-        String huawei = "HUAWEI";
-        String diagonalValue_14 = "14";
-        String cpuCore_i7 = "Core i7";
-        return Stream.of(Arguments.of(noutbukiCategory,
+        String brandName = "HUAWEI";
+        String diagonalValue = "14";
+        String cpuValue = "Core i7";
+        return Stream.of(Arguments.of(categoryName,
                 brandFilterCategory,
                 screenDiagonalFilterCategory,
                 processorSeriesFilterCategory,
-                huawei,
-                diagonalValue_14,
-                cpuCore_i7));
+                brandName,
+                diagonalValue,
+                cpuValue));
     }
 
-    static Stream<Arguments> dataSmartphone() {
-        String huaweiNovaY72 = "Смартфон Huawei nova Y72 8/128Gb, MGA-LX3, черный";
-        return Stream.of(Arguments.of(huaweiNovaY72));
+    static Stream<Arguments> checkItemAddToCartTestData() {
+        String productName = "Смартфон Huawei nova Y72 8/128Gb, MGA-LX3, черный";
+        return Stream.of(Arguments.of(productName));
     }
 
-    static Stream<Arguments> dataSnowplow() {
-        String huterBrandName = "Снегоуборщик Huter SGC";
-        String huterSGC4000L = "Снегоуборщик Huter SGC 4000L, бензиновый, 6.5л.с., самоходный [70/7/22]";
+    static Stream<Arguments> checkProductCompareTestData() {
+        String brandName = "Снегоуборщик Huter SGC";
+        String productName = "Снегоуборщик Huter SGC 4000L, бензиновый, 6.5л.с., самоходный [70/7/22]";
         String maxPrice = "45 000 ₽";
         String engineType = "Тип двигателя";
-        String engineTypeBenzin = "бензиновый";
+        String engineTypeValue = "бензиновый";
         String screwShape = "Форма шнека";
-        String screwShapeTooth = "зубчатая";
-        return Stream.of(Arguments.of(huterBrandName,
-                huterSGC4000L,
+        String screwShapeValue = "зубчатая";
+        return Stream.of(Arguments.of(brandName,
+                productName,
                 maxPrice,
                 engineType,
-                engineTypeBenzin,
+                engineTypeValue,
                 screwShape,
-                screwShapeTooth));
+                screwShapeValue));
     }
 }

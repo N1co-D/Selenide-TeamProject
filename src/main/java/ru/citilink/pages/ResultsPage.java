@@ -58,8 +58,8 @@ public class ResultsPage extends BasePage {
     private final String feedbackFilter = "//div[@data-meta-value='Оценка товара по отзывам']//div[@data-meta-name='FilterLabel']";
     private final String filterDropdownInputMaxPrice = "//div[@data-meta-name='FilterListGroupsLayout']//div[contains(@data-meta-value,'Цена')]//div/input[@name = 'input-max']";
     private final String currentProductCompareButton = ".//button[@data-meta-name='Snippet__compare-button']";
-
     private final String fresnelContainerCompareButton = "//div[@data-meta-name='UserButtonContainer']/following-sibling::div//div[@data-meta-name='CompareButton']";
+
     public ResultsPage checkIfCorrectPageOpen() {
         try {
             $x(filter).should(visible, WAITING_TIME);
@@ -185,14 +185,6 @@ public class ResultsPage extends BasePage {
                 .shouldBe(interactable, WAITING_TIME)
                 .click();
         sleep(2000);
-        return this;
-    }
-
-    public ResultsPage clickButtonDetailCatalogMode() {
-        $x(detailCatalogModeButton)
-                .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"nearest\"}")
-                .should(visible, WAITING_TIME)
-                .click();
         return this;
     }
 
@@ -378,6 +370,7 @@ public class ResultsPage extends BasePage {
         $$x(searchResultsList).shouldBe(sizeGreaterThan(0), WAITING_TIME).first().$x(inCartButton).click();
         return this;
     }
+
     public ResultsPage enterFilterDropdownInputMaxPrice(String price) {
         $x(filterDropdownInputMaxPrice)
                 .should(visible, WAITING_TIME)
