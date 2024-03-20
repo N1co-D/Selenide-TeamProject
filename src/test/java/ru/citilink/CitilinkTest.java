@@ -209,24 +209,25 @@ public class CitilinkTest extends BaseTest {
     }
 
     @ParameterizedTest
-    @MethodSource("ru.citilink.CitilinkTestData#dataSmartWatchesNaccessories")
+    @MethodSource("ru.citilink.CitilinkTestData#checkProductNameAfterFilterParamDataTest")
     public void checkProductNameAfterFilterParam(String categoryName,
                                                  String subcategoryName,
-                                                 String watchCategoryName,
-                                                 String series,
-                                                 String watchSE2023,
+                                                 String brandName,
+                                                 String seriesFilterCategory,
+                                                 String seriesValue,
                                                  String productName,
                                                  String productAvailFilterCategory,
-                                                 String productAvailPickUp_5min) {
+                                                 String productAvailValue) {
+
         open(confProperties.getProperty("test-site"));
 
         mainPage.clickCatalogMenuButton()
                 .clickCatalogCategoryButton(categoryName);
 
         resultsPage.clickDropDownlistShowMoreButton(subcategoryName)
-                .clickUnderSubcategoryButton(subcategoryName, watchCategoryName)
-                .clickFilterDropDownCategoryAndValue(series, watchSE2023)
-                .clickFilterDropDownCategoryAndValue(productAvailFilterCategory, productAvailPickUp_5min)
+                .clickUnderSubcategoryButton(subcategoryName, brandName)
+                .clickFilterDropDownCategoryAndValue(seriesFilterCategory, seriesValue)
+                .clickFilterDropDownCategoryAndValue(productAvailFilterCategory, productAvailValue)
                 .clickAddFirstItemToBasketButton()
                 .clickUpsaleBasketBlockGoShopCartButton();
 
