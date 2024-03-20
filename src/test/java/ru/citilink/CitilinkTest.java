@@ -3,7 +3,6 @@ package ru.citilink;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import ru.citilink.pages.CartPage;
 import ru.citilink.pages.ComparePage;
 import ru.citilink.pages.MainPage;
@@ -67,7 +66,7 @@ public class CitilinkTest extends BaseTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"'Ноутбук Huawei MateBook D 14 53013XFA, 14', '8 ГБ, LPDDR4x', 'SSD 512 ГБ', '2'"})
+    @MethodSource("ru.citilink.CitilinkTestData#checkIncreaseInQuantityWhenAddProductsToCartTestData")
     public void checkIncreaseInQuantityWhenAddProductsToCart(String inputText,
                                                              String rawMemoryRequiredParameter,
                                                              String diskRequiredParameter,
@@ -122,7 +121,7 @@ public class CitilinkTest extends BaseTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {2})
+    @MethodSource("ru.citilink.CitilinkTestData#checkProductAddToCompareSectionTestData")
     public void checkProductAddToCompareSection(int amountOfProductsForAdding) {
         open(confProperties.getProperty("test-site"));
 
@@ -142,8 +141,7 @@ public class CitilinkTest extends BaseTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"'Переходники', 'Переходники на евровилку', " +
-            "'Адаптер-переходник на евровилку PREMIER 11626/20, темно-серый', '1860968'"})
+    @MethodSource("ru.citilink.CitilinkTestData#checkProductAddToCartTestData")
     public void checkProductAddToCart(String inputText,
                                       String productFromDropDownList,
                                       String observedProduct,
@@ -165,8 +163,7 @@ public class CitilinkTest extends BaseTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"'Переходники', 'Переходники на евровилку', " +
-            "'Адаптер-переходник на евровилку PREMIER 11626/20, темно-серый'"})
+    @MethodSource("ru.citilink.CitilinkTestData#checkTheDeletingOfProductFromCartTestData")
     public void checkTheDeletingOfProductFromCart(String inputText,
                                                   String productFromDropDownList,
                                                   String observedProduct) {
@@ -233,5 +230,38 @@ public class CitilinkTest extends BaseTest {
                 .clickUpsaleBasketBlockGoShopCartButton();
 
         cartPage.checkProductNameInCart(huterSGC4000L);
+    }
+
+    @ParameterizedTest
+    @MethodSource("ru.citilink.CitilinkTestData#dataForCheckCorrectReflection")
+    public void checkCorrectReflectionProductNameInAccordanceWithFilterParameters(String searchedProduct,
+                                                                                  String sortingParameter,
+                                                                                  String rating,
+                                                                                  String observedProduct,
+                                                                                  String category) {
+        open(confProperties.getProperty("test-site"));
+        mainPage.inputBoxWriteText(searchedProduct).searchButtonClick();
+        assertEquals(String.format("Результаты для «%s»", searchedProduct), resultsPage.getSearchTitle(),
+                String.format("Указан заголовок некорректной страницы. Ожидаем = Результаты для «%s», факт = %s",
+                        searchedProduct, resultsPage.getSearchTitle()));
+
+        resultsPage.detailedCatalogModeButtonClick()
+                .laptopCategoryButtonClick();
+        assertEquals(category, resultsPage.getCategoryTitle(),
+                String.format("Указана не верная категория. Ожидаем = %s, факт = %s",
+                        category, resultsPage.getCategoryTitle()));
+
+        resultsPage.sortingItemClick(sortingParameter)
+                .sortingItemStatus(sortingParameter);
+        assertTrue(resultsPage.sortingPriceResult(), "Цена в списке идёт не по возрастанию");
+
+        resultsPage.feedbackFilterClick(rating)
+                .feedbackFilterStatus(rating);
+
+        resultsPage.buyFirstProductFromList()
+                .checkAppearWindowWithAddedProductInCartStatus()
+                .goToCartButtonClickWithPopupWindow();
+
+        cartPage.checkProductTitleCart(observedProduct);
     }
 }

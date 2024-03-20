@@ -113,6 +113,20 @@ public class CartPage extends BasePage {
                 .should(visible, WAITING_TIME)
                 .getText();
     }
+    public CartPage checkProductTitleCart(String observedProduct) {
+        ElementsCollection selenideElements = $$x(listOfProductsInCart).shouldBe(sizeGreaterThan(0), WAITING_TIME);
+        String productTitle = null;
+        for (int i = 0; i < selenideElements.size() - 1; i++) {
+            if (selenideElements.get(i).$x(productTitleInCart).getText().equals(observedProduct)) {
+                productTitle = selenideElements.get(i).$x(productTitleInCart).getText();
+                break;
+            }
+        }
+        if (productTitle == null) {
+            fail("Продукт с названием, '" + observedProduct + "', не был найден в списке");
+        }
+        return this;
+    }
 
     private String getProductNameInCart() {
         return $x(productNameInCart).should(visible, WAITING_TIME)
