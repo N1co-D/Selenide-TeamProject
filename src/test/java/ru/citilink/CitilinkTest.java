@@ -203,7 +203,7 @@ public class CitilinkTest extends BaseTest {
                 .clickCloseUpSaleBasketLayoutButton()
                 .clickBasketFresnelContainerButton();
 
-        assertEquals(productName, cartPage.getNameProductFromBasketSnippet(productName));
+        assertEquals(productName, cartPage.getNameProductFromBasketSnippet());
     }
 
     @ParameterizedTest
