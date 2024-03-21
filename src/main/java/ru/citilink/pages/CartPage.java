@@ -23,7 +23,8 @@ public class CartPage extends BasePage {
     private final String statusOfMissingProductsInCart = "//span[text()='В корзине нет товаров']";
     private final String deleteProductInCartButton = ".//div[@data-meta-name='DeleteAction']/button";
     private final String goBackToShoppingButton = "//a[@title='Вернуться к покупкам']";
-    private final String nameProductFromBasketSnippet = "//div[@data-meta-name='BasketSnippet']//span[contains(text(),'%s')]";
+    private final String nameProductFromBasketSnippet = "//div[@data-meta-name='BasketSnippet']//span[contains(normalize-space(text()),'%s')]";
+    private final String productNameInCart = "//div[@data-meta-name='BasketSnippet']//a//span[text()]";
 
     public CartPage checkIfCorrectPageOpen() {
         try {
@@ -112,7 +113,6 @@ public class CartPage extends BasePage {
                 .should(visible, WAITING_TIME)
                 .getText();
     }
-
     public CartPage checkProductTitleCart(String observedProduct) {
         ElementsCollection selenideElements = $$x(listOfProductsInCart).shouldBe(sizeGreaterThan(0), WAITING_TIME);
         String productTitle = null;
@@ -125,6 +125,21 @@ public class CartPage extends BasePage {
         if (productTitle == null) {
             fail("Продукт с названием, '" + observedProduct + "', не был найден в списке");
         }
+        return this;
+    }
+
+    private String getProductNameInCart() {
+        return $x(productNameInCart).should(visible, WAITING_TIME)
+                .getText();
+    }
+
+    public CartPage checkProductNameInCart(String expectedProductName) {
+        String productName = getProductNameInCart();
+        assertTrue(productName.contains(expectedProductName),
+                String.format("Фактическое имя добавленного товара = %s " +
+                                " не соответствует ожидаемому = %s",
+                        productName,
+                        expectedProductName));
         return this;
     }
 }

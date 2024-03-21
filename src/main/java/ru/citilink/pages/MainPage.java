@@ -24,6 +24,7 @@ public class MainPage extends BasePage {
     private final String oledTelevisionsCategory = "//span[text()='Телевизоры OLED']";
     private final String searchCategoryInDropDownMenu = "//div[@data-meta-name='InstantSearchExtraResultList']//a[@title='";
     private final String searchButton = "//div[@data-meta-name='HeaderBottom__search']//button[@type='submit']";
+    private final String productSearchInputLine = "//input[@type='search']";
 
     public MainPage checkIfCorrectPageOpen() {
         try {
@@ -108,5 +109,19 @@ public class MainPage extends BasePage {
         executeJavaScript("arguments[0].click()",
                 $x(searchButton).shouldBe(visible, WAITING_TIME));
         return new ResultsPage();
+    }
+
+    public MainPage enterProductInputLineAndClickSearchButton(String nameProduct) {
+        $x(productSearchInputLine)
+                .should(visible, WAITING_TIME)
+                .sendKeys(nameProduct);
+        clickSearchButton();
+        return this;
+    }
+
+    private void clickSearchButton() {
+        $x(searchButton)
+                .should(visible, WAITING_TIME)
+                .click();
     }
 }

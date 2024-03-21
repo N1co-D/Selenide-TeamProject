@@ -1,9 +1,16 @@
 package ru.citilink.pages;
 
+import com.codeborne.selenide.CollectionCondition;
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.UIAssertionError;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.codeborne.selenide.Condition.not;
 import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.$$x;
 import static com.codeborne.selenide.Selenide.$x;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -17,6 +24,10 @@ public class ComparePage extends BasePage {
     private final String compareValue = "//div[contains(@class, 'HeaderMenu__count') and text()]";
     private final String showOnlyDifferenceCheckbox = "//label[contains(@class,'Compare__actions_show-differences')]";
     private final String amountOfAddedProductsToCompare = "//div[@class='Tabs js--Tabs']//div";
+    private final String compareSpecificsRowValue = "//div[contains(text(),'%s')]/following-sibling::div[@class='Compare__specification-row_wrapper']/div/div";
+    private final String compareProductPriceBlockByIndex = "//div[contains(text(),'Цена')]/../div[contains(@class,'Compare__product-row')]/div[%d]";
+    private final String compareProductByIndexToCartButton = "//button/span[contains(text(),'В корзину')]/..";
+    private final String upsaleBasketBlockGoShopCartButton = "//div[@class='UpsaleBasket__header-link']//button[@data-label='Перейти в корзину']";
 
     public String getComparePageTitle() {
         return $x(comparePageTitle).shouldBe(visible, WAITING_TIME).getText();
@@ -30,7 +41,7 @@ public class ComparePage extends BasePage {
         return $x(productPrice).shouldBe(visible, WAITING_TIME).getText();
     }
 
-    public ComparePage deleteProductButtonClick() {
+    public ComparePage deleteProductButtonClick() { // todo rename: clickDeleteProductButton
         $x(deleteProductButton).shouldBe(visible, WAITING_TIME).click();
         return this;
     }
@@ -65,5 +76,50 @@ public class ComparePage extends BasePage {
                                 " не соответствует ожидаемому = %s",
                         getAmountOfAddedProductsToCompare(), expectedAmountOfProductsForAdding));
         return this;
+    }
+
+    private List<Integer> createIndexList(String specific, String value) {
+        List<Integer> indexList = new ArrayList<>();
+        int count = 1;
+        for (SelenideElement element : createElementsCollection(String.format(compareSpecificsRowValue, specific))) {
+            if (element.getText().equals(value)) {
+                indexList.add(count);
+            }
+            count++;
+        }
+        return indexList;
+    }
+
+    private List<Integer> getResultList(List<Integer> firstIndexList, List<Integer> secondIndexList) {
+        List<Integer> resultList = new ArrayList<>(firstIndexList);
+        resultList.retainAll(secondIndexList);
+        return resultList;
+    }
+
+    public ComparePage clickSelectedProductCartButton(String firstSpecific,
+                                                      String firstValue,
+                                                      String secondSpecific,
+                                                      String secondValue) {
+
+        for (Integer element : getResultList(createIndexList(firstSpecific, firstValue),
+                createIndexList(secondSpecific, secondValue))) {
+
+            $x(String.format(compareProductPriceBlockByIndex, element) +
+                    compareProductByIndexToCartButton)
+                    .scrollIntoView("{behavior: \"auto\", block: \"center\", inline: \"center\"}")
+                    .shouldBe(visible, WAITING_TIME)
+                    .click();
+        }
+        return this;
+    }
+
+    public void clickUpsaleBasketBlockGoShopCartButton() {
+        $x(upsaleBasketBlockGoShopCartButton)
+                .shouldBe(visible, WAITING_TIME)
+                .click();
+    }
+
+    private ElementsCollection createElementsCollection(String xPath) {
+        return $$x(xPath).should(CollectionCondition.sizeGreaterThan(0), WAITING_TIME);
     }
 }
