@@ -99,4 +99,23 @@ public class CitilinkTestData {
                 screwShape,
                 screwShapeValue));
     }
+
+    static Stream<Arguments> checkProductNameAfterFilterParamDataTest() {
+        String categoryName = "Смарт-часы, гаджеты и фото";
+        String subcategoryName = "Смарт-часы и аксессуары";
+        String brandName = "Apple Watch";
+        String seriesFilterCategory = "Серия";
+        String seriesValue = "Watch SE 2023";
+        String productName = "Смарт-часы Apple Watch SE 2023 A2722, 40мм, темная ночь / темная ночь [mre03ll/a]";
+        String productAvailFilterCategory = "Наличие товара";
+        String productAvailValue = "Забрать через 5 минут";
+        return Stream.of(Arguments.of(categoryName,
+                subcategoryName,
+                brandName,
+                seriesFilterCategory,
+                seriesValue,
+                productName,
+                productAvailFilterCategory,
+                productAvailValue));
+    }
 }

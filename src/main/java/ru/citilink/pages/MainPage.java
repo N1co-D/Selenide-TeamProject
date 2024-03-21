@@ -25,6 +25,8 @@ public class MainPage extends BasePage {
     private final String searchCategoryInDropDownMenu = "//div[@data-meta-name='InstantSearchExtraResultList']//a[@title='";
     private final String searchButton = "//div[@data-meta-name='HeaderBottom__search']//button[@type='submit']";
     private final String productSearchInputLine = "//input[@type='search']";
+    private final String catalogMenuButton = "//span[contains(text(),'Каталог товаров')]";
+    private final String catalogCategoryButton = "//div[@class='PopupScrollContainer']//span[contains(text(),'%s')]";
 
     public MainPage checkIfCorrectPageOpen() {
         try {
@@ -123,5 +125,17 @@ public class MainPage extends BasePage {
         $x(searchButton)
                 .should(visible, WAITING_TIME)
                 .click();
+    }
+
+    public MainPage clickCatalogMenuButton() {
+        $x(catalogMenuButton).shouldBe(visible, WAITING_TIME).click();
+        return this;
+    }
+
+    public MainPage clickCatalogCategoryButton(String nameCategory) {
+        $x(String.format(catalogCategoryButton, nameCategory))
+                .should(visible, WAITING_TIME)
+                .click();
+        return this;
     }
 }

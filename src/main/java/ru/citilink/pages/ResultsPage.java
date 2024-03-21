@@ -59,6 +59,10 @@ public class ResultsPage extends BasePage {
     private final String filterDropdownInputMaxPrice = "//div[@data-meta-name='FilterListGroupsLayout']//div[contains(@data-meta-value,'Цена')]//div/input[@name = 'input-max']";
     private final String currentProductCompareButton = ".//button[@data-meta-name='Snippet__compare-button']";
     private final String fresnelContainerCompareButton = "//div[@data-meta-name='UserButtonContainer']/following-sibling::div//div[@data-meta-name='CompareButton']";
+    private final String dropDownlistShowMoreButton = "//div/a[contains(text(),'%s')]/../..//span[contains(text(),'Показать еще')]";
+    private final String underSubcategoryButton = "//a[contains(text(),'%s')]/../..//a[contains(text(),'%s')]";
+    private final String addFirstItemToBasketButton = "//div[@data-meta-name='ProductVerticalSnippet'][1]//button[@data-meta-name='Snippet__cart-button']";
+    private final String upsaleBasketBlockGoShopCartButton = "//div[contains(@data-meta-name,'UpsaleBasketLayout')]/div[2]//span[contains(text(),'Перейти в корзину')]";
 
     public ResultsPage checkIfCorrectPageOpen() {
         try {
@@ -406,5 +410,35 @@ public class ResultsPage extends BasePage {
 
     private ElementsCollection createElementsCollection(String xPath) {
         return $$x(xPath).should(CollectionCondition.sizeGreaterThan(0), WAITING_TIME);
+    }
+
+    public ResultsPage clickDropDownlistShowMoreButton(String subcategoryname) {
+        $x(String.format(dropDownlistShowMoreButton, subcategoryname))
+                .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"nearest\"}")
+                .should(visible, WAITING_TIME)
+                .click();
+        return this;
+    }
+
+    public ResultsPage clickUnderSubcategoryButton(String subcategoryName, String underSubcategoryName) {
+        $x(String.format(underSubcategoryButton, subcategoryName, underSubcategoryName))
+                .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"nearest\"}")
+                .should(visible, WAITING_TIME)
+                .click();
+        return this;
+    }
+
+    public ResultsPage clickAddFirstItemToBasketButton() {
+        $x(addFirstItemToBasketButton)
+                .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"nearest\"}")
+                .should(visible, WAITING_TIME)
+                .click();
+        return this;
+    }
+
+    public void clickUpsaleBasketBlockGoShopCartButton() {
+        $x(upsaleBasketBlockGoShopCartButton)
+                .shouldBe(visible, WAITING_TIME)
+                .click();
     }
 }

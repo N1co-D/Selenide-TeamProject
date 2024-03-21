@@ -203,34 +203,7 @@ public class CitilinkTest extends BaseTest {
                 .clickCloseUpSaleBasketLayoutButton()
                 .clickBasketFresnelContainerButton();
 
-        assertEquals(productName, cartPage.getNameProductFromBasketSnippet(productName));
-    }
-
-    @ParameterizedTest
-    @MethodSource("ru.citilink.CitilinkTestData#checkProductCompareTestData")
-    public void checkProductCompare(String brandName,
-                                    String productName,
-                                    String maxPrice,
-                                    String engineType,
-                                    String engineTypeValue,
-                                    String screwShape,
-                                    String screwShapeValue) {
-
-        open(confProperties.getProperty("test-site"));
-
-        mainPage.checkIfCorrectPageOpen()
-                .enterProductInputLineAndClickSearchButton(brandName);
-
-        resultsPage.checkIfCorrectPageOpen()
-                .enterFilterDropdownInputMaxPrice(maxPrice)
-                .clickDetailCatalogModeButton()
-                .clickCollectionCompareProductButton()
-                .clickFresnelContainerCompareButton();
-
-        comparePage.clickSelectedProductCartButton(engineType, engineTypeValue, screwShape, screwShapeValue)
-                .clickUpsaleBasketBlockGoShopCartButton();
-
-        cartPage.checkProductNameInCart(productName);
+        assertEquals(productName, cartPage.getNameProductFromBasketSnippet());
     }
 
     @ParameterizedTest
@@ -264,5 +237,32 @@ public class CitilinkTest extends BaseTest {
                 .goToCartButtonClickWithPopupWindow();
 
         cartPage.checkProductTitleCart(observedProduct);
+    }
+
+    @ParameterizedTest
+    @MethodSource("ru.citilink.CitilinkTestData#checkProductNameAfterFilterParamDataTest")
+    public void checkProductNameAfterFilterParam(String categoryName,
+                                                 String subcategoryName,
+                                                 String brandName,
+                                                 String seriesFilterCategory,
+                                                 String seriesValue,
+                                                 String productName,
+                                                 String productAvailFilterCategory,
+                                                 String productAvailValue) {
+
+        open(confProperties.getProperty("test-site"));
+
+        mainPage.clickCatalogMenuButton()
+                .clickCatalogCategoryButton(categoryName);
+
+        resultsPage.clickDropDownlistShowMoreButton(subcategoryName)
+                .clickUnderSubcategoryButton(subcategoryName, brandName)
+                .clickFilterDropDownCategoryAndValue(seriesFilterCategory, seriesValue)
+                .clickFilterDropDownCategoryAndValue(productAvailFilterCategory, productAvailValue)
+                .clickAddFirstItemToBasketButton()
+                .clickUpsaleBasketBlockGoShopCartButton();
+
+        assertEquals(productName,
+                cartPage.getNameProductFromBasketSnippet());
     }
 }
