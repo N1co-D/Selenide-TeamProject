@@ -1,7 +1,6 @@
 package ru.citilink;
 
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import ru.citilink.pages.CartPage;
 import ru.citilink.pages.ComparePage;
@@ -46,23 +45,24 @@ public class CitilinkTest extends BaseTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"'Ноутбуки','Бренд','Диагональ экрана','Серия процессора','HUAWEI','14','Core i7'"})
-    public void checkFilterProductsByParameters(String noutbukiCategory,
+    @MethodSource("ru.citilink.CitilinkTestData#checkFilterProductsByParametersTestData")
+    public void checkFilterProductsByParameters(String categoryName,
                                                 String brandFilterCategory,
                                                 String screenDiagonalFilterCategory,
                                                 String processorSeriesFilterCategory,
-                                                String brandValue,
+                                                String brandName,
                                                 String diagonalValue,
                                                 String cpuValue) {
+
         open(confProperties.getProperty("test-site"));
 
-        mainPage.clickPopularCategoryTile(noutbukiCategory);
+        mainPage.clickPopularCategoryTile(categoryName);
 
-        resultsPage.clickFilterDropDownCategoryAndValue(brandFilterCategory, brandValue)
+        resultsPage.clickFilterDropDownCategoryAndValue(brandFilterCategory, brandName)
                 .clickFilterDropDownCategoryAndValue(screenDiagonalFilterCategory, diagonalValue)
                 .clickFilterDropDownCategoryAndValue(processorSeriesFilterCategory, cpuValue)
-                .clickButtonDetailCatalogMode()
-                .checkProductsAfterFiltration(brandValue, diagonalValue, cpuValue);
+                .clickDetailCatalogModeButton()
+                .checkProductsAfterFiltration(brandName, diagonalValue, cpuValue);
     }
 
     @ParameterizedTest
@@ -193,46 +193,17 @@ public class CitilinkTest extends BaseTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"'Смартфон Huawei nova Y72 8/128Gb,  MGA-LX3,  черный'"})
-    public void checkItemAddToCart(String inputText) {
-
+    @MethodSource("ru.citilink.CitilinkTestData#checkItemAddToCartTestData")
+    public void checkItemAddToCart(String productName) {
         open(confProperties.getProperty("test-site"));
 
-        mainPage.enterSearchProductInputLine(inputText);
+        mainPage.enterSearchProductInputLine(productName);
         resultsPage
-                .clickAddItemToBasketButton(inputText)
-                .clickButtonCloseUpSaleBasketLayout()
-                .clickButtonBasketFresnelContainer();
+                .clickAddItemToBasketButton(productName)
+                .clickCloseUpSaleBasketLayoutButton()
+                .clickBasketFresnelContainerButton();
 
-        assertEquals("Смартфон Huawei nova Y72 8/128Gb, MGA-LX3, черный",
-                cartPage.getNameProductFromBasketSnippet());
-    }
-
-    @ParameterizedTest
-    @MethodSource("ru.citilink.CitilinkTestData#checkProductNameAfterFilterParamDataTest")
-    public void checkProductNameAfterFilterParam(String categoryName,
-                                                 String subcategoryName,
-                                                 String brandName,
-                                                 String seriesFilterCategory,
-                                                 String seriesValue,
-                                                 String productName,
-                                                 String productAvailFilterCategory,
-                                                 String productAvailValue) {
-
-        open(confProperties.getProperty("test-site"));
-
-        mainPage.clickCatalogMenuButton()
-                .clickCatalogCategoryButton(categoryName);
-
-        resultsPage.clickDropDownlistShowMoreButton(subcategoryName)
-                .clickUnderSubcategoryButton(subcategoryName, brandName)
-                .clickFilterDropDownCategoryAndValue(seriesFilterCategory, seriesValue)
-                .clickFilterDropDownCategoryAndValue(productAvailFilterCategory, productAvailValue)
-                .clickAddFirstItemToBasketButton()
-                .clickUpsaleBasketBlockGoShopCartButton();
-
-        assertEquals(productName,
-                cartPage.getNameProductFromBasketSnippet());
+        assertEquals(productName, cartPage.getNameProductFromBasketSnippet(productName));
     }
 
     @ParameterizedTest
@@ -266,5 +237,32 @@ public class CitilinkTest extends BaseTest {
                 .goToCartButtonClickWithPopupWindow();
 
         cartPage.checkProductTitleCart(observedProduct);
+    }
+
+    @ParameterizedTest
+    @MethodSource("ru.citilink.CitilinkTestData#checkProductNameAfterFilterParamDataTest")
+    public void checkProductNameAfterFilterParam(String categoryName,
+                                                 String subcategoryName,
+                                                 String brandName,
+                                                 String seriesFilterCategory,
+                                                 String seriesValue,
+                                                 String productName,
+                                                 String productAvailFilterCategory,
+                                                 String productAvailValue) {
+
+        open(confProperties.getProperty("test-site"));
+
+        mainPage.clickCatalogMenuButton()
+                .clickCatalogCategoryButton(categoryName);
+
+        resultsPage.clickDropDownlistShowMoreButton(subcategoryName)
+                .clickUnderSubcategoryButton(subcategoryName, brandName)
+                .clickFilterDropDownCategoryAndValue(seriesFilterCategory, seriesValue)
+                .clickFilterDropDownCategoryAndValue(productAvailFilterCategory, productAvailValue)
+                .clickAddFirstItemToBasketButton()
+                .clickUpsaleBasketBlockGoShopCartButton();
+
+        assertEquals(productName,
+                cartPage.getNameProductFromBasketSnippet());
     }
 }
