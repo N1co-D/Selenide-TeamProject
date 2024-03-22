@@ -66,7 +66,7 @@ public class CitilinkTest extends BaseTest {
                 .checkProductsAfterFiltration(brandName, diagonalValue, cpuValue);
     }
 
-    @Description("TC-ID7")
+    @Description("TC-ID7 Проверка увеличения количества товаров, добавленных в корзину")
     @ParameterizedTest
     @MethodSource("ru.citilink.CitilinkTestData#checkIncreaseInQuantityWhenAddProductsToCartTestData")
     public void checkIncreaseInQuantityWhenAddProductsToCart(String inputText,
