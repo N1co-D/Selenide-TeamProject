@@ -1,5 +1,6 @@
 package ru.citilink;
 
+import io.qameta.allure.Description;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import ru.citilink.pages.CartPage;
@@ -65,6 +66,7 @@ public class CitilinkTest extends BaseTest {
                 .checkProductsAfterFiltration(brandName, diagonalValue, cpuValue);
     }
 
+    @Description("TC-ID7")
     @ParameterizedTest
     @MethodSource("ru.citilink.CitilinkTestData#checkIncreaseInQuantityWhenAddProductsToCartTestData")
     public void checkIncreaseInQuantityWhenAddProductsToCart(String inputText,

@@ -1,6 +1,7 @@
 package ru.citilink.pages;
 
 import com.codeborne.selenide.ex.UIAssertionError;
+import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.text;
@@ -28,6 +29,7 @@ public class MainPage extends BasePage {
     private final String catalogMenuButton = "//span[contains(text(),'Каталог товаров')]";
     private final String catalogCategoryButton = "//div[@class='PopupScrollContainer']//span[contains(text(),'%s')]";
 
+    @Step("Проверка открытия главной страницы")
     public MainPage checkIfCorrectPageOpen() {
         try {
             $x(centralAdBanner).should(visible, WAITING_TIME);
@@ -44,6 +46,7 @@ public class MainPage extends BasePage {
         return this;
     }
 
+    @Step("Поиск товара {searchedProduct} через поле поиска")
     public MainPage searchProductByInputBox(String searchedProduct) {
         inputBoxWriteText(searchedProduct);
         $x(productSearchField).should(visible, WAITING_TIME)
