@@ -4,6 +4,7 @@ import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.UIAssertionError;
+import io.qameta.allure.Step;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +65,7 @@ public class ResultsPage extends BasePage {
     private final String addFirstItemToBasketButton = "//div[@data-meta-name='ProductVerticalSnippet'][1]//button[@data-meta-name='Snippet__cart-button']";
     private final String upsaleBasketBlockGoShopCartButton = "//div[contains(@data-meta-name,'UpsaleBasketLayout')]/div[2]//span[contains(text(),'Перейти в корзину')]";
 
+    @Step
     public ResultsPage checkIfCorrectPageOpen() {
         try {
             $x(filter).should(visible, WAITING_TIME);
