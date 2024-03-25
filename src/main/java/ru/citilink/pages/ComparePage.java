@@ -76,7 +76,8 @@ public class ComparePage extends BasePage {
     public ComparePage checkAmountOfAddedProductsToCompare(int expectedAmountOfProductsForAdding) {
         String actualAmountOfProduct = getAmountOfAddedProductsToCompare();
         assertEquals(String.valueOf(expectedAmountOfProductsForAdding), actualAmountOfProduct,
-                String.format("Фактическое количество товаров в корзине = %s не соответствует ожидаемому = %s",
+                String.format("Фактическое количество добавленных для сравнения товаров = %s " +
+                                "не соответствует ожидаемому = %s",
                         actualAmountOfProduct, expectedAmountOfProductsForAdding));
         makeScreenshot();
         return this;

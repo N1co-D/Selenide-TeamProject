@@ -267,7 +267,7 @@ public class ResultsPage extends BasePage {
         assertEquals(actualAmountOfProduct,
                 String.valueOf(expectedAmountOfProductsForAdding),
                 String.format("Фактическое количество добавленных для сравнения товаров = %s " +
-                                " не соответствует ожидаемому = %s",
+                                "не соответствует ожидаемому = %s",
                         actualAmountOfProduct, expectedAmountOfProductsForAdding));
         makeScreenshot();
         return this;
