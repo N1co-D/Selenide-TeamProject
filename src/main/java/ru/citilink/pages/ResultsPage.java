@@ -251,10 +251,11 @@ public class ResultsPage extends BasePage {
     @Step("Добавление {amountOfProductsForAdding} первых товара в список сравнения")
     public ResultsPage someProductAddToComparingClick(int amountOfProductsForAdding) { //todo rename: clickProductAddToCompareButton
         ElementsCollection allProductsFromList = getAllProductsInPage();
-        sleep(3000);
+        sleep(2000);
         for (int countOfAddedProducts = 0; countOfAddedProducts < amountOfProductsForAdding; countOfAddedProducts++) {
             allProductsFromList.get(countOfAddedProducts).should(visible, WAITING_TIME);
             jsClick(allProductsFromList.get(countOfAddedProducts).$x(addToCompareButton));
+            sleep(2000);
         }
         return this;
     }
