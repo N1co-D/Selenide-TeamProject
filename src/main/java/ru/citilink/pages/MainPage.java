@@ -34,6 +34,7 @@ public class MainPage extends BasePage {
         try {
             $x(centralAdBanner).should(visible, WAITING_TIME);
         } catch (UIAssertionError e) {
+            makeScreenshot();
             fail("Не удалось подтвердить открытие ожидаемой страницы. " +
                     "Уникальный элемент страницы 'centralAdBanner' не был найден в течение заданного времени.");
         }

@@ -31,6 +31,7 @@ public class CartPage extends BasePage {
         try {
             $x(sideDescriptionOfCart).should(visible, WAITING_TIME);
         } catch (UIAssertionError e) {
+            makeScreenshot();
             fail("Не удалось подтвердить открытие ожидаемой страницы. " +
                     "Уникальный элемент страницы 'sideDescriptionOfCart' не был найден в течение заданного времени.");
         }
@@ -124,6 +125,7 @@ public class CartPage extends BasePage {
         try {
             $x(statusOfMissingProductsInCart).should(visible, WAITING_TIME);
         } catch (UIAssertionError e) {
+            makeScreenshot();
             fail("Элемент с уведомлением 'В корзине нет товаров' не был обнаружен");
         }
         makeScreenshot();

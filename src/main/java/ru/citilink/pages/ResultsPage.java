@@ -70,6 +70,7 @@ public class ResultsPage extends BasePage {
         try {
             $x(filter).should(visible, WAITING_TIME);
         } catch (UIAssertionError e) {
+            makeScreenshot();
             fail("Не удалось подтвердить открытие ожидаемой страницы. " +
                     "Уникальный элемент страницы 'filter' не был найден в течение заданного времени.");
         }
@@ -144,6 +145,7 @@ public class ResultsPage extends BasePage {
         try {
             $x(windowWithAddedProductInCartStatus).should(appear, WAITING_TIME);
         } catch (UIAssertionError e) {
+            makeScreenshot();
             fail("Не было обнаружено всплывающее окно с сообщением о добавлении товара в корзину");
         }
         makeScreenshot();
@@ -155,6 +157,7 @@ public class ResultsPage extends BasePage {
         try {
             $x(windowWithAddedProductInCartStatus).shouldNot(appear, WAITING_TIME);
         } catch (UIAssertionError e) {
+            makeScreenshot();
             fail("Всплывающее окно с сообщением о добавлении товара в корзину не было закрыто " +
                     "после нажатия соответствующего элемента 'closeWindowWithAddedProductInCartStatus'");
         }

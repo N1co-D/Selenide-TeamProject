@@ -60,6 +60,7 @@ public class ComparePage extends BasePage {
         try {
             $x(showOnlyDifferenceCheckbox).should(visible, WAITING_TIME);
         } catch (UIAssertionError e) {
+            makeScreenshot();
             fail("Не удалось подтвердить открытие ожидаемой страницы. Уникальный элемент " +
                     "страницы 'showOnlyDifferenceCheckbox' не был найден в течение заданного времени.");
         }
