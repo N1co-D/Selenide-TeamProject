@@ -69,10 +69,11 @@ public class CartPage extends BasePage {
 
     @Step("Соответствие кода добавленного в корзину товара с ожидаемым значением = {expectedProductCode}")
     public CartPage checkIsCorrectCodeNumberOfProductInCart(String expectedProductCode) {
-        assertTrue(getCodeNumberOfProductInCart().contains(expectedProductCode),
+        String actualProductCode = getCodeNumberOfProductInCart();
+        assertTrue(actualProductCode.contains(expectedProductCode),
                 String.format("Фактическое значение кода добавленного товара = %s " +
                                 " не соответствует ожидаемому = %s",
-                        getCodeNumberOfProductInCart().substring(getCodeNumberOfProductInCart().indexOf(":") + 1),
+                        actualProductCode.substring(getCodeNumberOfProductInCart().indexOf(":") + 1),
                         expectedProductCode));
         makeScreenshot();
         return this;
