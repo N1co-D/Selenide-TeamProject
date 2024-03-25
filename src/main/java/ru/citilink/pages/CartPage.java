@@ -34,6 +34,7 @@ public class CartPage extends BasePage {
             fail("Не удалось подтвердить открытие ожидаемой страницы. " +
                     "Уникальный элемент страницы 'sideDescriptionOfCart' не был найден в течение заданного времени.");
         }
+        makeScreenshot();
         return this;
     }
 
@@ -61,6 +62,7 @@ public class CartPage extends BasePage {
         assertEquals(expectedAmountOfProduct, actualAmountOfProduct,
                 String.format("Фактическое количество товаров в корзине = %s не соответствует ожидаемому = %s",
                         actualAmountOfProduct, expectedAmountOfProduct));
+        makeScreenshot();
         return this;
     }
 
@@ -71,6 +73,7 @@ public class CartPage extends BasePage {
                                 " не соответствует ожидаемому = %s",
                         getCodeNumberOfProductInCart().substring(getCodeNumberOfProductInCart().indexOf(":") + 1),
                         expectedProductCode));
+        makeScreenshot();
         return this;
     }
 
@@ -106,6 +109,7 @@ public class CartPage extends BasePage {
     public CartPage deleteRequiredProductInCartButtonClick(String observedProduct) {
         SelenideElement requiredProduct = searchingForRequiredProductInList(observedProduct);
         jsClick(requiredProduct.$x(deleteProductInCartButton));
+        makeScreenshot();
         return this;
     }
 
@@ -122,6 +126,7 @@ public class CartPage extends BasePage {
         } catch (UIAssertionError e) {
             fail("Элемент с уведомлением 'В корзине нет товаров' не был обнаружен");
         }
+        makeScreenshot();
         return this;
     }
 

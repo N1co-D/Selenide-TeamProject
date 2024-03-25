@@ -37,6 +37,7 @@ public class MainPage extends BasePage {
             fail("Не удалось подтвердить открытие ожидаемой страницы. " +
                     "Уникальный элемент страницы 'centralAdBanner' не был найден в течение заданного времени.");
         }
+        makeScreenshot();
         return this;
     }
 
@@ -44,6 +45,7 @@ public class MainPage extends BasePage {
     public MainPage inputBoxWriteText(String searchedProduct) {
         jsClick($x(productSearchField));
         $x(productSearchField).sendKeys(searchedProduct);
+        makeScreenshot();
         return this;
     }
 
@@ -64,6 +66,7 @@ public class MainPage extends BasePage {
     @Step("Открытие каталога товаров")
     public MainPage productCatalogClick() {
         jsClick($x(productCatalog));
+        makeScreenshot();
         return this;
     }
 
@@ -88,6 +91,7 @@ public class MainPage extends BasePage {
     public MainPage televisionsAndAudioVideoEquipmentCategoryClick() {
         $x(televisionsAndAudioVideoEquipmentCategory).should(visible, WAITING_TIME);
         actions().moveToElement($x(televisionsAndAudioVideoEquipmentCategory)).perform();
+        makeScreenshot();
         return this;
     }
 

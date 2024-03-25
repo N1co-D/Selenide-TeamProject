@@ -73,12 +73,14 @@ public class ResultsPage extends BasePage {
             fail("Не удалось подтвердить открытие ожидаемой страницы. " +
                     "Уникальный элемент страницы 'filter' не был найден в течение заданного времени.");
         }
+        makeScreenshot();
         return this;
     }
 
     @Step("Включение подробного режима каталога")
     public ResultsPage enableDetailedCatalogMode() { // todo overload: clickDetailCatalogModeButton()
         jsClick($x(detailedCatalogModeButton));
+        makeScreenshot();
         return this;
     }
 
@@ -144,6 +146,7 @@ public class ResultsPage extends BasePage {
         } catch (UIAssertionError e) {
             fail("Не было обнаружено всплывающее окно с сообщением о добавлении товара в корзину");
         }
+        makeScreenshot();
         return this;
     }
 
@@ -155,6 +158,7 @@ public class ResultsPage extends BasePage {
             fail("Всплывающее окно с сообщением о добавлении товара в корзину не было закрыто " +
                     "после нажатия соответствующего элемента 'closeWindowWithAddedProductInCartStatus'");
         }
+        makeScreenshot();
         return this;
     }
 
@@ -265,6 +269,7 @@ public class ResultsPage extends BasePage {
                 String.format("Фактическое количество добавленных для сравнения товаров = %s " +
                                 " не соответствует ожидаемому = %s",
                         actualAmountOfProduct, expectedAmountOfProductsForAdding));
+        makeScreenshot();
         return this;
     }
 

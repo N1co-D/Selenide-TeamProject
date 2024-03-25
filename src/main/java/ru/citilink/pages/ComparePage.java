@@ -63,6 +63,7 @@ public class ComparePage extends BasePage {
             fail("Не удалось подтвердить открытие ожидаемой страницы. Уникальный элемент " +
                     "страницы 'showOnlyDifferenceCheckbox' не был найден в течение заданного времени.");
         }
+        makeScreenshot();
         return this;
     }
 
@@ -77,6 +78,7 @@ public class ComparePage extends BasePage {
         assertEquals(String.valueOf(expectedAmountOfProductsForAdding), actualAmountOfProduct,
                 String.format("Фактическое количество товаров в корзине = %s не соответствует ожидаемому = %s",
                         actualAmountOfProduct, expectedAmountOfProductsForAdding));
+        makeScreenshot();
         return this;
     }
 
