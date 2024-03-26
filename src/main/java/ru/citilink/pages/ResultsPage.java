@@ -4,6 +4,7 @@ import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.UIAssertionError;
+import io.qameta.allure.Step;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,18 +65,23 @@ public class ResultsPage extends BasePage {
     private final String addFirstItemToBasketButton = "//div[@data-meta-name='ProductVerticalSnippet'][1]//button[@data-meta-name='Snippet__cart-button']";
     private final String upsaleBasketBlockGoShopCartButton = "//div[contains(@data-meta-name,'UpsaleBasketLayout')]/div[2]//span[contains(text(),'Перейти в корзину')]";
 
+    @Step("Открытие страницы с результатами запроса / выбранной категории")
     public ResultsPage checkIfCorrectPageOpen() {
         try {
             $x(filter).should(visible, WAITING_TIME);
         } catch (UIAssertionError e) {
+            makeScreenshot();
             fail("Не удалось подтвердить открытие ожидаемой страницы. " +
                     "Уникальный элемент страницы 'filter' не был найден в течение заданного времени.");
         }
+        makeScreenshot();
         return this;
     }
 
+    @Step("Включение подробного режима каталога")
     public ResultsPage enableDetailedCatalogMode() { // todo overload: clickDetailCatalogModeButton()
         jsClick($x(detailedCatalogModeButton));
+        makeScreenshot();
         return this;
     }
 
@@ -93,6 +99,7 @@ public class ResultsPage extends BasePage {
                 .getText();
     }
 
+    @Step("Переход на главную страницу через логотип сайта")
     public ResultsPage returnToMainPage() {
         jsClick($x(logo));
         return this;
@@ -114,38 +121,47 @@ public class ResultsPage extends BasePage {
         return foundProduct;
     }
 
+    @Step("Добавление подходящего под параметры ('{firstParameter}' и '{secondParameter}') товара в корзину")
     public ResultsPage requiredProductWithParametersBuyingClick(String firstParameter, String secondParameter) { //todo rename: click...
         SelenideElement requiredProduct = searchForRequiredProductInList(firstParameter, secondParameter);
         jsClick(requiredProduct.$x(inCartButton));
         return this;
     }
 
+    @Step("Переход на страницу корзины через верхнее меню")
     public ResultsPage cartButtonClick() { // todo rename: clickCartButton
         jsClick($x(cartButton));
         return this;
     }
 
+    @Step("Закрытие всплывающего окна со статусом успешного добавления товара в корзину")
     public ResultsPage closeWindowWithAddedProductInCartStatusClick() { // todo overload: clickCloseUpSaleBasketLayoutButton()
         jsClick($x(closeWindowWithAddedProductInCartStatus));
         return this;
     }
 
+    @Step("Появление всплывающего окна со статусом успешного добавления товара в корзину")
     public ResultsPage checkAppearWindowWithAddedProductInCartStatus() {
         try {
             $x(windowWithAddedProductInCartStatus).should(appear, WAITING_TIME);
         } catch (UIAssertionError e) {
+            makeScreenshot();
             fail("Не было обнаружено всплывающее окно с сообщением о добавлении товара в корзину");
         }
+        makeScreenshot();
         return this;
     }
 
+    @Step("Пропадание всплывающего окна со статусом успешного добавления товара в корзину")
     public ResultsPage checkDisappearWindowWithAddedProductInCartStatus() {
         try {
             $x(windowWithAddedProductInCartStatus).shouldNot(appear, WAITING_TIME);
         } catch (UIAssertionError e) {
+            makeScreenshot();
             fail("Всплывающее окно с сообщением о добавлении товара в корзину не было закрыто " +
                     "после нажатия соответствующего элемента 'closeWindowWithAddedProductInCartStatus'");
         }
+        makeScreenshot();
         return this;
     }
 
@@ -232,12 +248,14 @@ public class ResultsPage extends BasePage {
         return String.join("\n", list);
     }
 
+    @Step("Добавление {amountOfProductsForAdding} первых товара в список сравнения")
     public ResultsPage someProductAddToComparingClick(int amountOfProductsForAdding) { //todo rename: clickProductAddToCompareButton
         ElementsCollection allProductsFromList = getAllProductsInPage();
-        sleep(3000);
+        sleep(2000);
         for (int countOfAddedProducts = 0; countOfAddedProducts < amountOfProductsForAdding; countOfAddedProducts++) {
             allProductsFromList.get(countOfAddedProducts).should(visible, WAITING_TIME);
             jsClick(allProductsFromList.get(countOfAddedProducts).$x(addToCompareButton));
+            sleep(2000);
         }
         return this;
     }
@@ -247,15 +265,19 @@ public class ResultsPage extends BasePage {
                 .getText();
     }
 
+    @Step("Соответствие количества добавленного товара в список сравнения с ожидаемым значением = {expectedAmountOfProductsForAdding}")
     public ResultsPage checkAmountOfAddedProductsToCompare(int expectedAmountOfProductsForAdding) { // todo rename: checkAmountProductsAddToCompare
-        assertEquals(getAmountOfAddedProductsToCompare(),
+        String actualAmountOfProduct = getAmountOfAddedProductsToCompare();
+        assertEquals(actualAmountOfProduct,
                 String.valueOf(expectedAmountOfProductsForAdding),
                 String.format("Фактическое количество добавленных для сравнения товаров = %s " +
-                                " не соответствует ожидаемому = %s",
-                        getAmountOfAddedProductsToCompare(), expectedAmountOfProductsForAdding));
+                                "не соответствует ожидаемому = %s",
+                        actualAmountOfProduct, expectedAmountOfProductsForAdding));
+        makeScreenshot();
         return this;
     }
 
+    @Step("Переход на страницу сравнения товаров через верхнее меню")
     public ResultsPage comparingButtonClick() { // todo rename: clickCompareButton
         jsClick($x(comparingButton));
         return this;
@@ -283,12 +305,14 @@ public class ResultsPage extends BasePage {
         return product.$x(productTitle);
     }
 
+    @Step("Добавление подходящего по названию ('{observedProduct}') товара в корзину")
     public ResultsPage requiredProductBuyingClick(String observedProduct) { // todo rename: clickRequiredProductBuyButton
         SelenideElement foundRequiredProduct = searchForRequiredProductInList(observedProduct);
         jsClick(foundRequiredProduct.$x(inCartButton));
         return this;
     }
 
+    @Step("Переход на страницу корзины через всплывающее окно со статусом успешного добавления товара в корзину")
     public ResultsPage goToCartButtonClickWithPopupWindow() { // todo rename: clickGoToCartWithPopupWindowButton
         jsClick($x(goToCartButton));
         return this;

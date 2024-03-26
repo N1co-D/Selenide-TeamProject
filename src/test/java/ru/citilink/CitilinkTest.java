@@ -1,5 +1,6 @@
 package ru.citilink;
 
+import io.qameta.allure.Description;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import ru.citilink.pages.CartPage;
@@ -65,12 +66,14 @@ public class CitilinkTest extends BaseTest {
                 .checkProductsAfterFiltration(brandName, diagonalValue, cpuValue);
     }
 
+    @Description("TC-ID7 Проверка увеличения количества добавленных в корзину товаров")
     @ParameterizedTest
     @MethodSource("ru.citilink.CitilinkTestData#checkIncreaseInQuantityWhenAddProductsToCartTestData")
     public void checkIncreaseInQuantityWhenAddProductsToCart(String inputText,
                                                              String rawMemoryRequiredParameter,
                                                              String diskRequiredParameter,
-                                                             int expectedAmountOfProduct) {
+                                                             int amountOfProductsForIncrease,
+                                                             String expectedAmountOfProduct) {
         open(confProperties.getProperty("test-site"));
 
         mainPage.checkIfCorrectPageOpen()
@@ -85,11 +88,8 @@ public class CitilinkTest extends BaseTest {
                 .cartButtonClick();
 
         cartPage.checkIfCorrectPageOpen()
-                .increaseTheAmountOfProductInCartButtonClick();
-        assertEquals(String.valueOf(expectedAmountOfProduct),
-                cartPage.getAmountOfProductInCart(),
-                String.format("Фактическое количество товаров в корзине = %s не соответствует ожидаемому = %s",
-                        cartPage.getAmountOfProductInCart(), expectedAmountOfProduct));
+                .increaseTheAmountOfProductInCartButtonClick(amountOfProductsForIncrease)
+                .checkAmountOfProductInCart(expectedAmountOfProduct);
     }
 
     @ParameterizedTest
@@ -120,6 +120,7 @@ public class CitilinkTest extends BaseTest {
                 () -> assertTrue(comparePage.noProductsForCompareIsDisplayed(), "Отсутствует уведомление Нет товаров для сравнения"));
     }
 
+    @Description("TC-ID8 Проверка добавления товаров в список сравнения")
     @ParameterizedTest
     @MethodSource("ru.citilink.CitilinkTestData#checkProductAddToCompareSectionTestData")
     public void checkProductAddToCompareSection(int amountOfProductsForAdding) {
@@ -140,6 +141,7 @@ public class CitilinkTest extends BaseTest {
                 .checkAmountOfAddedProductsToCompare(amountOfProductsForAdding);
     }
 
+    @Description("TC-ID1 Проверка добавления товаров в корзину")
     @ParameterizedTest
     @MethodSource("ru.citilink.CitilinkTestData#checkProductAddToCartTestData")
     public void checkProductAddToCart(String inputText,
@@ -162,6 +164,7 @@ public class CitilinkTest extends BaseTest {
                 .checkIsCorrectCodeNumberOfProductInCart(expectedProductCode);
     }
 
+    @Description("TC-ID2 Проверка удаления товара из корзины")
     @ParameterizedTest
     @MethodSource("ru.citilink.CitilinkTestData#checkTheDeletingOfProductFromCartTestData")
     public void checkTheDeletingOfProductFromCart(String inputText,

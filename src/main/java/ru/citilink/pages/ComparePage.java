@@ -4,6 +4,7 @@ import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.UIAssertionError;
+import io.qameta.allure.Step;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,13 +55,16 @@ public class ComparePage extends BasePage {
         return $x(compareValue).should(not(visible), WAITING_TIME).isDisplayed();
     }
 
+    @Step("Открытие страницы сравнения товаров")
     public ComparePage checkIfCorrectPageOpen() {
         try {
             $x(showOnlyDifferenceCheckbox).should(visible, WAITING_TIME);
         } catch (UIAssertionError e) {
+            makeScreenshot();
             fail("Не удалось подтвердить открытие ожидаемой страницы. Уникальный элемент " +
                     "страницы 'showOnlyDifferenceCheckbox' не был найден в течение заданного времени.");
         }
+        makeScreenshot();
         return this;
     }
 
@@ -69,12 +73,14 @@ public class ComparePage extends BasePage {
                 .getText();
     }
 
+    @Step("Соответствие количества добавленного товара в список сравнения с ожидаемым значением = {expectedAmountOfProductsForAdding}")
     public ComparePage checkAmountOfAddedProductsToCompare(int expectedAmountOfProductsForAdding) {
-        assertEquals(getAmountOfAddedProductsToCompare(),
-                String.valueOf(expectedAmountOfProductsForAdding),
+        String actualAmountOfProduct = getAmountOfAddedProductsToCompare();
+        assertEquals(String.valueOf(expectedAmountOfProductsForAdding), actualAmountOfProduct,
                 String.format("Фактическое количество добавленных для сравнения товаров = %s " +
-                                " не соответствует ожидаемому = %s",
-                        getAmountOfAddedProductsToCompare(), expectedAmountOfProductsForAdding));
+                                "не соответствует ожидаемому = %s",
+                        actualAmountOfProduct, expectedAmountOfProductsForAdding));
+        makeScreenshot();
         return this;
     }
 

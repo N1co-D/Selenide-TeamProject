@@ -27,9 +27,10 @@ public class CitilinkTestData {
         String inputText = "Ноутбук Huawei MateBook D 14 53013XFA, 14";
         String rawMemoryRequiredParameter = "8 ГБ, LPDDR4x";
         String diskRequiredParameter = "SSD 512 ГБ";
-        int expectedAmountOfProduct = 2;
+        int amountOfProductsForIncrease = 2;
+        String expectedAmountOfProduct = "2";
         return Stream.of(Arguments.of(inputText, rawMemoryRequiredParameter,
-                diskRequiredParameter, expectedAmountOfProduct));
+                diskRequiredParameter, amountOfProductsForIncrease, expectedAmountOfProduct));
     }
 
     /**

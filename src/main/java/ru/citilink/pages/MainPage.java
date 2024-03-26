@@ -1,6 +1,7 @@
 package ru.citilink.pages;
 
 import com.codeborne.selenide.ex.UIAssertionError;
+import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.text;
@@ -28,22 +29,28 @@ public class MainPage extends BasePage {
     private final String catalogMenuButton = "//span[contains(text(),'Каталог товаров')]";
     private final String catalogCategoryButton = "//div[@class='PopupScrollContainer']//span[contains(text(),'%s')]";
 
+    @Step("Открытие главной страницы")
     public MainPage checkIfCorrectPageOpen() {
         try {
             $x(centralAdBanner).should(visible, WAITING_TIME);
         } catch (UIAssertionError e) {
+            makeScreenshot();
             fail("Не удалось подтвердить открытие ожидаемой страницы. " +
                     "Уникальный элемент страницы 'centralAdBanner' не был найден в течение заданного времени.");
         }
+        makeScreenshot();
         return this;
     }
 
+    @Step("Ввод запроса '{searchedProduct}' в поле поиска")
     public MainPage inputBoxWriteText(String searchedProduct) {
         jsClick($x(productSearchField));
         $x(productSearchField).sendKeys(searchedProduct);
+        makeScreenshot();
         return this;
     }
 
+    @Step("Поиск товара '{searchedProduct}' через поле поиска")
     public MainPage searchProductByInputBox(String searchedProduct) {
         inputBoxWriteText(searchedProduct);
         $x(productSearchField).should(visible, WAITING_TIME)
@@ -57,8 +64,10 @@ public class MainPage extends BasePage {
         return new ResultsPage();
     }
 
+    @Step("Открытие каталога товаров")
     public MainPage productCatalogClick() {
         jsClick($x(productCatalog));
+        makeScreenshot();
         return this;
     }
 
@@ -79,22 +88,27 @@ public class MainPage extends BasePage {
         return this;
     }
 
+    @Step("Выбор категории 'Телевизоры, аудио-видео техника'")
     public MainPage televisionsAndAudioVideoEquipmentCategoryClick() {
         $x(televisionsAndAudioVideoEquipmentCategory).should(visible, WAITING_TIME);
         actions().moveToElement($x(televisionsAndAudioVideoEquipmentCategory)).perform();
+        makeScreenshot();
         return this;
     }
 
+    @Step("Выбор подкатегории 'Телевизоры OLED'")
     public MainPage oledTelevisionsCategoryClick() {
         jsClick($x(oledTelevisionsCategory));
         return this;
     }
 
+    @Step("Выбор подсказки '{productFromDropDownList}' при вводе запроса в поле поиска")
     public MainPage clickOnProductFromDropDownList(String productFromDropDownList) {
         jsClick($x(searchCategoryInDropDownMenu + productFromDropDownList + "']"));
         return this;
     }
 
+    @Step("Переход на страницу корзины через верхнее меню")
     public MainPage cartButtonClick() {
         jsClick($x(cartButton));
         return this;

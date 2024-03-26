@@ -3,12 +3,12 @@ package ru.citilink.pages;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.UIAssertionError;
+import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Страница "Корзина" на сайте Citilink
@@ -26,18 +26,24 @@ public class CartPage extends BasePage {
     private final String productNameInCart = "//div[@data-meta-name='BasketSnippet']//a//span[text()]";
     private final String basketSnippetProductname = "//div[@data-meta-type='Product']//a//span[text()]";
 
+    @Step("Открытие страницы корзины")
     public CartPage checkIfCorrectPageOpen() {
         try {
             $x(sideDescriptionOfCart).should(visible, WAITING_TIME);
         } catch (UIAssertionError e) {
+            makeScreenshot();
             fail("Не удалось подтвердить открытие ожидаемой страницы. " +
                     "Уникальный элемент страницы 'sideDescriptionOfCart' не был найден в течение заданного времени.");
         }
+        makeScreenshot();
         return this;
     }
 
-    public CartPage increaseTheAmountOfProductInCartButtonClick() {
-        jsClick($x(increaseTheAmountOfProductInCartButton));
+    @Step("Увеличение количества товара в корзине до {amountOfProductsForIncrease}")
+    public CartPage increaseTheAmountOfProductInCartButtonClick(int amountOfProductsForIncrease) {
+        for (int i = 1; i < amountOfProductsForIncrease; i++) {
+            jsClick($x(increaseTheAmountOfProductInCartButton));
+        }
         return this;
     }
 
@@ -51,12 +57,25 @@ public class CartPage extends BasePage {
                 .getText();
     }
 
+    @Step("Соответствие количества добавленного товара в корзине с ожидаемым значением = {expectedAmountOfProduct}")
+    public CartPage checkAmountOfProductInCart(String expectedAmountOfProduct) {
+        String actualAmountOfProduct = getAmountOfProductInCart();
+        assertEquals(expectedAmountOfProduct, actualAmountOfProduct,
+                String.format("Фактическое количество товаров в корзине = %s не соответствует ожидаемому = %s",
+                        actualAmountOfProduct, expectedAmountOfProduct));
+        makeScreenshot();
+        return this;
+    }
+
+    @Step("Соответствие кода добавленного в корзину товара с ожидаемым значением = {expectedProductCode}")
     public CartPage checkIsCorrectCodeNumberOfProductInCart(String expectedProductCode) {
-        assertTrue(getCodeNumberOfProductInCart().contains(expectedProductCode),
+        String actualProductCode = getCodeNumberOfProductInCart();
+        assertTrue(actualProductCode.contains(expectedProductCode),
                 String.format("Фактическое значение кода добавленного товара = %s " +
                                 " не соответствует ожидаемому = %s",
-                        getCodeNumberOfProductInCart().substring(getCodeNumberOfProductInCart().indexOf(":") + 1),
+                        actualProductCode.substring(getCodeNumberOfProductInCart().indexOf(":") + 1),
                         expectedProductCode));
+        makeScreenshot();
         return this;
     }
 
@@ -88,23 +107,29 @@ public class CartPage extends BasePage {
         return product.$x(productTitleInCart);
     }
 
+    @Step("Удаление товара '{observedProduct}' из корзины")
     public CartPage deleteRequiredProductInCartButtonClick(String observedProduct) {
         SelenideElement requiredProduct = searchingForRequiredProductInList(observedProduct);
         jsClick(requiredProduct.$x(deleteProductInCartButton));
+        makeScreenshot();
         return this;
     }
 
+    @Step("Переход на главную страницу через кнопку 'Вернуться к покупкам'")
     public CartPage goBackToShoppingButtonClick() {
         jsClick($x(goBackToShoppingButton));
         return this;
     }
 
+    @Step("Отображение статуса об отсутствии товаров в корзине")
     public CartPage checkIsVisibleStatusOfMissingProductsInCart() {
         try {
             $x(statusOfMissingProductsInCart).should(visible, WAITING_TIME);
         } catch (UIAssertionError e) {
+            makeScreenshot();
             fail("Элемент с уведомлением 'В корзине нет товаров' не был обнаружен");
         }
+        makeScreenshot();
         return this;
     }
 
