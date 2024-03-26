@@ -41,7 +41,7 @@ public class CartPage extends BasePage {
 
     @Step("Увеличение количества товара в корзине до {amountOfProductsForIncrease}")
     public CartPage increaseTheAmountOfProductInCartButtonClick(int amountOfProductsForIncrease) {
-        for (int countOfClicking = 1; countOfClicking < amountOfProductsForIncrease; countOfClicking++) {
+        for (int i = 1; i < amountOfProductsForIncrease; i++) {
             jsClick($x(increaseTheAmountOfProductInCartButton));
         }
         return this;
