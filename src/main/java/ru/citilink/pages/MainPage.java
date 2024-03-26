@@ -1,6 +1,7 @@
 package ru.citilink.pages;
 
 import com.codeborne.selenide.ex.UIAssertionError;
+import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.text;
@@ -28,6 +29,7 @@ public class MainPage extends BasePage {
     private final String catalogMenuButton = "//span[contains(text(),'Каталог товаров')]";
     private final String catalogCategoryButton = "//div[@class='PopupScrollContainer']//span[contains(text(),'%s')]";
 
+    @Step("Проверка открытия главной страницы")
     public MainPage checkIfCorrectPageOpen() {
         try {
             $x(centralAdBanner).should(visible, WAITING_TIME);
@@ -44,6 +46,7 @@ public class MainPage extends BasePage {
         return this;
     }
 
+    @Step("Поиск товара {searchedProduct} через поле поиска")
     public MainPage searchProductByInputBox(String searchedProduct) {
         inputBoxWriteText(searchedProduct);
         $x(productSearchField).should(visible, WAITING_TIME)
@@ -71,11 +74,13 @@ public class MainPage extends BasePage {
         return new ComparePage();
     }
 
+    @Step("Переход в раздел категории = {nameCategory}, через плитку категории")
     public MainPage clickPopularCategoryTile(String nameCategory) {
         $x(String.format(popularCategoryTile, nameCategory))
                 .scrollIntoView("{behavior: \"smooth\", block: \"center\", inline: \"nearest\"}")
                 .should(visible, WAITING_TIME)
                 .click();
+        makeScreenshot();
         return this;
     }
 
@@ -100,10 +105,12 @@ public class MainPage extends BasePage {
         return this;
     }
 
+    @Step("Поиск товара '{nameProduct}' через поле поиска")
     public MainPage enterSearchProductInputLine(String nameProduct) {
         $x(productSearchField)
                 .should(visible, WAITING_TIME)
                 .val(nameProduct).pressEnter();
+        makeScreenshot();
         return this;
     }
 
@@ -113,11 +120,13 @@ public class MainPage extends BasePage {
         return new ResultsPage();
     }
 
+    @Step("Поиск товара '{nameProduct}' через поле поиска и нажатие на кнопку поискаь(рис.лупа)")
     public MainPage enterProductInputLineAndClickSearchButton(String nameProduct) {
         $x(productSearchInputLine)
                 .should(visible, WAITING_TIME)
                 .sendKeys(nameProduct);
         clickSearchButton();
+        makeScreenshot();
         return this;
     }
 
@@ -127,15 +136,19 @@ public class MainPage extends BasePage {
                 .click();
     }
 
+    @Step("Раскрытие каталога (выпадающий список)")
     public MainPage clickCatalogMenuButton() {
         $x(catalogMenuButton).shouldBe(visible, WAITING_TIME).click();
+        makeScreenshot();
         return this;
     }
 
+    @Step("Переход в категорию {nameCategory} через выпадающий список 'Категории'")
     public MainPage clickCatalogCategoryButton(String nameCategory) {
         $x(String.format(catalogCategoryButton, nameCategory))
                 .should(visible, WAITING_TIME)
                 .click();
+        makeScreenshot();
         return this;
     }
 }

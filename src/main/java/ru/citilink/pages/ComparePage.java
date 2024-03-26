@@ -4,6 +4,7 @@ import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.UIAssertionError;
+import io.qameta.allure.Step;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,6 +97,7 @@ public class ComparePage extends BasePage {
         return resultList;
     }
 
+    @Step("Добавление товара после фильтрации в корзину")
     public ComparePage clickSelectedProductCartButton(String firstSpecific,
                                                       String firstValue,
                                                       String secondSpecific,
@@ -110,9 +112,11 @@ public class ComparePage extends BasePage {
                     .shouldBe(visible, WAITING_TIME)
                     .click();
         }
+        makeScreenshot();
         return this;
     }
 
+    @Step("Переход в корзину через всплывающее окно добавленного товара в корзину")
     public void clickUpsaleBasketBlockGoShopCartButton() {
         $x(upsaleBasketBlockGoShopCartButton)
                 .shouldBe(visible, WAITING_TIME)

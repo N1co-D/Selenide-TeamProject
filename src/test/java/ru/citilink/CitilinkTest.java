@@ -1,5 +1,6 @@
 package ru.citilink;
 
+import io.qameta.allure.Description;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import ru.citilink.pages.CartPage;
@@ -44,6 +45,7 @@ public class CitilinkTest extends BaseTest {
                                 priceOfCurrentProduct, comparePage.getComparePageTitle())));
     }
 
+    @Description("TC-ID6 Проверка фильтрации товаров")
     @ParameterizedTest
     @MethodSource("ru.citilink.CitilinkTestData#checkFilterProductsByParametersTestData")
     public void checkFilterProductsByParameters(String categoryName,
@@ -65,6 +67,7 @@ public class CitilinkTest extends BaseTest {
                 .checkProductsAfterFiltration(brandName, diagonalValue, cpuValue);
     }
 
+    @Description("TC-ID7 Проверка увеличения количества товаров, добавленных в корзину")
     @ParameterizedTest
     @MethodSource("ru.citilink.CitilinkTestData#checkIncreaseInQuantityWhenAddProductsToCartTestData")
     public void checkIncreaseInQuantityWhenAddProductsToCart(String inputText,
@@ -192,6 +195,7 @@ public class CitilinkTest extends BaseTest {
         mainPage.checkIfCorrectPageOpen();
     }
 
+    @Description("TC-ID5 Проверка добавление товара в корзину")
     @ParameterizedTest
     @MethodSource("ru.citilink.CitilinkTestData#checkItemAddToCartTestData")
     public void checkItemAddToCart(String productName) {
@@ -239,6 +243,7 @@ public class CitilinkTest extends BaseTest {
         cartPage.checkProductTitleCart(observedProduct);
     }
 
+    @Description("TC-ID10 Проверка наименования товара после фильтрации")
     @ParameterizedTest
     @MethodSource("ru.citilink.CitilinkTestData#checkProductNameAfterFilterParamDataTest")
     public void checkProductNameAfterFilterParam(String categoryName,

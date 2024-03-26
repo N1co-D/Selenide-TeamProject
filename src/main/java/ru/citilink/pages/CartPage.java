@@ -3,6 +3,7 @@ package ru.citilink.pages;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.UIAssertionError;
+import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.visible;
@@ -108,6 +109,7 @@ public class CartPage extends BasePage {
         return this;
     }
 
+    @Step("Получить имя продукта из карточки продукта в корзине")
     public String getNameProductFromBasketSnippet() {
         return $x(basketSnippetProductname)
                 .should(visible, WAITING_TIME)
@@ -134,6 +136,7 @@ public class CartPage extends BasePage {
                 .getText();
     }
 
+    @Step("Проверка имени продукта добавленного в корзину с ожидаемым значением = {expectedProductName}")
     public CartPage checkProductNameInCart(String expectedProductName) {
         String productName = getProductNameInCart();
         assertTrue(productName.contains(expectedProductName),
@@ -141,6 +144,7 @@ public class CartPage extends BasePage {
                                 " не соответствует ожидаемому = %s",
                         productName,
                         expectedProductName));
+        makeScreenshot();
         return this;
     }
 }
