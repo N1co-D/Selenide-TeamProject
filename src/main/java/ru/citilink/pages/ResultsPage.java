@@ -4,6 +4,7 @@ import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.UIAssertionError;
+import io.qameta.allure.Step;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -180,6 +181,7 @@ public class ResultsPage extends BasePage {
      * @return this Page
      * sleep and the dual use of scroll due to the site filter features
      */
+    @Step("Выбор категории и значения для фильтрации товара")
     public ResultsPage clickFilterDropDownCategoryAndValue(String filterCategory, String value) { // todo  modify scroll
         sleep(2000);
         $x(String.format(dropDownCategoryAndValueFilter, filterCategory, value))
@@ -200,6 +202,7 @@ public class ResultsPage extends BasePage {
      * @param processor
      * @return this Page
      */
+    @Step("Проверка товаров после фильтрации")
     public ResultsPage checkProductsAfterFiltration(String brand, String diagonal, String processor) {
         assertAll(
                 () -> assertTrue(checkParamProductsAfterFilter(horizontalSnippetsProducts
@@ -294,25 +297,31 @@ public class ResultsPage extends BasePage {
         return this;
     }
 
+    @Step("Добавление товара: {nameProduct} в корзину")
     public ResultsPage clickAddItemToBasketButton(String nameProduct) {
         $x(String.format(addItemToBasketButton, nameProduct))
                 .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"nearest\"}")
                 .should(visible, WAITING_TIME)
                 .click();
+        makeScreenshot();
         return this;
     }
 
+    @Step("Закрытие всплывающего окна с информацией о добавленном в корзину товаре")
     public ResultsPage clickCloseUpSaleBasketLayoutButton() {
         $x(closeUpSaleBasketLayoutButton)
                 .should(visible, WAITING_TIME)
                 .click();
+        makeScreenshot();
         return this;
     }
 
+    @Step("Открытие раздела 'Корзина'")
     public ResultsPage clickBasketFresnelContainerButton() {
         $x(basketFresnelContainerButton)
                 .should(visible, WAITING_TIME)
                 .click();
+        makeScreenshot();
         return this;
     }
 
@@ -375,21 +384,26 @@ public class ResultsPage extends BasePage {
         return this;
     }
 
+    @Step("Ввод значения {price} в поле фильтра 'Максимальная цена'")
     public ResultsPage enterFilterDropdownInputMaxPrice(String price) {
         $x(filterDropdownInputMaxPrice)
                 .should(visible, WAITING_TIME)
                 .val(price).pressEnter();
+        makeScreenshot();
         return this;
     }
 
+    @Step("Нажатие на кнопку детального просмотра товаров")
     public ResultsPage clickDetailCatalogModeButton() {
         $x(detailCatalogModeButton)
                 .scrollIntoView("{behavior: \"auto\", block: \"center\", inline: \"nearest\"}")
                 .should(interactable, WAITING_TIME)
                 .click();
+        makeScreenshot();
         return this;
     }
 
+    @Step("Добавление коллекции товаров в 'Сравнение'")
     public ResultsPage clickCollectionCompareProductButton() {
         for (SelenideElement element : createElementsCollection(horizontalSnippetsProducts)) {
             element.$x(currentProductCompareButton)
@@ -397,14 +411,17 @@ public class ResultsPage extends BasePage {
                     .shouldBe(visible, WAITING_TIME)
                     .click();
         }
+        makeScreenshot();
         return this;
     }
 
+    @Step("Переход в раздел 'Сравнение'")
     public ResultsPage clickFresnelContainerCompareButton() {
         $x(fresnelContainerCompareButton)
                 .scrollIntoView("{behavior: \"auto\", block: \"center\", inline: \"nearest\"}")
                 .should(visible, WAITING_TIME)
                 .click();
+        makeScreenshot();
         return this;
     }
 
@@ -412,30 +429,37 @@ public class ResultsPage extends BasePage {
         return $$x(xPath).should(CollectionCondition.sizeGreaterThan(0), WAITING_TIME);
     }
 
+    @Step("Нажатие кнопки 'Смотреть больше' подкатегории {subcategoryname}")
     public ResultsPage clickDropDownlistShowMoreButton(String subcategoryname) {
         $x(String.format(dropDownlistShowMoreButton, subcategoryname))
                 .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"nearest\"}")
                 .should(visible, WAITING_TIME)
                 .click();
+        makeScreenshot();
         return this;
     }
 
+    @Step("Переход в раздел категории: {subcategoryName} / {underSubcategoryName}")
     public ResultsPage clickUnderSubcategoryButton(String subcategoryName, String underSubcategoryName) {
         $x(String.format(underSubcategoryButton, subcategoryName, underSubcategoryName))
                 .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"nearest\"}")
                 .should(visible, WAITING_TIME)
                 .click();
+        makeScreenshot();
         return this;
     }
 
+    @Step("Добавление первого товара в корзину")
     public ResultsPage clickAddFirstItemToBasketButton() {
         $x(addFirstItemToBasketButton)
                 .scrollIntoView("{behavior: \"instant\", block: \"center\", inline: \"nearest\"}")
                 .should(visible, WAITING_TIME)
                 .click();
+        makeScreenshot();
         return this;
     }
 
+    @Step("Переход в корзину через всплывающее окно добавленного товара в корзину")
     public void clickUpsaleBasketBlockGoShopCartButton() {
         $x(upsaleBasketBlockGoShopCartButton)
                 .shouldBe(visible, WAITING_TIME)
